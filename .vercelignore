@@ -10,3 +10,8 @@ README.md
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+update-paths.ps1
