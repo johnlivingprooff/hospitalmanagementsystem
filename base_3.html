@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/GetWebsiteLogo">
+
+    <title>Hospital Management System - {% block pageTitle %}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--<link href="/assets/bootstrap/css/floating-labels.css" rel="stylesheet">-->
+
+    <!-- Custom styles for this template -->
+    <link href="/assets/bootstrap/css/dashboard.css" rel="stylesheet">
+
+    <link href="/assets/fa/css/all.min.css" rel="stylesheet">
+
+    <link href="/assets/datatables/datatables.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/webfont-medical-icons/css/wfmi-style.css">
+
+    <style>
+        .logo {
+            width: 30px;
+            height: 30px;
+        }
+
+        img.image-preview, img.profile-image {
+            object-fit: cover;
+            width: 200px;
+            height: 200px;
+        }
+
+        .menu-list .list-group-item:first-child {
+            border-top-right-radius: 0px;
+            border-top-left-radius: 0px;
+            border-top: none;
+        }
+
+        .menu-list .list-group-item:last-child {
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+        }
+
+        .menu-list .list-group-item {
+            border-left: none;
+            border-right: none;
+        }
+
+        body {
+            background: #dedede;
+        }
+
+        h5.page-title, .section-title {
+            border-bottom: 1px double gray;
+            padding: 8px;
+            background-color: #f0e4c6;
+        }
+
+        {% block headerStyles %}{% endblock %}
+
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="/Hms/Home">
+        <img class="rounded-circle"
+             style="background-color: white; border:1px solid #dbcaca"
+             src="/GetWebsiteLogo"
+             width="30px" height="30px">&nbsp;
+        {{ websiteBanner | escape }}
+    </a>
+    <button class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <div class="container">
+            <ul class="navbar-nav">
+                {# Descendant views should extend this block for menus #}
+                {% block menuBlock %}{% endblock %}
+            </ul>
+        </div>
+
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a href="#"
+                   class="nav-link dropdown-toggle"
+                   data-toggle="dropdown">
+                    <img src="/Hms/Users/ProfileImage/{{ user.Id }}"
+                         width="30"
+                         height="30"
+                         class="rounded-circle">&nbsp;
+                    {{ user.fullname() | escape }} ({{ userRole.roleName }})
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="/Hms/Account/Contact" class="dropdown-item">
+                        <i class="fa fa-user"></i>
+                        My Account
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/Auth/Logout" class="dropdown-item">
+                        <i class="fa fa-power-off"></i>
+                        Logout
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-fixed">
+
+                <div class="list-group menu-list">
+
+                    {% if hasPermission("ReadHome", userPermissions) %}
+
+                    <a id="Home" class="list-group-item" href="/Hms/Home">
+                        <span class="medical-icon-i-hospital" aria-hidden="true"></span>
+                        Home
+                    </a>
+
+                    {% endif %}
+
+
+                    {# --- Add non-system menus here --- #}
+
+                    {% if hasPermission("ReadReception", userPermissions) %}
+
+                    <a id="Reception" class="list-group-item" href="/Hms/Reception">
+                        <span class="medical-icon-i-registration" aria-hidden="true"></span>
+                        Reception
+                    </a>
+
+                    {% endif %}
+
+                    {% if hasPermission("ReadAppointments", userPermissions) %}
+
+                    <a id="Appointments" class="list-group-item" href="/Hms/Appointments">
+                        <span class="medical-icon-i-waiting-area" aria-hidden="true"></span>
+                        Appointments
+                    </a>
+
+                    {% endif %}
+
+                    {% if hasPermission("ReadDental", userPermissions) %}
+
+                    <a id="Dental" class="list-group-item" href="/Hms/Dental">
+                        <span class="medical-icon-i-dental" aria-hidden="true"></span>
+                        Dental
+                    </a>
+
+                    {% endif %}
+
+                    {% if hasPermission("ReadNursesSection", userPermissions) %}
+
+                    <a id="Nurse" class="list-group-item" href="/Hms/Nurse">
+                        <span class="medical-icon-i-care-staff-area" aria-hidden="true"></span>
+                        Nurse
+                    </a>
+
+                    {% endif %}
+
+                    {% if hasPermission("ReadConsultation", userPermissions) %}
+
+                    <a id="Consultation" class="list-group-item" href="/Hms/Consultation">
+                        <span class="medical-icon-i-care-staff-area" aria-hidden="true"></span>
+                        Consultation
+                    </a>
+
+                    {% endif %}
+
+                    {% if hasPermission("ReadWards", userPermissions) %}
+
+                    <a id="Wards" class="list-group-item" href="/Hms/Wards">
+                        <span class="medical-icon-i-inpatient" aria-hidden="true"></span>
+                        Wards
+                    </a>
+
+                    {% endif %}
+
+                    {% if hasPermission("ReadXRay", userPermissions) %}
+
+                    <a id="XRay" class="list-group-item" href="/Hms/XRay">
+                        <span class="medical-icon-i-radiology" aria-hidden="true"></span>
+                        X-Ray
+                    </a>
+
+                    {% endif %}
+
+                    {% if hasPermission("ReadPharmacy", userPermissions) %}
+
+                    <a id="Pharmacy" class="list-group-item" href="/Hms/Pharmacy">
+                        <span class="medical-icon-i-pharmacy" aria-hidden="true"></span>
+                        Pharmacy
+                    </a>
+
+                    {% endif %}
+
+                    {% if hasPermission("ReadLaboratory", userPermissions) %}
+
+                    <a id="Laboratory" class="list-group-item" href="/Hms/Laboratory">
+                        <span class="medical-icon-i-laboratory" aria-hidden="true"></span>
+                        Laboratory
+                    </a>
+
+                    {% endif %}
+
+                    {% if hasPermission("ReadBulkStore", userPermissions) %}
+
+                    <a id="BulkStore" class="list-group-item" href="/Hms/BulkStore">
+                        <i class="fa fa-barcode"></i>
+                        Bulk Store
+                    </a>
+
+                    {% endif%}
+
+                    {# --- end --- #}
+
+                    {% if hasPermission("ReadPermissions", userPermissions) %}
+
+                    <a id="Permissions" class="list-group-item" href="/Hms/Permissions">
+                        <i class="fa fa-id-card"></i>
+                        Permissions
+                    </a>
+
+                    {% endif %}
+
+                    {% if hasPermission("ReadRoles", userPermissions) %}
+
+                    <a id="Roles" class="list-group-item" href="/Hms/Roles">
+                        <i class="fa fa-id-badge"></i>
+                        Roles
+                    </a>
+
+                    {% endif %}
+
+                    {% if hasPermission("ReadSections", userPermissions) %}
+
+                    <a id="Sections" class="list-group-item" href="/Hms/Sections">
+                        <i class="fa fa-hospital"></i>
+                        Sections
+                    </a>
+
+                    {% endif %}
+
+                    {% if hasPermission("ReadUsers", userPermissions) %}
+
+                    <a id="Users" class="list-group-item" href="/Hms/Users">
+                        <i class="fa fa-users"></i>
+                        Users
+                    </a>
+
+                    {% endif %}
+
+                    {% if hasPermission("ReadAuditLogs", userPermissions) %}
+
+                    <a id="AuditLogs" class="list-group-item" href="/Hms/AuditLogs">
+                        <i class="fa fa-shield-alt"></i>
+                        System Audit
+                    </a>
+
+                    {% endif %}
+
+                    {% if hasPermission("ReadSettings", userPermissions) %}
+
+                    <a id="SystemSettings" class="list-group-item" href="/Hms/SystemSettings">
+                        <i class="fa fa-cog"></i>
+                        System Settings
+                    </a>
+
+                    {% endif %}
+                </div>
+
+                <!--
+                <ul class="nav flex-column">
+
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/Hms/Permissions">
+                            <i class="fa fa-id-card"></i>
+                            Permissions <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Hms/Roles">
+                            <i class="fa fa-id-badge"></i>
+                            Roles
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Hms/Users">
+                            <i class="fa fa-users"></i>
+                            Users
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Hms/AuditLogs">
+                            <i class="fa fa-shield-alt"></i>
+                            System Audit
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Hms/SystemSettings">
+                            <i class="fa fa-cog"></i>
+                            System Settings
+                        </a>
+                    </li>
+
+                </ul>
+                -->
+
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+            {% if errorMessage %}
+            {{ showErrorMessage(errorMessage, "my-4 mx-4") }}
+            {% endif %}
+
+            {% if successMessage %}
+            {{ showSuccessMessage(successMessage, "my-4 mx-4") }}
+            {% endif %}
+
+            {% if infoMessage %}
+            {{ showInfoMessage(infoMessage, "my-4 mx-4") }}
+            {% endif %}
+
+            {# Descendant views should extend this block for adding content #}
+            {% block mainContent %}{% endblock %}
+        </main>
+
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/assets/jquery/jquery-3.4.1.js"></script>
+<script src="/assets/popper/popper-1.12.9.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/fa/js/all.min.js"></script>
+<script src="/assets/datatables/datatables.min.js"></script>
+
+<!-- Graphs -->
+<script src="/assets/chart.min.js"></script>
+<script>
+/*
+      var ctx = document.getElementById("myChart");
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          datasets: [{
+            data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
+            lineTension: 0,
+            backgroundColor: 'transparent',
+            borderColor: '#007bff',
+            borderWidth: 4,
+            pointBackgroundColor: '#007bff'
+          }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: false
+              }
+            }]
+          },
+          legend: {
+            display: false,
+          }
+        }
+      });*/
+
+// dynamically select menu
+let path = document.location.pathname.substring(1).split("/")[1];
+
+// Select
+$('#' + path).addClass('active');
+
+var dt = $('.datatable');
+if(dt !== undefined){
+    dt.DataTable();
+}
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+
+
+</script>
+
+{# Descendant views should extend this block to add footer scripts #}
+{% block footerScripts %}{% endblock %}
+
+</body>
+</html>

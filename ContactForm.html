@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Update My Contact Details{% endblock %}
+
+{% block headerStyles %}
+{{ parent() }}
+
+#FileInput {
+display: none;
+}
+
+#ProfilePicture {
+    cursor: pointer;
+}
+
+{% endblock %}
+
+{% block mainContent %}
+
+<div class="container mx-auto mt-4">
+
+    <div class="panel panel-success mb-4">
+        <div class="panel-heading mb-4">
+            <h5 class="panel-title">Picture</h5>
+        </div>
+        <div class="panel-body">
+            {{ openForm("/Hms/Account/UpdateProfilePicture", "", true) }}
+            <div class="form-row">
+                <div class="col-3">
+                    <img id="ProfilePicture"
+                         class="profile-image"
+                         data-toggle="tooltip"
+                         data-placement="right"
+                         title="Click to select a new image"
+                         src="/Hms/Users/ProfileImage/{{ user.Id }}">
+                    <input id="FileInput"
+                           type="file"
+                           name="profile-image"
+                           accept=".jpeg, .jpg, .png"
+                           onchange="previewFile(event)">
+                </div>
+                <div class="col-1 mt-auto">
+                    <button type="submit" class="btn btn-info">
+                        <i class="fa fa-upload">&nbsp;</i> Save
+                    </button>
+                </div>
+            </div>
+            {{ closeForm() }}
+        </div>
+    </div>
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h5 class="panel-title">Update Contact Details</h5>
+        </div>
+        <div class="panel-body mt-4">
+
+            {{ openForm("/Hms/Account/UpdateContactInformation") }}
+
+            <div class="form-row">
+                <div class="col-5">
+                    <div class="form-group">
+                        <label for="address1">Email Address</label>
+                        <input type="email"
+                               minlength="1"
+                               maxlength="50"
+                               autocomplete="off"
+                               name="email"
+                               id="email"
+                               value="{{ email|escape }}"
+                               class="form-control"
+                               placeholder="Email address" required autofocus>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date"
+                               minlength="1"
+                               maxlength="50"
+                               autocomplete="off"
+                               name="dob"
+                               id="dob"
+                               value="{{ date(dob) | escape }}"
+                               class="form-control"
+                               placeholder="Date of birth" required autofocus>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-5">
+                    <div class="form-group">
+                        <label for="address1">First name</label>
+                        <input type="text"
+                               minlength="1"
+                               maxlength="50"
+                               autocomplete="off"
+                               name="firstName"
+                               id="firstName"
+                               value="{{ firstName|escape }}"
+                               class="form-control"
+                               placeholder="First name" required autofocus>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="form-group">
+                        <label for="address2">Last name</label>
+                        <input type="text"
+                               minlength="1"
+                               maxlength="50"
+                               autocomplete="off"
+                               name="lastName"
+                               id="lastName"
+                               value="{{ lastName|escape }}"
+                               class="form-control"
+                               placeholder="Last name" required autofocus>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-5">
+                    <div class="form-group">
+                        <label for="address1">Physical Address</label>
+                        <input type="text"
+                               minlength="1"
+                               maxlength="50"
+                               autocomplete="off"
+                               name="address1"
+                               id="address1"
+                               value="{{ address1|escape }}"
+                               class="form-control"
+                               placeholder="Physical address" required autofocus>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="form-group">
+                        <label for="address2">Mailing Address</label>
+                        <input type="text"
+                               minlength="1"
+                               maxlength="50"
+                               autocomplete="off"
+                               name="address2"
+                               id="address2"
+                               value="{{ address2|escape }}"
+                               class="form-control"
+                               placeholder="Mailing address" required autofocus>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-5">
+                    <div class="form-group">
+                        <label for="phone1">Primary phone number</label>
+                        <input type="text"
+                               minlength="1"
+                               maxlength="50"
+                               autocomplete="off"
+                               name="phone1"
+                               value="{{ phone1|escape }}"
+                               id="phone1"
+                               class="form-control"
+                               placeholder="Primary number" required autofocus>
+                    </div>
+                </div>
+
+                <div class="col-5">
+                    <div class="form-group">
+                        <label for="phone2">Secondary phone number</label>
+                        <input type="text"
+                               minlength="1"
+                               maxlength="50"
+                               autocomplete="off"
+                               name="phone2"
+                               value="{{ phone2|escape }}"
+                               id="phone2"
+                               class="form-control"
+                               placeholder="Secondary number" required autofocus>
+                    </div>
+                </div>
+            </div>
+
+            {{ printErrorList(errorList) }}
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary mb-2 mt-4">
+                    Update
+                </button>
+            </div>
+
+            {{ closeForm() }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footerScripts %}
+
+{{ parent() }}
+
+<script>
+    // File reader for image previews
+    let fileReader = new FileReader();
+
+    $("#ProfilePicture").click(function(){
+        $("#FileInput").click();
+    });
+
+    function previewFile(event){
+        console.log(event.target);
+        ProfilePicture.src = window.URL.createObjectURL(event.target.files[0]);
+    }
+
+</script>
+
+{% endblock %}

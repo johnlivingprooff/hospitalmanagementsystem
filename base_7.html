@@ -1,0 +1,9 @@
+{% extends "../base.html" %}
+
+{% block footerScripts %}
+
+<script>
+$('#' + document.location.pathname.substring(1).split("/")[2]).addClass('active');
+</script>
+
+{% endblock %}

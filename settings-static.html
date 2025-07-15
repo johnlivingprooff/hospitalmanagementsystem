@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="hms-default-logo.png">
+    <title>Hospital Management System - System Settings</title>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="dashboard.css" rel="stylesheet">
+    <link href="all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="wfmi-style.css">
+    <style>
+        body { background: #dedede; }
+        h5.page-title, .section-title {
+            border-bottom: 1px double gray;
+            padding: 8px;
+            background-color: #f0e4c6;
+        }
+        .sidebar {
+            position: fixed;
+            top: 51px;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 20px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            border-right: 1px solid #eee;
+        }
+        .image-preview {
+            object-fit: cover;
+            width: 200px;
+            height: 200px;
+            border: 2px dashed #ccc;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="/dashboard">
+        <img class="rounded-circle" style="background-color: white; border:1px solid #dbcaca" 
+             src="hms-default-logo.png" width="30px" height="30px">&nbsp;
+        Hospital Management System
+    </a>
+    <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                    <img src="placeholder-face-big.png" width="30" height="30" class="rounded-circle">&nbsp;
+                    Dr. Admin User (Administrator)
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="/" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-fixed">
+                <div class="list-group menu-list">
+                    <a href="/dashboard" class="list-group-item">
+                        <span class="medical-icon-i-hospital"></span> Home
+                    </a>
+                    <a href="/users" class="list-group-item">
+                        <i class="fa fa-users"></i> Users
+                    </a>
+                    <a href="/roles" class="list-group-item">
+                        <i class="fa fa-id-badge"></i> Roles
+                    </a>
+                    <a href="/permissions" class="list-group-item">
+                        <i class="fa fa-id-card"></i> Permissions
+                    </a>
+                    <a href="/settings" class="list-group-item active">
+                        <i class="fa fa-cog"></i> System Settings
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">System Settings</h1>
+            </div>
+
+            <div class="container mx-auto">
+                <h5 class="section-title my-4">Website logo</h5>
+                <p class="lead">The logo appears on the login page and top-left corner of the navigation bar</p>
+                <div class="form-row my-4">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <img src="hms-default-logo.png"
+                                 id="logoPreview"
+                                 class="image-preview">
+                        </div>
+                    </div>
+                </div>
+
+                <form action="/settings/logo" method="post" enctype="multipart/form-data">
+                    <input id="logo"
+                           onchange="logoPreview.src = window.URL.createObjectURL(this.files[0])"
+                           name="logo"
+                           style="display: none"
+                           type="file"
+                           accept=".jpeg, .jpg, .png" />
+
+                    <div class="form-row my-1">
+                        <div class="col-2">
+                            <div class="form-group">
+                                <button type="button" onclick="document.getElementById('logo').click()" class="btn btn-primary">
+                                    <i class="fa fa-image"></i> Select Logo
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fa fa-upload"></i> Upload
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <h5 class="section-title my-4">Website banner</h5>
+                <p class="lead">The banner appears next to the logo and on the login page</p>
+                
+                <form action="/settings/banner" method="post">
+                    <div class="form-row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="banner">Banner Text</label>
+                                <input type="text"
+                                       name="banner"
+                                       id="banner"
+                                       class="form-control"
+                                       value="Hospital Management System"
+                                       placeholder="Enter banner text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i> Update Banner
+                        </button>
+                    </div>
+                </form>
+
+                <h5 class="section-title my-4">System Information</h5>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Version Information</h5>
+                                <p class="card-text">
+                                    <strong>System Version:</strong> 1.0.0<br>
+                                    <strong>Build Date:</strong> July 15, 2025<br>
+                                    <strong>Node.js Version:</strong> <span id="nodeVersion">Loading...</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">System Status</h5>
+                                <p class="card-text">
+                                    <strong>Status:</strong> <span class="badge badge-success">Online</span><br>
+                                    <strong>Uptime:</strong> <span id="uptime">Loading...</span><br>
+                                    <strong>Memory Usage:</strong> <span id="memory">Loading...</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="jquery-3.4.1.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="all.min.js"></script>
+
+<script>
+// Load system information
+document.addEventListener('DOMContentLoaded', function() {
+    // Simulate loading system info
+    document.getElementById('nodeVersion').textContent = 'v18.0.0';
+    document.getElementById('uptime').textContent = '2 days, 14 hours';
+    document.getElementById('memory').textContent = '45.2 MB';
+});
+</script>
+
+</body>
+</html>

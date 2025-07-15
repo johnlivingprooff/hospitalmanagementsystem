@@ -1,0 +1,408 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Register New Patient{% endblock %}
+
+{% block mainContent %}
+
+{{ printErrorList(errorList) }}
+
+<div class="container mx-auto">
+
+    <h5 class="page-title my-4">Personal details</h5>
+
+    {% if showAlert %}
+    <div class="alert alert-warning">
+        <p class="lead">Verify that the client/patient does not already exist in the system by
+            using the <a class="alert-link" href="/Hms/Reception/ClientSearch">Client Search</a> function.
+        </p>
+    </div>
+    {% endif %}
+
+    {{ openForm("/Hms/Reception/RegisterPatient", "form-signin", true) }}
+
+    <div class="form-row">
+        <div class="col-2">
+            <div class="form-group">
+                <label for="imgPreview">Picture</label>
+                <img data-toggle="tooltip"
+                     data-placement="top"
+                     src="/assets/static/placeholder-face-big.png"
+                     class="image-preview"
+                     style="cursor: pointer;"
+                     title="Click to select a picture"
+                     onclick="$(filePicker).click()"
+                     id="imgPreview">
+                <input name="picture"
+                       id="filePicker"
+                       type="file"
+                       onchange="imgPreview.src = window.URL.createObjectURL(filePicker.files[0])"
+                       accept=".jpeg, .jpg, .png"
+                       style="display: none">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="firstName">First name</label>
+                <input type="text"
+                       autocomplete="off"
+                       minlength="1"
+                       maxlength="50"
+                       value="{{ firstName|escape }}"
+                       name="firstName"
+                       id="firstName"
+                       class="form-control"
+                       placeholder="First name" required autofocus>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label for="lastName">Last name</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       value="{{ lastName|escape }}"
+                       name="lastName"
+                       id="lastName"
+                       class="form-control"
+                       placeholder="Last name" required autofocus>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="sex">Sex</label>
+                {# formDropdown(items, id, name, selected, className) #}
+                {{ formDropDown(genderList, "sex", "sex", sex) }}
+            </div>
+        </div>
+        <div class="col-6">
+            <label for="dob">Date of birth</label>
+            <input type="date"
+                   autocomplete="off"
+                   value="{{ date(dob) }}"
+                   name="dob"
+                   id="dob"
+                   class="form-control" required autofocus>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="phone1">Email address</label>
+                <input type="email"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       name="email"
+                       value="{{ email|escape }}"
+                       id="email"
+                       class="form-control"
+                       placeholder="Email address" required autofocus>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label for="country">Nationality</label>
+                {# formDropdown(items, id, name, selected, className) #}
+                {{ formDropDown(countries, "country", "country", country) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="idNumber"
+                       title="Enter client's identification number"
+                       data-placement="top"
+                       data-toggle="tooltip"><abbr>ID Number</abbr></label>
+                <input type="text"
+                       minlength="3"
+                       maxlength="15"
+                       autocomplete="off"
+                       value="{{ idNumber|escape }}"
+                       name="idNumber"
+                       id="idNumber"
+                       class="form-control"
+                       placeholder="ID number" autofocus required>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="form-group">
+                <label for="idType">ID Type</label>
+                {# formDropdown(items, id, name, selected, className) #}
+                {{ formDropDown(idTypes, "idType", "idType", idType) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="idIssueDate">ID Issue date</label>
+                <input type="date"
+                       value="{{ date(idIssueDate) }}"
+                       name="idIssueDate"
+                       id="idIssueDate"
+                       class="form-control" required>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label for="idExpiryDate">ID Expiry date</label>
+                <input type="date"
+                       value="{{ date(idExpiryDate) }}"
+                       name="idExpiryDate"
+                       id="idExpiryDate"
+                       class="form-control" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="address1">Physical Address</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       name="address1"
+                       id="address1"
+                       value="{{ address1|escape }}"
+                       class="form-control"
+                       placeholder="Physical address" required autofocus>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label for="address2">Mailing Address</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       name="address2"
+                       id="address2"
+                       value="{{ address2|escape }}"
+                       class="form-control"
+                       placeholder="Mailing address" required autofocus>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="phone1">Primary phone number</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       name="phone1"
+                       value="{{ phone1|escape }}"
+                       id="phone1"
+                       class="form-control"
+                       placeholder="Primary number" required autofocus>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label for="phone2">Secondary phone number</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       name="phone2"
+                       value="{{ phone2|escape }}"
+                       id="phone2"
+                       class="form-control"
+                       placeholder="Secondary number" autofocus>
+            </div>
+        </div>
+    </div>
+
+    <h5 class="section-title my-4">Next of kin</h5>
+
+    <div class="form-row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="nokFirstName">First name</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       name="nokFirstName"
+                       value="{{ nokFirstName|escape }}"
+                       id="nokFirstName"
+                       class="form-control"
+                       placeholder="First name" autofocus required>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label for="nokLastName">Last name</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       name="nokLastName"
+                       value="{{ nokLastName|escape }}"
+                       id="nokLastName"
+                       class="form-control"
+                       placeholder="Last name" autofocus required>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="nokAddress">Address</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       name="nokAddress"
+                       value="{{ nokAddress|escape }}"
+                       id="nokAddress"
+                       class="form-control"
+                       placeholder="Address" autofocus required>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="form-group">
+                <label for="nokRelationshipType"
+                       data-placement="top"
+                       title="Patient's relationship to next of kin"
+                       data-toggle="tooltip">Relationship to next of kin</label>
+                {{ formDropDown(relationshipTypes, "nokRelationshipType", "nokRelationshipType", nokRelationshipType) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="nokPhone1">Primary phone</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       name="nokPhone1"
+                       value="{{ nokPhone1|escape }}"
+                       id="nokPhone1"
+                       class="form-control"
+                       placeholder="Primary phone" autofocus required>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label for="nokPhone2">Secondary phone</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       name="nokPhone2"
+                       value="{{ nokPhone2|escape }}"
+                       id="nokPhone2"
+                       class="form-control"
+                       placeholder="Secondary phone" autofocus>
+            </div>
+        </div>
+    </div>
+    <h5 class="section-title my-4">Employment details (optional)</h5>
+    <div class="form-row">
+        <div class="col-8">
+            <div class="form-group">
+                <label for="employer">Employer</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       name="employer"
+                       value="{{ employer|escape }}"
+                       id="employer"
+                       class="form-control"
+                       placeholder="Employer" autofocus>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <label for="employeeId">Employee ID</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       name="employeeId"
+                       value="{{ employeeId|escape }}"
+                       id="employeeId"
+                       class="form-control"
+                       placeholder="Employee Id" autofocus>
+            </div>
+        </div>
+    </div>
+    <h5 class="section-title my-4">Insurance scheme details (optional)</h5>
+    <div class="form-row">
+        <div class="col-8">
+            <div class="form-group">
+                <label for="insurer">Insurer</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       name="insurer"
+                       value="{{ insurer|escape }}"
+                       id="insurer"
+                       class="form-control"
+                       placeholder="Insurance company" autofocus>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <label for="membershipId">Membership ID</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       name="membershipId"
+                       value="{{ membershipId|escape }}"
+                       id="membershipId"
+                       class="form-control"
+                       placeholder="Membership Id" autofocus>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-12">
+            <div class="form-group">
+                <label for="schemeNotes">Additional notes</label>
+                <textarea id="schemeNotes"
+                          rows="3"
+                          maxlength="512"
+                          name="schemeNotes"
+                          placeholder="Additional notes"
+                          class="form-control">{{ schemeNotes | escape }}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary mb-2 mt-4">
+            Submit
+        </button>
+    </div>
+
+    {{ closeForm() }}
+
+</div>
+
+{% endblock %}

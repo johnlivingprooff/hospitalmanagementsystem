@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Search for patient{% endblock %}
+
+{% block mainContent %}
+
+<div class="container mx-auto my-4">
+    <div class="panel-heading">
+        <h5 class="panel-title">Patient search</h5>
+        <p class="lead">Search for an existing patient record</p>
+    </div>
+</div>
+
+<div class="container mx-auto">
+
+    {{ openForm("/Hms/Reception/PatientLookup", "form-signin") }}
+
+    <div class="form-row">
+        <div class="col-5">
+            <div class="form-group">
+                <label for="firstName">First name</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       value="{{ firstName|escape }}"
+                       name="firstName"
+                       id="firstName"
+                       class="form-control"
+                       placeholder="First name" required autofocus>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="form-group">
+                <label for="lastName">Last name</label>
+                <input type="text"
+                       minlength="1"
+                       maxlength="50"
+                       autocomplete="off"
+                       value="{{ lastName|escape }}"
+                       name="lastName"
+                       id="lastName"
+                       class="form-control"
+                       placeholder="Last name" required autofocus>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-5">
+            <div class="form-group">
+                <label for="sex">Sex</label>
+                {# formDropdown(items, id, name, selected, className) #}
+                {{ formDropDown(genderList, "sex", "sex", sex) }}
+            </div>
+        </div>
+        <div class="col-5">
+            <label for="dob">Date of birth</label>
+            <input type="date"
+                   autocomplete="off"
+                   value="{{ date(dob) }}"
+                   name="dob"
+                   id="dob"
+                   class="form-control" required autofocus>
+        </div>
+    </div>
+
+    {{ printErrorList(errorList) }}
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary mb-2 mt-4">
+            Search
+        </button>
+    </div>
+
+    {{ closeForm() }}
+
+</div>
+
+{# Search results #}
+{% if patientList %}
+
+<div class="my-4">
+    <h5 class="my-8 section-title">Search results - {{ pluralString(patientList.size(), "record") }} found</h5>
+    <div class="my-4">
+        <span class="lead">Select a patient to proceed</span>
+    </div>
+    <div class="pane-body">
+        <table class="table datatable table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Primary phone</th>
+                <th>Secondary phone</th>
+                <th>Physical address</th>
+                <th>Mailing address</th>
+                <th>Status</th>
+                <th>IDs</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for patient in patientList %}
+            <tr>
+                <td>
+                    <a href="/Hms/Reception/ClientVisitForm/{{ patient.id }}">{{ patient.fullname() | escape }}</a>
+                </td>
+                <td>{{ patient.phone1 | escape }}</td>
+                <td>{{ patient.phone2 | escape }}</td>
+                <td>{{ patient.address1 | escape }}</td>
+                <td>{{ patient.address2 | escape }}</td>
+                <td data-toggle="tooltip"
+                    title="{{ patient.status.description }}"
+                    data-placement="top">{{ patient.status }}
+                </td>
+                <td>
+                    <a data-toggle="tooltip"
+                       data-placement="top"
+                       title="Click to view list of IDs"
+                       href="javascript:openIdListDialog({{ patient.id }})">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Dialog -->
+<div id="idList" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Patient IDs</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="background-color: #dedede">Loading IDs...</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block footerScripts %}
+
+{{ parent() }}
+
+{% if patientList %}
+
+{# Only add script if search results are available #}
+<script>
+        var __id;
+        $('#idList').on('show.bs.modal', function (e) {
+            $(".modal-body").load("/Hms/Patients/GetIdList/" + __id, function(e){
+                $('#idTable').dataTable();
+                $('[data-toggle="tooltip"]').tooltip()
+            });
+        })
+        function openIdListDialog(patientId){
+            __id = patientId;
+            $("#idList").modal("show");
+        }
+</script>
+
+{% endif %}
+
+{% endblock %}

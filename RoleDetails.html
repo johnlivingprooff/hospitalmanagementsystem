@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Role - {{ role.roleName }}{% endblock %}
+
+{% block mainContent %}
+
+<div class="panel panel-primary my-4">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{ role.roleName }}</h3>
+    </div>
+    <div class="panel-body">
+        <p class="lead">{{ role.roleDescription }}</p>
+    </div>
+</div>
+
+<div class="panel panel-primary mb-4">
+    <div class="panel-heading">
+        <h5 class="panel-title">Role Permissions</h5>
+    </div>
+    <ul class="list-group">
+        {% for permission in rolePermissions %}
+        <li class="list-group-item">
+            <h5>{{ permission.permissionName }}</h5>
+            <p class="lead">{{ permission.PermissionDescription }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% if role.SystemRole == false and hasPermission("WriteRoles", userPermissions) %}
+
+<div class="panel panel-success mb-4">
+    <div class="panel-body">
+        {{ openForm("/Hms/Roles/Delete") }}
+
+        <input type="hidden" name="id" value="{{ role.id }}">
+
+        <button type="submit" class="btn btn-danger">
+            <i class="fa fa-trash"></i>
+            Delete
+        </button>
+
+        {{ closeForm() }}
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

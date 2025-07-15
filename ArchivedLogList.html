@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}System Audit Logs{% endblock %}
+
+{% block mainContent %}
+
+<div class="panel panel-primary my-4">
+    <div class="panel-heading">
+        <h3 class="panel-title">Archived Audit Logs</h3>
+    </div>
+    <div class="panel-body">
+        <p class="lead">Archived audit logs</p>
+    </div>
+
+    <table class="table datatable table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Context</th>
+            <th>What</th>
+            <th>When</th>
+            <th>Where</th>
+            <th>From</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for auditLog in auditLogs %}
+        <tr>
+            <td>{{ auditLog.LogType }}</td>
+            <td>{{ auditLog.Action | escape }}</td>
+            <td>{{ auditLog.Created }}</td>
+            <td>{{ auditLog.Location }}</td>
+            <td>{{ auditLog.Address | escape }}</td>
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/GetWebsiteLogo">
+
+    <title>Hospital Management System - Login</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/assets/bootstrap/css/floating-labels.css" rel="stylesheet">
+
+    <link href="/assets/fa/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .logo {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+        }
+        body {
+            background: #dedede;
+        }
+        .version {
+            color: gray;
+            text-align: center;
+        }
+        #version-text {
+            font-size: 1rem !important;
+        }
+    </style>
+</head>
+
+<body>
+{{ openForm("/Auth/Login", "form-signin") }}
+<div class="text-center mb-4">
+    <img class="logo" src="/GetWebsiteLogo" />
+    <h5 class="my-4">{{ systemSettings.banner }}</h5>
+    <p class="my-4 font-weight-normal">Sign-in to get started.</p>
+</div>
+
+<div class="form-label-group">
+    <input type="email"
+           value="{{ email }}"
+           name="email"
+           id="inputEmail"
+           class="form-control"
+           placeholder="Email address" required autofocus>
+    <label for="inputEmail">Email address</label>
+</div>
+
+<div class="form-label-group">
+    <input type="password"
+           name="password"
+           minlength="8"
+           maxlength="15"
+           id="inputPassword"
+           class="form-control"
+           placeholder="Password" required>
+    <label for="inputPassword">Password</label>
+</div>
+
+{{ printErrorList(errorList) }}
+
+<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+{{ closeForm }}
+
+<div class="my-4 version">
+    <p id="version-text"
+       class="lead">System Version {{ systemSettings.majorVersion }}.{{ systemSettings.minorVersion }}</p>
+</div>
+
+<script src="/assets/fa/js/all.min.js"></script>
+</body>
+</html>

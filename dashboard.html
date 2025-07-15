@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="hms-default-logo.png">
+
+    <title>Hospital Management System - Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="dashboard.css" rel="stylesheet">
+
+    <link href="all.min.css" rel="stylesheet">
+
+    <link href="datatables.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="wfmi-style.css">
+
+    <style>
+        .logo {
+            width: 30px;
+            height: 30px;
+            object-fit: cover;
+        }
+
+        img.image-preview, img.profile-image {
+            object-fit: cover;
+            width: 200px;
+            height: 200px;
+        }
+
+        .menu-list .list-group-item:first-child {
+            border-top-right-radius: 0px;
+            border-top-left-radius: 0px;
+            border-top: none;
+        }
+
+        .menu-list .list-group-item:last-child {
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+        }
+
+        .menu-list .list-group-item {
+            border-left: none;
+            border-right: none;
+        }
+
+        body {
+            background: #dedede;
+        }
+
+        h5.page-title, .section-title {
+            border-bottom: 1px double gray;
+            padding: 8px;
+            background-color: #f0e4c6;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="/home">
+        <img class="rounded-circle"
+             style="background-color: white; border:1px solid #dbcaca"
+             src="hms-default-logo.png"
+             width="30px" height="30px">&nbsp;
+        Hospital Management System
+    </a>
+    <button class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a href="#"
+                   class="nav-link dropdown-toggle"
+                   data-toggle="dropdown">
+                    <img src="placeholder-face-big.png"
+                         width="30"
+                         height="30"
+                         class="rounded-circle">&nbsp;
+                    Dr. Admin User (Administrator)
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="/account" class="dropdown-item">
+                        <i class="fa fa-user"></i>
+                        My Account
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/" class="dropdown-item">
+                        <i class="fa fa-power-off"></i>
+                        Logout
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-fixed">
+                <div class="list-group menu-list">
+                    <a id="Home" class="list-group-item active" href="/home">
+                        <span class="medical-icon-i-hospital" aria-hidden="true"></span>
+                        Home
+                    </a>
+
+                    <a id="Reception" class="list-group-item" href="/register-patient">
+                        <span class="medical-icon-i-registration" aria-hidden="true"></span>
+                        Reception
+                    </a>
+
+                    <a id="Appointments" class="list-group-item" href="#appointments">
+                        <span class="medical-icon-i-waiting-area" aria-hidden="true"></span>
+                        Appointments
+                    </a>
+
+                    <a id="Dental" class="list-group-item" href="#dental">
+                        <span class="medical-icon-i-dental" aria-hidden="true"></span>
+                        Dental
+                    </a>
+
+                    <a id="Nurse" class="list-group-item" href="#nurse">
+                        <span class="medical-icon-i-care-staff-area" aria-hidden="true"></span>
+                        Nurse
+                    </a>
+
+                    <a id="Consultation" class="list-group-item" href="#consultation">
+                        <span class="medical-icon-i-care-staff-area" aria-hidden="true"></span>
+                        Consultation
+                    </a>
+
+                    <a id="Wards" class="list-group-item" href="#wards">
+                        <span class="medical-icon-i-inpatient" aria-hidden="true"></span>
+                        Wards
+                    </a>
+
+                    <a id="XRay" class="list-group-item" href="#xray">
+                        <span class="medical-icon-i-radiology" aria-hidden="true"></span>
+                        X-Ray
+                    </a>
+
+                    <a id="Pharmacy" class="list-group-item" href="#pharmacy">
+                        <span class="medical-icon-i-pharmacy" aria-hidden="true"></span>
+                        Pharmacy
+                    </a>
+
+                    <a id="Laboratory" class="list-group-item" href="#laboratory">
+                        <span class="medical-icon-i-laboratory" aria-hidden="true"></span>
+                        Laboratory
+                    </a>
+
+                    <a id="Users" class="list-group-item" href="/users">
+                        <i class="fa fa-users"></i>
+                        Users
+                    </a>
+
+                    <a id="AuditLogs" class="list-group-item" href="#audit">
+                        <i class="fa fa-shield-alt"></i>
+                        System Audit
+                    </a>
+
+                    <a id="SystemSettings" class="list-group-item" href="#settings">
+                        <i class="fa fa-cog"></i>
+                        System Settings
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Dashboard</h1>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Total Patients</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">2,456</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-user-injured fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Today's Appointments</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">24</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-calendar-check fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Active Staff</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-user-md fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Occupied Beds</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">65%</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-bed fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Recent Admissions</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Patient</th>
+                                            <th>Room</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>John Doe</td>
+                                            <td>Room 101</td>
+                                            <td>2025-07-15</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jane Smith</td>
+                                            <td>Room 205</td>
+                                            <td>2025-07-14</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bob Johnson</td>
+                                            <td>Room 302</td>
+                                            <td>2025-07-14</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <a href="/register-patient" class="btn btn-primary btn-block">
+                                        <i class="fa fa-user-plus"></i> Register Patient
+                                    </a>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <a href="/client-search" class="btn btn-info btn-block">
+                                        <i class="fa fa-search"></i> Search Patient
+                                    </a>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <a href="/users" class="btn btn-success btn-block">
+                                        <i class="fa fa-users"></i> Manage Users
+                                    </a>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <a href="#" class="btn btn-warning btn-block">
+                                        <i class="fa fa-calendar"></i> Schedule Appointment
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="jquery-3.4.1.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="all.min.js"></script>
+<script src="datatables.min.js"></script>
+
+<script>
+// dynamically select menu
+let path = document.location.pathname.substring(1).split("/")[0];
+if (path === '') path = 'Home';
+
+// Select active menu item
+$('#' + path).addClass('active');
+$('#' + path).siblings().removeClass('active');
+
+// Initialize DataTables
+var dt = $('.datatable');
+if(dt !== undefined){
+    dt.DataTable();
+}
+
+// Initialize tooltips
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+});
+</script>
+
+</body>
+</html>

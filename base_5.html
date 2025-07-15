@@ -1,0 +1,25 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+{% if hasPermission("WriteRoles", userPermissions) %}
+
+<li class="nav-item">
+    <a id="CreateForm" href="/Hms/Roles/CreateForm" class="nav-link">
+        <i class="fa fa-plus"></i>
+        Create New Role
+    </a>
+</li>
+
+{% endif %}
+
+{% endblock %}
+
+
+{% block footerScripts %}
+
+<script>
+$('#' + document.location.pathname.substring(1).split("/")[2]).addClass('active');
+</script>
+
+{% endblock %}

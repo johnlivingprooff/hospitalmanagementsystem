@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="hms-default-logo.png">
+    <title>Hospital Management System - Register Patient</title>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="dashboard.css" rel="stylesheet">
+    <link href="all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="wfmi-style.css">
+    <style>
+        body { background: #dedede; }
+        h5.page-title, .section-title {
+            border-bottom: 1px double gray;
+            padding: 8px;
+            background-color: #f0e4c6;
+        }
+        .image-preview {
+            object-fit: cover;
+            width: 200px;
+            height: 200px;
+            border: 2px dashed #ccc;
+            cursor: pointer;
+        }
+        .sidebar {
+            position: fixed;
+            top: 51px;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 20px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            border-right: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="/dashboard">
+        <img class="rounded-circle" style="background-color: white; border:1px solid #dbcaca" 
+             src="hms-default-logo.png" width="30px" height="30px">&nbsp;
+        Hospital Management System
+    </a>
+    <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                    <img src="placeholder-face-big.png" width="30" height="30" class="rounded-circle">&nbsp;
+                    Dr. Admin User (Administrator)
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="/" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-fixed">
+                <div class="list-group menu-list">
+                    <a href="/dashboard" class="list-group-item">
+                        <span class="medical-icon-i-hospital"></span> Home
+                    </a>
+                    <a href="/register-patient" class="list-group-item active">
+                        <span class="medical-icon-i-registration"></span> Reception
+                    </a>
+                    <a href="/users" class="list-group-item">
+                        <i class="fa fa-users"></i> Users
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <i class="fa fa-shield-alt"></i> System Audit
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Register New Patient</h1>
+            </div>
+
+            <div class="container mx-auto">
+                <h5 class="page-title my-4">Personal details</h5>
+
+                <div class="alert alert-warning">
+                    <p class="lead">Verify that the client/patient does not already exist in the system by
+                        using the <a class="alert-link" href="/client-search">Client Search</a> function.
+                    </p>
+                </div>
+
+                <form class="form-signin">
+                    <div class="form-row">
+                        <div class="col-2">
+                            <div class="form-group">
+                                <label for="imgPreview">Picture</label>
+                                <img data-toggle="tooltip"
+                                     data-placement="top"
+                                     src="placeholder-face-big.png"
+                                     class="image-preview"
+                                     style="cursor: pointer;"
+                                     title="Click to select a picture"
+                                     onclick="$(filePicker).click()"
+                                     id="imgPreview">
+                                <input name="picture"
+                                       id="filePicker"
+                                       type="file"
+                                       onchange="imgPreview.src = window.URL.createObjectURL(filePicker.files[0])"
+                                       accept=".jpeg, .jpg, .png"
+                                       style="display: none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="firstName">First name</label>
+                                <input type="text"
+                                       autocomplete="off"
+                                       name="firstName"
+                                       id="firstName"
+                                       class="form-control"
+                                       placeholder="First name" required autofocus>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="lastName">Last name</label>
+                                <input type="text"
+                                       autocomplete="off"
+                                       name="lastName"
+                                       id="lastName"
+                                       class="form-control"
+                                       placeholder="Last name" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="sex">Sex</label>
+                                <select name="sex" id="sex" class="form-control">
+                                    <option value="">Select...</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="dob">Date of birth</label>
+                                <input type="date"
+                                       autocomplete="off"
+                                       name="dob"
+                                       id="dob"
+                                       class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="phone1">Primary phone number</label>
+                                <input type="tel"
+                                       autocomplete="off"
+                                       name="phone1"
+                                       id="phone1"
+                                       class="form-control"
+                                       placeholder="Primary phone number" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="email">Email address</label>
+                                <input type="email"
+                                       autocomplete="off"
+                                       name="email"
+                                       id="email"
+                                       class="form-control"
+                                       placeholder="Email address" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="country">Nationality</label>
+                                <select name="country" id="country" class="form-control">
+                                    <option value="">Select...</option>
+                                    <option value="US">United States</option>
+                                    <option value="UK">United Kingdom</option>
+                                    <option value="CA">Canada</option>
+                                    <option value="AU">Australia</option>
+                                    <option value="DE">Germany</option>
+                                    <option value="FR">France</option>
+                                    <option value="ZW">Zimbabwe</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="idNumber">ID Number</label>
+                                <input type="text"
+                                       autocomplete="off"
+                                       name="idNumber"
+                                       id="idNumber"
+                                       class="form-control"
+                                       placeholder="National ID Number" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="address1">Physical Address</label>
+                                <input type="text"
+                                       autocomplete="off"
+                                       name="address1"
+                                       id="address1"
+                                       class="form-control"
+                                       placeholder="Physical address" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="address2">Mailing Address</label>
+                                <input type="text"
+                                       autocomplete="off"
+                                       name="address2"
+                                       id="address2"
+                                       class="form-control"
+                                       placeholder="Mailing address">
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5 class="section-title my-4">Emergency Contact</h5>
+                    <div class="form-row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="emergencyName">Contact Name</label>
+                                <input type="text"
+                                       autocomplete="off"
+                                       name="emergencyName"
+                                       id="emergencyName"
+                                       class="form-control"
+                                       placeholder="Emergency contact name">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="emergencyPhone">Contact Phone</label>
+                                <input type="tel"
+                                       autocomplete="off"
+                                       name="emergencyPhone"
+                                       id="emergencyPhone"
+                                       class="form-control"
+                                       placeholder="Emergency contact phone">
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5 class="section-title my-4">Insurance Information (Optional)</h5>
+                    <div class="form-row">
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label for="insurer">Insurance Company</label>
+                                <input type="text"
+                                       autocomplete="off"
+                                       name="insurer"
+                                       id="insurer"
+                                       class="form-control"
+                                       placeholder="Insurance company">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="membershipId">Policy Number</label>
+                                <input type="text"
+                                       autocomplete="off"
+                                       name="membershipId"
+                                       id="membershipId"
+                                       class="form-control"
+                                       placeholder="Policy number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fa fa-user-plus"></i> Register Patient
+                        </button>
+                        <a href="/dashboard" class="btn btn-secondary btn-lg ml-2">
+                            <i class="fa fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="jquery-3.4.1.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="all.min.js"></script>
+
+<script>
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+});
+</script>
+
+</body>
+</html>

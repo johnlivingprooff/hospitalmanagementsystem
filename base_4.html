@@ -1,0 +1,47 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+
+{% if hasPermission("ReadPatients", userPermissions) %}
+
+<li class="nav-item">
+    <a id="ClientSearch"
+       href="/Hms/Reception/ClientSearch" class="nav-link">
+        <i class="fa fa-search" aria-hidden="true">&nbsp;</i>
+        Client Search&hellip;
+    </a>
+</li>
+
+{% endif %}
+
+{% if hasPermission("WritePatients", userPermissions) %}
+
+<li class="nav-item">
+    <a id="ClientRegistration"
+       href="/Hms/Reception/ClientRegistration" class="nav-link">
+        <span class="medical-icon-i-registration" aria-hidden="true"></span>
+        Client Registration
+    </a>
+</li>
+
+{% endif %}
+
+<li class="nav-item">
+    <a id="Reports" href="/Hms/Receptionist/Reports" class="nav-link">
+        <span class="medical-icon-i-billing" aria-hidden="true"></span>
+        Reports
+    </a>
+</li>
+
+{% endblock %}
+
+{% block footerScripts %}
+
+<script>
+$('#' + document.location.pathname.substring(1).split("/")[2]).addClass('active');
+
+
+</script>
+
+{% endblock %}

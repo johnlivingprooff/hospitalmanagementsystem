@@ -1,0 +1,36 @@
+<div class="panel panel-default my-4 mx-4">
+    <div class="panel-body">
+        <table id="idTable" class="table datatable table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Issued</th>
+                <th>Expires</th>
+                <th>Added</th>
+                <th>Validity</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for id in ids %}
+            <tr>
+                <td>{{ id.IdNumber | escape }}</td>
+                <td>{{ id.idType }}</td>
+                <td>{{ date(id.issued) }}</td>
+                <td>{{ date(id.expires) }}</td>
+                <td>{{ date(id.created) }}</td>
+                <td>
+                    {% if id.expires.after(today) %}
+                        <span class="text-success">Valid</span>
+                    {% else %}
+                        <span class="text-danger" data-placement="top"
+                              title="This ID is expired and may no longer be recognized by the issuing party"
+                              data-toggle="tooltip">Expired</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a id="Contact" href="/Hms/Account/Contact" class="nav-link">
+        <i class="fa fa-address-book"></i>
+        Personal Information
+    </a>
+</li>
+
+<li class="nav-item">
+    <a id="Password" href="/Hms/Account/Password" class="nav-link">
+        <i class="fa fa-key"></i>
+        Password
+    </a>
+</li>
+
+{% endblock %}
+
+
+{% block footerScripts %}
+
+<script>
+$('#' + document.location.pathname.substring(1).split("/")[2]).addClass('active');
+</script>
+
+{% endblock %}

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="hms-default-logo.png">
+    <title>Hospital Management System - {{PAGE_TITLE}}</title>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="dashboard.css" rel="stylesheet">
+    <link href="all.min.css" rel="stylesheet">
+    <link href="datatables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="wfmi-style.css">
+    <style>
+        body { background: #dedede; }
+        h5.page-title, .section-title {
+            border-bottom: 1px double gray;
+            padding: 8px;
+            background-color: #f0e4c6;
+        }
+        .sidebar {
+            position: fixed;
+            top: 51px;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 20px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            border-right: 1px solid #eee;
+        }
+        .menu-list .list-group-item {
+            border-left: none;
+            border-right: none;
+        }
+        .image-preview {
+            object-fit: cover;
+            width: 200px;
+            height: 200px;
+            border: 2px dashed #ccc;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="/dashboard">
+        <img class="rounded-circle" style="background-color: white; border:1px solid #dbcaca" 
+             src="hms-default-logo.png" width="30px" height="30px">&nbsp;
+        Hospital Management System
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                    <img src="placeholder-face-big.png" width="30" height="30" class="rounded-circle">&nbsp;
+                    Dr. Admin User (Administrator)
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="/account" class="dropdown-item"><i class="fa fa-user"></i> My Account</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-fixed">
+                <div class="list-group menu-list">
+                    <a href="/dashboard" class="list-group-item" id="Home">
+                        <span class="medical-icon-i-hospital"></span> Home
+                    </a>
+                    <a href="/register-patient" class="list-group-item" id="Reception">
+                        <span class="medical-icon-i-registration"></span> Reception
+                    </a>
+                    <a href="/client-search" class="list-group-item" id="ClientSearch">
+                        <i class="fa fa-search"></i> Client Search
+                    </a>
+                    <a href="/users" class="list-group-item" id="Users">
+                        <i class="fa fa-users"></i> Users
+                    </a>
+                    <a href="/roles" class="list-group-item" id="Roles">
+                        <i class="fa fa-id-badge"></i> Roles
+                    </a>
+                    <a href="/permissions" class="list-group-item" id="Permissions">
+                        <i class="fa fa-id-card"></i> Permissions
+                    </a>
+                    <a href="/audit-logs" class="list-group-item" id="AuditLogs">
+                        <i class="fa fa-shield-alt"></i> System Audit
+                    </a>
+                    <a href="/settings" class="list-group-item" id="Settings">
+                        <i class="fa fa-cog"></i> System Settings
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">{{PAGE_TITLE}}</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    {{TOOLBAR_CONTENT}}
+                </div>
+            </div>
+
+            {{MAIN_CONTENT}}
+        </main>
+    </div>
+</div>
+
+<script src="jquery-3.4.1.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="all.min.js"></script>
+<script src="datatables.min.js"></script>
+
+<script>
+// Auto-select active menu item based on current page
+let currentPath = window.location.pathname;
+let menuId = 'Home'; // default
+
+if (currentPath.includes('/users')) menuId = 'Users';
+else if (currentPath.includes('/register-patient')) menuId = 'Reception';
+else if (currentPath.includes('/client-search')) menuId = 'ClientSearch';
+else if (currentPath.includes('/roles')) menuId = 'Roles';
+else if (currentPath.includes('/permissions')) menuId = 'Permissions';
+else if (currentPath.includes('/audit-logs')) menuId = 'AuditLogs';
+else if (currentPath.includes('/settings')) menuId = 'Settings';
+
+$('#' + menuId).addClass('active');
+
+// Initialize DataTables
+$(document).ready(function() {
+    $('.datatable').DataTable({
+        "pageLength": 10,
+        "responsive": true,
+        "order": [[0, "asc"]]
+    });
+});
+
+// Initialize tooltips
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+});
+
+{{CUSTOM_SCRIPTS}}
+</script>
+
+</body>
+</html>

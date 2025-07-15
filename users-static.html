@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="hms-default-logo.png">
+    <title>Hospital Management System - User List</title>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="dashboard.css" rel="stylesheet">
+    <link href="all.min.css" rel="stylesheet">
+    <link href="datatables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="wfmi-style.css">
+    <style>
+        body { background: #dedede; }
+        h5.page-title, .section-title {
+            border-bottom: 1px double gray;
+            padding: 8px;
+            background-color: #f0e4c6;
+        }
+        .sidebar {
+            position: fixed;
+            top: 51px;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 20px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            border-right: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="/dashboard">
+        <img class="rounded-circle" style="background-color: white; border:1px solid #dbcaca" 
+             src="hms-default-logo.png" width="30px" height="30px">&nbsp;
+        Hospital Management System
+    </a>
+    <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                    <img src="placeholder-face-big.png" width="30" height="30" class="rounded-circle">&nbsp;
+                    Dr. Admin User (Administrator)
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="/" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-fixed">
+                <div class="list-group menu-list">
+                    <a href="/dashboard" class="list-group-item">
+                        <span class="medical-icon-i-hospital"></span> Home
+                    </a>
+                    <a href="/register-patient" class="list-group-item">
+                        <span class="medical-icon-i-registration"></span> Reception
+                    </a>
+                    <a href="/users" class="list-group-item active">
+                        <i class="fa fa-users"></i> Users
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <i class="fa fa-shield-alt"></i> System Audit
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <i class="fa fa-cog"></i> System Settings
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">System Users</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">
+                            <i class="fa fa-user-plus"></i> Add User
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-primary my-4">
+                <div class="panel-body">
+                    <p class="lead">Active system users</p>
+                </div>
+
+                <table class="table datatable table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Sex</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th>Date of Birth</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td><a href="#user1">Dr. John Smith</a></td>
+                        <td><abbr>Doctor</abbr></td>
+                        <td>Male</td>
+                        <td>2025-01-15 09:30:00</td>
+                        <td>2025-07-10 14:20:00</td>
+                        <td>1985-03-22</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#user2">Nurse Sarah Johnson</a></td>
+                        <td><abbr>Nurse</abbr></td>
+                        <td>Female</td>
+                        <td>2025-02-01 10:15:00</td>
+                        <td>2025-07-12 16:45:00</td>
+                        <td>1990-08-14</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#user3">Dr. Emily Davis</a></td>
+                        <td><abbr>Doctor</abbr></td>
+                        <td>Female</td>
+                        <td>2025-01-20 08:00:00</td>
+                        <td>2025-07-11 11:30:00</td>
+                        <td>1982-12-05</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#user4">Admin Mike Wilson</a></td>
+                        <td><abbr>Administrator</abbr></td>
+                        <td>Male</td>
+                        <td>2024-12-01 09:00:00</td>
+                        <td>2025-07-15 08:15:00</td>
+                        <td>1978-06-18</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#user5">Receptionist Lisa Brown</a></td>
+                        <td><abbr>Receptionist</abbr></td>
+                        <td>Female</td>
+                        <td>2025-03-10 14:20:00</td>
+                        <td>2025-07-13 17:00:00</td>
+                        <td>1995-11-28</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#user6">Dr. Robert Taylor</a></td>
+                        <td><abbr>Doctor</abbr></td>
+                        <td>Male</td>
+                        <td>2025-02-15 07:45:00</td>
+                        <td>2025-07-14 13:20:00</td>
+                        <td>1987-04-30</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="jquery-3.4.1.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="all.min.js"></script>
+<script src="datatables.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('.datatable').DataTable({
+        "pageLength": 10,
+        "responsive": true,
+        "order": [[0, "asc"]]
+    });
+});
+</script>
+
+</body>
+</html>

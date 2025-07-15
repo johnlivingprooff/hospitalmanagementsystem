@@ -1,0 +1,33 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+
+<li class="nav-item">
+    <a id="InactiveUsers" href="/Hms/Users/InactiveUsers" class="nav-link">
+        <i class="fa fa-user-times"></i>
+        Inactive Users
+    </a>
+</li>
+
+{% if hasPermission("WriteUsers", userPermissions) %}
+
+<li class="nav-item">
+    <a id="CreateForm" href="/Hms/Users/CreateForm" class="nav-link">
+        <i class="fa fa-user-plus"></i>
+        Create New User
+    </a>
+</li>
+
+{% endif %}
+
+{% endblock %}
+
+{% block footerScripts %}
+
+<script>
+$('#' + document.location.pathname.substring(1).split("/")[2]).addClass('active');
+
+</script>
+
+{% endblock %}

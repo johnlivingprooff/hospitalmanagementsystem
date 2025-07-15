@@ -1,0 +1,23 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+
+
+<li class="nav-item">
+    <a id="ArchivedLogs" href="/Hms/AuditLogs/ArchivedLogs" class="nav-link">
+        <i class="fa fa-archive"></i>
+        Archived Logs
+    </a>
+</li>
+
+{% endblock %}
+
+
+{% block footerScripts %}
+
+<script>
+$('#' + document.location.pathname.substring(1).split("/")[2]).addClass('active');
+</script>
+
+{% endblock %}
