@@ -18,7 +18,19 @@ function renderTemplate(templatePath, data) {
     return content;
 }
 
-// Serve static files (CSS, JS, images) - but not HTML files
+// Serve static files (CSS, JS, images) from public directory
+app.use(express.static('public', {
+    setHeaders: (res, path) => {
+        if (path.endsWith('.css')) {
+            res.setHeader('Content-Type', 'text/css');
+        }
+        if (path.endsWith('.js')) {
+            res.setHeader('Content-Type', 'application/javascript');
+        }
+    }
+}));
+
+// Also serve root-level static files for backward compatibility
 app.use(express.static('.', {
     setHeaders: (res, path) => {
         if (path.endsWith('.html')) {
@@ -189,3 +201,6 @@ app.listen(port, () => {
     console.log(`Hospital Management System running on port ${port}`);
     console.log(`Visit: http://localhost:${port}`);
 });
+
+// Export the Express app for Vercel
+module.exports = app;

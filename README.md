@@ -34,7 +34,25 @@ This is a Hospital Management System web application built with Node.js and Expr
 
 ## Deployment Options
 
-### 1. Render (Recommended)
+### 1. Vercel (Recommended for Node.js)
+1. Install Vercel CLI:
+   ```bash
+   npm install -g vercel
+   ```
+
+2. Deploy to Vercel:
+   ```bash
+   vercel
+   ```
+
+3. Follow the prompts to configure your deployment.
+
+**Alternative: Connect via GitHub**
+1. Push your code to a Git repository (GitHub, GitLab, etc.)
+2. Connect your repository to Vercel at https://vercel.com
+3. Vercel will automatically deploy your application
+
+### 2. Render (Alternative)
 1. Create a new account at [render.com](https://render.com)
 2. Connect your GitHub repository
 3. Create a new Web Service
@@ -44,7 +62,7 @@ This is a Hospital Management System web application built with Node.js and Expr
    - **Environment**: Node.js
 5. Deploy!
 
-### 2. Heroku
+### 3. Heroku
 1. Install Heroku CLI
 2. Login: `heroku login`
 3. Create app: `heroku create your-app-name`
