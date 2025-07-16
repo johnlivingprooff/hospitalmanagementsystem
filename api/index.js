@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const app = express();
-const port = process.env.PORT || 3000;
 
 // Simple template helper function
 function renderTemplate(templatePath, data) {
@@ -18,69 +17,49 @@ function renderTemplate(templatePath, data) {
     return content;
 }
 
-// Serve static files from public directory with proper security
-app.use('/css', express.static('public/css', {
-    setHeaders: (res, path, stat) => {
-        res.setHeader('Content-Type', 'text/css');
-        res.setHeader('Cache-Control', 'public, max-age=31536000');
-        // Security headers
-        res.setHeader('X-Content-Type-Options', 'nosniff');
-    }
-}));
-
-app.use('/images', express.static('public/images', {
-    setHeaders: (res, path, stat) => {
-        res.setHeader('Cache-Control', 'public, max-age=31536000');
-        // Security headers
-        res.setHeader('X-Content-Type-Options', 'nosniff');
-    }
-}));
-
-// General static file serving with restrictions
+// Serve static files (CSS, JS, images) from public directory
 app.use(express.static('public', {
-    setHeaders: (res, path, stat) => {
+    setHeaders: (res, path) => {
         if (path.endsWith('.css')) {
             res.setHeader('Content-Type', 'text/css');
         }
         if (path.endsWith('.js')) {
             res.setHeader('Content-Type', 'application/javascript');
         }
-        // Security headers for all static files
-        res.setHeader('X-Content-Type-Options', 'nosniff');
-        res.setHeader('X-Frame-Options', 'DENY');
-    },
-    // Only serve specific file types
-    extensions: ['css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'ico', 'woff', 'woff2', 'ttf', 'eot']
+    }
+}));
+
+// Also serve root-level static files for backward compatibility
+app.use(express.static('.', {
+    setHeaders: (res, path) => {
+        if (path.endsWith('.html')) {
+            res.setHeader('Cache-Control', 'no-store');
+        }
+    }
 }));
 
 // Parse JSON and URL-encoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Security middleware to prevent access to sensitive files
+// Middleware to prevent serving HTML files directly from static
 app.use((req, res, next) => {
-    // Block access to sensitive files and directories
-    const blockedPaths = [
-        '/server.js',
-        '/package.json',
-        '/node_modules',
-        '/.env',
-        '/.git',
-        '/vercel.json',
-        '/.vercelignore'
-    ];
-    
-    const blockedExtensions = ['.js', '.json', '.env', '.md'];
-    
-    // Check if path is blocked
-    if (blockedPaths.some(blocked => req.path.startsWith(blocked))) {
-        return res.status(403).send('Access forbidden');
+    if (req.path.endsWith('.html') && req.path !== '/') {
+        // Only allow specific HTML files to be served directly
+        const allowedFiles = [
+            '/404.html',
+            '/403.html', 
+            '/500.html'
+        ];
+        
+        if (!allowedFiles.includes(req.path)) {
+            return res.redirect('/');
+        }
     }
     
-    // Check if extension is blocked (except for static assets in public)
-    if (!req.path.startsWith('/css/') && !req.path.startsWith('/images/') && 
-        blockedExtensions.some(ext => req.path.endsWith(ext))) {
-        return res.status(403).send('Access forbidden');
+    // Prevent serving index files that might cause routing loops
+    if (req.path.toLowerCase().includes('index') && req.path.endsWith('.html')) {
+        return res.redirect('/');
     }
     
     next();
@@ -88,16 +67,7 @@ app.use((req, res, next) => {
 
 // Route for login page (main entry point)
 app.get('/', (req, res) => {
-    console.log('Root route accessed');
-    const filePath = path.join(__dirname, 'login-static.html');
-    console.log('Serving file:', filePath);
-    
-    if (fs.existsSync(filePath)) {
-        res.sendFile(filePath);
-    } else {
-        console.error('File not found:', filePath);
-        res.status(404).send('Login page not found');
-    }
+    res.sendFile(path.join(__dirname, 'login-static.html'));
 });
 
 // Route for main dashboard after login
@@ -155,38 +125,45 @@ app.get('/create-role', (req, res) => {
     res.sendFile(path.join(__dirname, 'CreateRole.html'));
 });
 
-// POST routes for form handling
+// POST routes for form handling (demo purposes)
 app.post('/login', (req, res) => {
+    // In a real app, you'd validate login here
     console.log('Login attempt:', req.body);
     res.redirect('/dashboard');
 });
 
 app.post('/dashboard', (req, res) => {
+    // This should handle login form submission
     console.log('Dashboard login data:', req.body);
     res.redirect('/dashboard');
 });
 
 app.post('/register-patient', (req, res) => {
+    // In a real app, you'd save patient data to database
     console.log('Patient registration data:', req.body);
     res.redirect('/dashboard');
 });
 
 app.post('/create-user', (req, res) => {
+    // In a real app, you'd save user data to database
     console.log('User creation data:', req.body);
     res.redirect('/users');
 });
 
 app.post('/create-role', (req, res) => {
+    // In a real app, you'd save role data to database
     console.log('Role creation data:', req.body);
     res.redirect('/roles');
 });
 
 app.post('/settings/logo', (req, res) => {
+    // In a real app, you'd save logo file to server
     console.log('Logo update request');
     res.redirect('/settings');
 });
 
 app.post('/settings/banner', (req, res) => {
+    // In a real app, you'd save banner text to database
     console.log('Banner update data:', req.body);
     res.redirect('/settings');
 });
@@ -214,13 +191,5 @@ app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, '404.html'));
 });
 
-// Only start server if not in Vercel environment
-if (!process.env.VERCEL) {
-    app.listen(port, () => {
-        console.log(`Hospital Management System running on port ${port}`);
-        console.log(`Visit: http://localhost:${port}`);
-    });
-}
-
-// Export the Express app for Vercel
+// Export the Express app for Vercel (no app.listen needed for serverless)
 module.exports = app;
