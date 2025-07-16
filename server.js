@@ -36,7 +36,7 @@ app.use('/images', express.static('public/images', {
     }
 }));
 
-// General static file serving with restrictions
+// Serve static files from public directory root (for backward compatibility)
 app.use(express.static('public', {
     setHeaders: (res, path, stat) => {
         if (path.endsWith('.css')) {
@@ -48,14 +48,18 @@ app.use(express.static('public', {
         // Security headers for all static files
         res.setHeader('X-Content-Type-Options', 'nosniff');
         res.setHeader('X-Frame-Options', 'DENY');
-    },
-    // Only serve specific file types
-    extensions: ['css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'ico', 'woff', 'woff2', 'ttf', 'eot']
+    }
 }));
 
 // Parse JSON and URL-encoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Debug middleware to log requests
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path}`);
+    next();
+});
 
 // Security middleware to prevent access to sensitive files
 app.use((req, res, next) => {
@@ -98,6 +102,16 @@ app.get('/', (req, res) => {
         console.error('File not found:', filePath);
         res.status(404).send('Login page not found');
     }
+});
+
+// Handle favicon requests
+app.get('/favicon.ico', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/images/hms-default-logo.png'));
+});
+
+// Handle legacy favicon path
+app.get('/hms-default-logo.png', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/images/hms-default-logo.png'));
 });
 
 // Route for main dashboard after login
