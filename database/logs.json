@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "userId": 1,
+    "action": "USER_LOGIN",
+    "description": "Admin user logged in",
+    "timestamp": "2024-01-20T09:30:00Z",
+    "ipAddress": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "level": "INFO"
+  },
+  {
+    "id": 2,
+    "userId": 2,
+    "action": "PATIENT_CREATED",
+    "description": "New patient John Doe created",
+    "timestamp": "2024-01-20T10:15:00Z",
+    "ipAddress": "192.168.1.101",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "level": "INFO"
+  },
+  {
+    "id": 3,
+    "userId": 2,
+    "action": "APPOINTMENT_SCHEDULED",
+    "description": "Appointment scheduled for patient John Doe",
+    "timestamp": "2024-01-20T10:30:00Z",
+    "ipAddress": "192.168.1.101",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "level": "INFO"
+  },
+  {
+    "id": 4,
+    "userId": 5,
+    "action": "LOGIN_FAILED",
+    "description": "Failed login attempt for inactive user",
+    "timestamp": "2024-01-20T11:00:00Z",
+    "ipAddress": "192.168.1.102",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "level": "WARNING"
+  },
+  {
+    "id": 5,
+    "userId": 1,
+    "action": "USER_DEACTIVATED",
+    "description": "User account deactivated",
+    "timestamp": "2024-01-20T12:00:00Z",
+    "ipAddress": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "level": "WARNING"
+  }
+]

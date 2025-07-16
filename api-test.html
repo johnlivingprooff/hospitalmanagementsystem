@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management API Test</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/all.min.css">
+    <style>
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .result-box {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            color: #28a745;
+        }
+        .error {
+            color: #dc3545;
+        }
+        .btn-group {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Hospital Management API Test</h1>
+        
+        <!-- Authentication Section -->
+        <div class="test-section">
+            <h3><i class="fas fa-user-lock"></i> Authentication</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Username:</label>
+                        <input type="text" id="username" class="form-control" value="admin" placeholder="Enter username">
+                    </div>
+                    <div class="form-group">
+                        <label>Password:</label>
+                        <input type="password" id="password" class="form-control" value="admin123" placeholder="Enter password">
+                    </div>
+                    <button class="btn btn-primary" onclick="testLogin()">Login</button>
+                    <button class="btn btn-secondary" onclick="testLogout()">Logout</button>
+                </div>
+                <div class="col-md-6">
+                    <div class="result-box" id="auth-result">
+                        <p>Enter credentials and click Login to test authentication</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Section -->
+        <div class="test-section">
+            <h3><i class="fas fa-users"></i> Users Management</h3>
+            <div class="btn-group" role="group">
+                <button class="btn btn-outline-primary" onclick="testGetUsers()">Get All Users</button>
+                <button class="btn btn-outline-success" onclick="testGetActiveUsers()">Get Active Users</button>
+                <button class="btn btn-outline-warning" onclick="testGetInactiveUsers()">Get Inactive Users</button>
+                <button class="btn btn-outline-info" onclick="testGetUser(1)">Get User by ID (1)</button>
+            </div>
+            <div class="result-box" id="users-result">
+                <p>Click a button above to test user operations</p>
+            </div>
+        </div>
+
+        <!-- Patients Section -->
+        <div class="test-section">
+            <h3><i class="fas fa-user-injured"></i> Patients Management</h3>
+            <div class="btn-group" role="group">
+                <button class="btn btn-outline-primary" onclick="testGetPatients()">Get All Patients</button>
+                <button class="btn btn-outline-success" onclick="testGetActivePatients()">Get Active Patients</button>
+                <button class="btn btn-outline-info" onclick="testGetPatient(1)">Get Patient by ID (1)</button>
+                <button class="btn btn-outline-secondary" onclick="testSearchPatients('John')">Search Patients (John)</button>
+            </div>
+            <div class="result-box" id="patients-result">
+                <p>Click a button above to test patient operations</p>
+            </div>
+        </div>
+
+        <!-- Appointments Section -->
+        <div class="test-section">
+            <h3><i class="fas fa-calendar-alt"></i> Appointments Management</h3>
+            <div class="btn-group" role="group">
+                <button class="btn btn-outline-primary" onclick="testGetAppointments()">Get All Appointments</button>
+                <button class="btn btn-outline-info" onclick="testGetAppointmentsByPatient(1)">By Patient (1)</button>
+                <button class="btn btn-outline-info" onclick="testGetAppointmentsByDoctor(2)">By Doctor (2)</button>
+                <button class="btn btn-outline-success" onclick="testGetAppointmentsByStatus('Scheduled')">Scheduled</button>
+            </div>
+            <div class="result-box" id="appointments-result">
+                <p>Click a button above to test appointment operations</p>
+            </div>
+        </div>
+
+        <!-- Roles and Permissions Section -->
+        <div class="test-section">
+            <h3><i class="fas fa-user-shield"></i> Roles and Permissions</h3>
+            <div class="btn-group" role="group">
+                <button class="btn btn-outline-primary" onclick="testGetRoles()">Get All Roles</button>
+                <button class="btn btn-outline-secondary" onclick="testGetPermissions()">Get All Permissions</button>
+                <button class="btn btn-outline-info" onclick="testGetRole(1)">Get Role by ID (1)</button>
+            </div>
+            <div class="result-box" id="roles-result">
+                <p>Click a button above to test role operations</p>
+            </div>
+        </div>
+
+        <!-- Departments Section -->
+        <div class="test-section">
+            <h3><i class="fas fa-building"></i> Departments</h3>
+            <div class="btn-group" role="group">
+                <button class="btn btn-outline-primary" onclick="testGetDepartments()">Get All Departments</button>
+                <button class="btn btn-outline-info" onclick="testGetDepartment(1)">Get Department by ID (1)</button>
+            </div>
+            <div class="result-box" id="departments-result">
+                <p>Click a button above to test department operations</p>
+            </div>
+        </div>
+
+        <!-- Logs Section -->
+        <div class="test-section">
+            <h3><i class="fas fa-clipboard-list"></i> System Logs</h3>
+            <div class="btn-group" role="group">
+                <button class="btn btn-outline-primary" onclick="testGetLogs()">Get All Logs</button>
+                <button class="btn btn-outline-info" onclick="testGetLogsByUser(1)">Logs by User (1)</button>
+                <button class="btn btn-outline-warning" onclick="testGetLogsByLevel('WARNING')">Warning Logs</button>
+                <button class="btn btn-outline-danger" onclick="testGetLogsByLevel('ERROR')">Error Logs</button>
+            </div>
+            <div class="result-box" id="logs-result">
+                <p>Click a button above to test log operations</p>
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="test-section">
+            <h3><i class="fas fa-chart-bar"></i> Statistics</h3>
+            <div class="btn-group" role="group">
+                <button class="btn btn-outline-primary" onclick="testGetStats()">Get System Statistics</button>
+            </div>
+            <div class="result-box" id="stats-result">
+                <p>Click the button above to test statistics</p>
+            </div>
+        </div>
+
+        <!-- Database Management Section -->
+        <div class="test-section">
+            <h3><i class="fas fa-database"></i> Database Management</h3>
+            <div class="btn-group" role="group">
+                <button class="btn btn-outline-success" onclick="testCreateBackup()">Create Backup</button>
+                <button class="btn btn-outline-warning" onclick="alert('Restore functionality requires backup path')">Restore (Demo)</button>
+            </div>
+            <div class="result-box" id="database-result">
+                <p>Click a button above to test database management</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script>
+        // Test functions
+        function displayResult(containerId, data, isError = false) {
+            const container = document.getElementById(containerId);
+            const className = isError ? 'error' : 'success';
+            container.innerHTML = `<pre class="${className}">${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        // Authentication tests
+        async function testLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const result = await api.login(username, password);
+                displayResult('auth-result', { success: true, user: result });
+            } catch (error) {
+                displayResult('auth-result', { error: error.message }, true);
+            }
+        }
+
+        function testLogout() {
+            api.logout();
+            displayResult('auth-result', { success: true, message: 'Logged out successfully' });
+        }
+
+        // User tests
+        async function testGetUsers() {
+            try {
+                const result = await api.getUsers();
+                displayResult('users-result', result);
+            } catch (error) {
+                displayResult('users-result', { error: error.message }, true);
+            }
+        }
+
+        async function testGetActiveUsers() {
+            try {
+                const result = await api.getActiveUsers();
+                displayResult('users-result', result);
+            } catch (error) {
+                displayResult('users-result', { error: error.message }, true);
+            }
+        }
+
+        async function testGetInactiveUsers() {
+            try {
+                const result = await api.getInactiveUsers();
+                displayResult('users-result', result);
+            } catch (error) {
+                displayResult('users-result', { error: error.message }, true);
+            }
+        }
+
+        async function testGetUser(id) {
+            try {
+                const result = await api.getUser(id);
+                displayResult('users-result', result);
+            } catch (error) {
+                displayResult('users-result', { error: error.message }, true);
+            }
+        }
+
+        // Patient tests
+        async function testGetPatients() {
+            try {
+                const result = await api.getPatients();
+                displayResult('patients-result', result);
+            } catch (error) {
+                displayResult('patients-result', { error: error.message }, true);
+            }
+        }
+
+        async function testGetActivePatients() {
+            try {
+                const result = await api.getActivePatients();
+                displayResult('patients-result', result);
+            } catch (error) {
+                displayResult('patients-result', { error: error.message }, true);
+            }
+        }
+
+        async function testGetPatient(id) {
+            try {
+                const result = await api.getPatient(id);
+                displayResult('patients-result', result);
+            } catch (error) {
+                displayResult('patients-result', { error: error.message }, true);
+            }
+        }
+
+        async function testSearchPatients(query) {
+            try {
+                const result = await api.searchPatients(query);
+                displayResult('patients-result', result);
+            } catch (error) {
+                displayResult('patients-result', { error: error.message }, true);
+            }
+        }
+
+        // Appointment tests
+        async function testGetAppointments() {
+            try {
+                const result = await api.getAppointments();
+                displayResult('appointments-result', result);
+            } catch (error) {
+                displayResult('appointments-result', { error: error.message }, true);
+            }
+        }
+
+        async function testGetAppointmentsByPatient(patientId) {
+            try {
+                const result = await api.getAppointmentsByPatient(patientId);
+                displayResult('appointments-result', result);
+            } catch (error) {
+                displayResult('appointments-result', { error: error.message }, true);
+            }
+        }
+
+        async function testGetAppointmentsByDoctor(doctorId) {
+            try {
+                const result = await api.getAppointmentsByDoctor(doctorId);
+                displayResult('appointments-result', result);
+            } catch (error) {
+                displayResult('appointments-result', { error: error.message }, true);
+            }
+        }
+
+        async function testGetAppointmentsByStatus(status) {
+            try {
+                const result = await api.getAppointmentsByStatus(status);
+                displayResult('appointments-result', result);
+            } catch (error) {
+                displayResult('appointments-result', { error: error.message }, true);
+            }
+        }
+
+        // Role tests
+        async function testGetRoles() {
+            try {
+                const result = await api.getRoles();
+                displayResult('roles-result', result);
+            } catch (error) {
+                displayResult('roles-result', { error: error.message }, true);
+            }
+        }
+
+        async function testGetPermissions() {
+            try {
+                const result = await api.getPermissions();
+                displayResult('roles-result', result);
+            } catch (error) {
+                displayResult('roles-result', { error: error.message }, true);
+            }
+        }
+
+        async function testGetRole(id) {
+            try {
+                const result = await api.getRole(id);
+                displayResult('roles-result', result);
+            } catch (error) {
+                displayResult('roles-result', { error: error.message }, true);
+            }
+        }
+
+        // Department tests
+        async function testGetDepartments() {
+            try {
+                const result = await api.getDepartments();
+                displayResult('departments-result', result);
+            } catch (error) {
+                displayResult('departments-result', { error: error.message }, true);
+            }
+        }
+
+        async function testGetDepartment(id) {
+            try {
+                const result = await api.getDepartment(id);
+                displayResult('departments-result', result);
+            } catch (error) {
+                displayResult('departments-result', { error: error.message }, true);
+            }
+        }
+
+        // Log tests
+        async function testGetLogs() {
+            try {
+                const result = await api.getLogs();
+                displayResult('logs-result', result);
+            } catch (error) {
+                displayResult('logs-result', { error: error.message }, true);
+            }
+        }
+
+        async function testGetLogsByUser(userId) {
+            try {
+                const result = await api.getLogsByUser(userId);
+                displayResult('logs-result', result);
+            } catch (error) {
+                displayResult('logs-result', { error: error.message }, true);
+            }
+        }
+
+        async function testGetLogsByLevel(level) {
+            try {
+                const result = await api.getLogsByLevel(level);
+                displayResult('logs-result', result);
+            } catch (error) {
+                displayResult('logs-result', { error: error.message }, true);
+            }
+        }
+
+        // Statistics tests
+        async function testGetStats() {
+            try {
+                const result = await api.getStats();
+                displayResult('stats-result', result);
+            } catch (error) {
+                displayResult('stats-result', { error: error.message }, true);
+            }
+        }
+
+        // Database management tests
+        async function testCreateBackup() {
+            try {
+                const result = await api.createBackup();
+                displayResult('database-result', result);
+            } catch (error) {
+                displayResult('database-result', { error: error.message }, true);
+            }
+        }
+    </script>
+</body>
+</html>

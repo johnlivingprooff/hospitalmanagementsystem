@@ -1,0 +1,97 @@
+[
+  {
+    "id": 1,
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@email.com",
+    "phone": "+1234567890",
+    "dateOfBirth": "1985-03-15",
+    "gender": "Male",
+    "address": "123 Main St, City, State 12345",
+    "emergencyContact": {
+      "name": "Jane Doe",
+      "phone": "+1234567891",
+      "relationship": "Spouse"
+    },
+    "medicalHistory": [
+      {
+        "condition": "Hypertension",
+        "diagnosedDate": "2020-05-10",
+        "status": "Ongoing"
+      }
+    ],
+    "insurance": {
+      "provider": "Blue Cross",
+      "policyNumber": "BC123456789",
+      "groupNumber": "GRP001"
+    },
+    "registeredDate": "2024-01-15T10:30:00Z",
+    "lastVisit": "2024-01-18T14:00:00Z",
+    "isActive": true
+  },
+  {
+    "id": 2,
+    "firstName": "Sarah",
+    "lastName": "Wilson",
+    "email": "sarah.wilson@email.com",
+    "phone": "+1234567892",
+    "dateOfBirth": "1992-07-22",
+    "gender": "Female",
+    "address": "456 Oak Ave, City, State 12346",
+    "emergencyContact": {
+      "name": "Mike Wilson",
+      "phone": "+1234567893",
+      "relationship": "Brother"
+    },
+    "medicalHistory": [
+      {
+        "condition": "Asthma",
+        "diagnosedDate": "2015-09-05",
+        "status": "Controlled"
+      }
+    ],
+    "insurance": {
+      "provider": "Aetna",
+      "policyNumber": "AE987654321",
+      "groupNumber": "GRP002"
+    },
+    "registeredDate": "2024-01-16T11:15:00Z",
+    "lastVisit": "2024-01-19T10:30:00Z",
+    "isActive": true
+  },
+  {
+    "id": 3,
+    "firstName": "Michael",
+    "lastName": "Brown",
+    "email": "michael.brown@email.com",
+    "phone": "+1234567894",
+    "dateOfBirth": "1978-11-30",
+    "gender": "Male",
+    "address": "789 Pine Rd, City, State 12347",
+    "emergencyContact": {
+      "name": "Lisa Brown",
+      "phone": "+1234567895",
+      "relationship": "Wife"
+    },
+    "medicalHistory": [
+      {
+        "condition": "Diabetes Type 2",
+        "diagnosedDate": "2019-03-12",
+        "status": "Managed"
+      },
+      {
+        "condition": "High Cholesterol",
+        "diagnosedDate": "2021-08-20",
+        "status": "Ongoing"
+      }
+    ],
+    "insurance": {
+      "provider": "Cigna",
+      "policyNumber": "CG456789123",
+      "groupNumber": "GRP003"
+    },
+    "registeredDate": "2024-01-17T09:45:00Z",
+    "lastVisit": "2024-01-20T08:15:00Z",
+    "isActive": true
+  }
+]

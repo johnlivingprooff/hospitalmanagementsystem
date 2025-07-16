@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "user_management",
+    "description": "Create, update, and delete user accounts"
+  },
+  {
+    "id": 2,
+    "name": "patient_management",
+    "description": "Manage patient information and records"
+  },
+  {
+    "id": 3,
+    "name": "system_admin",
+    "description": "System administration and configuration"
+  },
+  {
+    "id": 4,
+    "name": "medical_records",
+    "description": "Access and manage medical records"
+  },
+  {
+    "id": 5,
+    "name": "appointments",
+    "description": "Schedule and manage appointments"
+  },
+  {
+    "id": 6,
+    "name": "patient_care",
+    "description": "Provide direct patient care"
+  },
+  {
+    "id": 7,
+    "name": "patient_registration",
+    "description": "Register new patients"
+  },
+  {
+    "id": 8,
+    "name": "reports",
+    "description": "Generate and view reports"
+  },
+  {
+    "id": 9,
+    "name": "settings",
+    "description": "Modify system settings"
+  }
+]

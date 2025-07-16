@@ -1,0 +1,54 @@
+[
+  {
+    "id": 1,
+    "name": "Administrator",
+    "description": "Full system access and user management",
+    "permissions": [
+      "user_management",
+      "patient_management",
+      "system_admin",
+      "medical_records",
+      "appointments",
+      "reports",
+      "settings"
+    ],
+    "isActive": true,
+    "createdAt": "2024-01-10T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Doctor",
+    "description": "Medical staff with patient care access",
+    "permissions": [
+      "patient_management",
+      "medical_records",
+      "appointments",
+      "patient_care"
+    ],
+    "isActive": true,
+    "createdAt": "2024-01-10T10:00:00Z"
+  },
+  {
+    "id": 3,
+    "name": "Nurse",
+    "description": "Nursing staff with patient care access",
+    "permissions": [
+      "patient_care",
+      "medical_records",
+      "appointments"
+    ],
+    "isActive": true,
+    "createdAt": "2024-01-10T10:00:00Z"
+  },
+  {
+    "id": 4,
+    "name": "Receptionist",
+    "description": "Front desk staff with limited access",
+    "permissions": [
+      "patient_registration",
+      "appointments"
+    ],
+    "isActive": true,
+    "createdAt": "2024-01-10T10:00:00Z"
+  }
+]

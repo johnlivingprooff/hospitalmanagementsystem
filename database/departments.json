@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Cardiology",
+    "description": "Heart and cardiovascular care",
+    "head": "Dr. Sarah Smith",
+    "location": "Building A, Floor 3",
+    "phone": "+1234567800",
+    "isActive": true
+  },
+  {
+    "id": 2,
+    "name": "Emergency",
+    "description": "Emergency medical care",
+    "head": "Dr. Michael Johnson",
+    "location": "Building A, Floor 1",
+    "phone": "+1234567801",
+    "isActive": true
+  },
+  {
+    "id": 3,
+    "name": "Pediatrics",
+    "description": "Children's healthcare",
+    "head": "Dr. Emily Davis",
+    "location": "Building B, Floor 2",
+    "phone": "+1234567802",
+    "isActive": true
+  },
+  {
+    "id": 4,
+    "name": "Administration",
+    "description": "Hospital administration",
+    "head": "Admin User",
+    "location": "Building A, Floor 4",
+    "phone": "+1234567803",
+    "isActive": true
+  },
+  {
+    "id": 5,
+    "name": "Front Desk",
+    "description": "Patient reception and registration",
+    "head": "Jane Doe",
+    "location": "Building A, Floor 1",
+    "phone": "+1234567804",
+    "isActive": true
+  }
+]
