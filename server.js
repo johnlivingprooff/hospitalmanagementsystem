@@ -19,7 +19,7 @@ function renderTemplate(templatePath, data) {
 }
 
 // Serve static files from public directory with proper security
-app.use('/css', express.static('public/css', {
+app.use('/css', express.static(path.join(__dirname, 'public', 'css'), {
     setHeaders: (res, path, stat) => {
         res.setHeader('Content-Type', 'text/css');
         res.setHeader('Cache-Control', 'public, max-age=31536000');
@@ -27,7 +27,7 @@ app.use('/css', express.static('public/css', {
     }
 }));
 
-app.use('/images', express.static('public/images', {
+app.use('/images', express.static(path.join(__dirname, 'public', 'images'), {
     setHeaders: (res, path, stat) => {
         res.setHeader('Cache-Control', 'public, max-age=31536000');
         res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -35,7 +35,7 @@ app.use('/images', express.static('public/images', {
 }));
 
 // Serve static files from public directory root (this handles everything else)
-app.use(express.static('public', {
+app.use(express.static(path.join(__dirname, 'public'), {
     setHeaders: (res, path, stat) => {
         // Set proper MIME types
         if (path.endsWith('.css')) {
@@ -65,14 +65,6 @@ app.use(express.static('public', {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Debug middleware to log requests (only in development)
-if (!process.env.VERCEL) {
-    app.use((req, res, next) => {
-        console.log(`${req.method} ${req.path}`);
-        next();
-    });
-}
-
 // Security middleware to prevent access to sensitive files (but allow static assets)
 app.use((req, res, next) => {
     // Block access to sensitive files and directories
@@ -91,7 +83,7 @@ app.use((req, res, next) => {
         return res.status(403).send('Access forbidden');
     }
     
-    // Allow all static assets (CSS, JS, images, fonts, etc.)
+    // Allow all static assets (CSS, JS, images, fonts, etc.) - pass through immediately
     if (req.path.startsWith('/css/') || 
         req.path.startsWith('/images/') || 
         req.path.match(/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$/)) {
@@ -106,6 +98,14 @@ app.use((req, res, next) => {
     
     next();
 });
+
+// Debug middleware to log requests (only in development)
+if (!process.env.VERCEL) {
+    app.use((req, res, next) => {
+        console.log(`${req.method} ${req.path}`);
+        next();
+    });
+}
 
 // Route for login page (main entry point)
 app.get('/', (req, res) => {
@@ -124,6 +124,42 @@ app.get('/', (req, res) => {
 // Route for main dashboard after login
 app.get('/dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'dashboard.html'));
+});
+
+// Test route for CSS loading
+app.get('/test-css', (req, res) => {
+    res.sendFile(path.join(__dirname, 'test-css.html'));
+});
+
+// Debug route to check file existence
+app.get('/debug-files', (req, res) => {
+    const fs = require('fs');
+    const publicDir = path.join(__dirname, 'public');
+    const cssDir = path.join(publicDir, 'css');
+    const imagesDir = path.join(publicDir, 'images');
+    
+    const checkFiles = [
+        'public/css/bootstrap.min.css',
+        'public/css/all.min.css',
+        'public/css/dashboard.css'
+    ];
+    
+    const result = {
+        __dirname: __dirname,
+        publicDir: publicDir,
+        cssDir: cssDir,
+        files: {}
+    };
+    
+    checkFiles.forEach(file => {
+        const fullPath = path.join(__dirname, file);
+        result.files[file] = {
+            exists: fs.existsSync(fullPath),
+            fullPath: fullPath
+        };
+    });
+    
+    res.json(result);
 });
 
 // Route for home page
