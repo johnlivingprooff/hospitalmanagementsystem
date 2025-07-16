@@ -23,7 +23,6 @@ app.use('/css', express.static('public/css', {
     setHeaders: (res, path, stat) => {
         res.setHeader('Content-Type', 'text/css');
         res.setHeader('Cache-Control', 'public, max-age=31536000');
-        // Security headers
         res.setHeader('X-Content-Type-Options', 'nosniff');
     }
 }));
@@ -31,23 +30,34 @@ app.use('/css', express.static('public/css', {
 app.use('/images', express.static('public/images', {
     setHeaders: (res, path, stat) => {
         res.setHeader('Cache-Control', 'public, max-age=31536000');
-        // Security headers
         res.setHeader('X-Content-Type-Options', 'nosniff');
     }
 }));
 
-// Serve static files from public directory root (for backward compatibility)
+// Serve static files from public directory root (this handles everything else)
 app.use(express.static('public', {
     setHeaders: (res, path, stat) => {
+        // Set proper MIME types
         if (path.endsWith('.css')) {
             res.setHeader('Content-Type', 'text/css');
-        }
-        if (path.endsWith('.js')) {
+        } else if (path.endsWith('.js')) {
             res.setHeader('Content-Type', 'application/javascript');
+        } else if (path.endsWith('.png')) {
+            res.setHeader('Content-Type', 'image/png');
+        } else if (path.endsWith('.jpg') || path.endsWith('.jpeg')) {
+            res.setHeader('Content-Type', 'image/jpeg');
+        } else if (path.endsWith('.gif')) {
+            res.setHeader('Content-Type', 'image/gif');
+        } else if (path.endsWith('.svg')) {
+            res.setHeader('Content-Type', 'image/svg+xml');
+        } else if (path.endsWith('.ico')) {
+            res.setHeader('Content-Type', 'image/x-icon');
         }
+        
         // Security headers for all static files
         res.setHeader('X-Content-Type-Options', 'nosniff');
         res.setHeader('X-Frame-Options', 'DENY');
+        res.setHeader('Cache-Control', 'public, max-age=31536000');
     }
 }));
 
@@ -55,13 +65,15 @@ app.use(express.static('public', {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Debug middleware to log requests
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.path}`);
-    next();
-});
+// Debug middleware to log requests (only in development)
+if (!process.env.VERCEL) {
+    app.use((req, res, next) => {
+        console.log(`${req.method} ${req.path}`);
+        next();
+    });
+}
 
-// Security middleware to prevent access to sensitive files
+// Security middleware to prevent access to sensitive files (but allow static assets)
 app.use((req, res, next) => {
     // Block access to sensitive files and directories
     const blockedPaths = [
@@ -74,16 +86,21 @@ app.use((req, res, next) => {
         '/.vercelignore'
     ];
     
-    const blockedExtensions = ['.js', '.json', '.env', '.md'];
-    
     // Check if path is blocked
     if (blockedPaths.some(blocked => req.path.startsWith(blocked))) {
         return res.status(403).send('Access forbidden');
     }
     
-    // Check if extension is blocked (except for static assets in public)
-    if (!req.path.startsWith('/css/') && !req.path.startsWith('/images/') && 
-        blockedExtensions.some(ext => req.path.endsWith(ext))) {
+    // Allow all static assets (CSS, JS, images, fonts, etc.)
+    if (req.path.startsWith('/css/') || 
+        req.path.startsWith('/images/') || 
+        req.path.match(/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$/)) {
+        return next();
+    }
+    
+    // Block direct access to other file types that aren't routes
+    const blockedExtensions = ['.json', '.env', '.md'];
+    if (blockedExtensions.some(ext => req.path.endsWith(ext))) {
         return res.status(403).send('Access forbidden');
     }
     
@@ -102,16 +119,6 @@ app.get('/', (req, res) => {
         console.error('File not found:', filePath);
         res.status(404).send('Login page not found');
     }
-});
-
-// Handle favicon requests
-app.get('/favicon.ico', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/images/hms-default-logo.png'));
-});
-
-// Handle legacy favicon path
-app.get('/hms-default-logo.png', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/images/hms-default-logo.png'));
 });
 
 // Route for main dashboard after login
