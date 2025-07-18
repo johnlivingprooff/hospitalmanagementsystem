@@ -1,0 +1,9 @@
+{% extends "../../base.html" %}
+
+{% block menuBlock %}
+
+{{ protectedNavLink('/Hms/Regions', 'Regions', 'ReadRegions', userPermissions) }}
+
+{{ protectedNavLink('/Hms/Regions/New', 'Add New Region', 'WriteRegions', userPermissions) }}
+
+{% endblock %}

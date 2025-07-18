@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}View User - {{ userDetails.account.fullname() | escape }} {% endblock %}
+
+{% block headerStyles %}
+
+{{ parent() }}
+
+{% endblock %}
+
+{% block mainContent %}
+
+<div class="panel panel-primary ml-4 mt-4 my-4">
+    <div class="row">
+        <div class="col-2">
+            <img src="/Hms/Users/ProfileImage/{{ userDetails.account.Id }}"
+                 class="profile-image">
+        </div>
+        <div class="col-8 my-auto">
+            <ul class="list-group">
+                <li class="list-group-item"><h4>{{ userDetails.account.fullname() | escape }}</h4></li>
+                <li class="list-group-item">
+                    <p class="lead">
+                        {% if hasPermission("ReadRoles", userPermissions) %}
+                        <a href="/Hms/Roles/View/{{ userDetails.role.id }}">{{ userDetails.role.roleName | escape }}</a>
+                        {% else %}
+                        {{ userDetails.role.roleName | escape }}
+                        {% endif %}
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-5 my-auto">
+        <ul class="list-group">
+            <li class="list-group-item"><h5>Email Address</h5></li>
+            <li class="list-group-item">{{ userDetails.account.Email | escape }}</li>
+        </ul>
+    </div>
+    <div class="col-5 my-auto">
+        <ul class="list-group">
+            <li class="list-group-item"><h5>Date of Birth</h5></li>
+            <li class="list-group-item">{{ formatDate(userDetails.account.DateOfBirth) }}</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-5 my-auto">
+        <ul class="list-group">
+            <li class="list-group-item"><h5>Physical Address</h5></li>
+            <li class="list-group-item">{{ userDetails.ContactInfo.PhysicalAddress | escape }}</li>
+        </ul>
+    </div>
+    <div class="col-5 my-auto">
+        <ul class="list-group">
+            <li class="list-group-item"><h5>Mailing Address</h5></li>
+            <li class="list-group-item">{{ userDetails.ContactInfo.MailingAddress | escape }}</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-5 my-auto">
+        <ul class="list-group">
+            <li class="list-group-item"><h5>Primary Phone</h5></li>
+            <li class="list-group-item">{{ userDetails.ContactInfo.Phone1 | escape }}</li>
+        </ul>
+    </div>
+    <div class="col-5 my-auto">
+        <ul class="list-group">
+            <li class="list-group-item"><h5>Secondary Phone</h5></li>
+            <li class="list-group-item">{{ userDetails.ContactInfo.Phone2 | escape }}&nbsp;</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-5 my-auto">
+        <ul class="list-group">
+            <li class="list-group-item"><h5>Date Created</h5></li>
+            <li class="list-group-item">{{ formatDate(userDetails.account.Created, true) }}</li>
+        </ul>
+    </div>
+    <div class="col-5 my-auto">
+        <ul class="list-group">
+            <li class="list-group-item"><h5>Date Updated</h5></li>
+            <li class="list-group-item">{{ formatDate(userDetails.account.Updated, true) }}</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row my-4">
+    <div class="col-5 my-auto">
+        <ul class="list-group">
+            <li class="list-group-item"><h5>Section</h5></li>
+            <li class="list-group-item">
+                {{ userDetails.section.sectionName | escape }}
+                {% if userDetails.section.Hidden or userDetails.section.SystemSection %}
+                    (
+                        {% if userDetails.section.Hidden %} Hidden {% endif %}
+                        {% if userDetails.section.SystemSection %} System Section {% endif %}
+                    )
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+    <div class="col-5 my-auto">
+        <ul class="list-group">
+            <li class="list-group-item"><h5>Active</h5></li>
+            <li class="list-group-item">
+                {% if editableUser and hasPermission("WriteUsers", userPermissions) %}
+                        {% if userDetails.account.Active %}
+                            {{ openForm("/Hms/Users/Deactivate", "deactivate-form") }}
+                                <input type="hidden" name="id" value="{{ userDetails.account.Id }}">
+                                {{ yesOrNo(userDetails.account.Active) }} -
+                                <strong>
+                                    <a href="javascript:$('.deactivate-form').submit()"
+                                       data-toggle="tooltip"
+                                       data-placement="top"
+                                       title="Deactivating this account will prevent them from logging in the next time they try to log in"
+                                       class="text-danger">Deactivate</a>
+                                </strong>
+                            {{ closeForm() }}
+                        {% else%}
+                            {{ openForm("/Hms/Users/Activate", "activate-form") }}
+                                <input type="hidden" name="id" value="{{ userDetails.account.Id }}">
+                                {{ yesOrNo(userDetails.account.Active) }} -
+                                <strong>
+                                    <a href="javascript:$('.activate-form').submit()"
+                                       class="text-success">Activate</a>
+                                </strong>
+                            {{ closeForm() }}
+                        {% endif %}
+                {% else %}
+                    {{ yesOrNo(userDetails.account.Active) }}
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</div>
+
+{% if editableUser and hasPermission("WriteUsers", userPermissions) %}
+
+<div class="row mt-4 mb-4">
+    <div class="col-5 my-auto">
+        <ul class="list-group">
+            <li class="list-group-item"><h5>Role</h5></li>
+            <li class="list-group-item">
+                {{ openForm("/Hms/Users/UpdateRole", "role-form") }}
+                <div class="form-row">
+                    <div class="form-group col-11">
+                        <input type="hidden" name="userId" value="{{ userDetails.account.id }}">
+                        <select name="roleId" class="custom-select" required>
+                            {% for role in roles %}
+                                <option
+                                        {% if role.Id == userDetails.role.Id %}
+                                            selected
+                                        {% endif %}
+                                        value="{{ role.id }}">{{ role.roleName }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-1">
+                        <button class="btn btn-info"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="Changes will take effect the next time this account logs in"
+                                type="submit"><i class="fa fa-check">&nbsp;</i></button>
+                    </div>
+                </div>
+                {{ closeForm() }}
+            </li>
+        </ul>
+    </div>
+    <div class="col-5 my-auto">
+        <ul class="list-group">
+            <li class="list-group-item"><h5>Password</h5></li>
+            <li class="list-group-item">
+                {{ openForm("/Hms/Users/UpdatePassword", "pwd-form") }}
+                    <div class="form-row">
+                        <div class="form-group col-11">
+                            <input type="hidden" name="id" value="{{ userDetails.account.id }}">
+                            <input
+                                    type="password"
+                                    autocomplete="off"
+                                    minlength="8"
+                                    maxlength="15"
+                                    class="form-control"
+                                    name="password"
+                                    placeholder="Password" required>
+                        </div>
+                        <div class="col-1">
+                            <button class="btn btn-info" type="submit"><i class="fa fa-check">&nbsp;</i></button>
+                        </div>
+                    </div>
+                {{ closeForm() }}
+            </li>
+        </ul>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

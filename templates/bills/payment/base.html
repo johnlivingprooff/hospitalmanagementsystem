@@ -1,0 +1,10 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Billing/{{ info.id | escape }}/UnPaidBills"
+       class="nav-link"><i class="fa fa-chevron-left"></i> Back to bills</a>
+</li>
+
+{% endblock %}

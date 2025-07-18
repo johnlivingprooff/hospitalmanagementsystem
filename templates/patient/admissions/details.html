@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Admission Details for {{ admission.patientName | upper | escape }}{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Admissions"
+       class="nav-link"><i class="fa fa-chevron-left"></i> Back to admissions</a>
+</li>
+
+{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Admission for {{ admission.patientName | upper | escape }} | {{ admission.patientMrn | escape
+        }}</h4>
+    <div class="card-body">
+
+        <div class="form-row">
+            <div class="col-3">
+                <div class="form-group">
+                    {{ labelFor("mrn", "Patient ID") }}
+                    <input type="text"
+                           id="mrn"
+                           readonly
+                           autofocus
+                           value="{{ admission.patientMrn | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("admissionDate", "Date of Admission") }}
+                    <input id="admissionDate"
+                           autofocus
+                           readonly
+                           value="{{ formatDate(admission.createdAt, true) | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+            {% if admission.status == "Discharged" %}
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("dischargedAt", "Date of Termination") }}
+                    <input id="dischargedAt"
+                           autofocus
+                           readonly
+                           value="{{ formatDate(admission.dischargedAt, true) | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+            {% endif %}
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("admissionType", "Admission Type") }}
+                    <input id="admissionType"
+                           autofocus
+                           readonly
+                           value="{{ admission.admissionType.description | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("wardId", "Ward") }}
+                    <input id="wardId"
+                           autofocus
+                           readonly
+                           value="{{ admission.wardCode | escape }} ({{ admission.wardName | escape }})"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("bedId", "Bed") }}
+                    <input id="bedId"
+                           autofocus
+                           readonly
+                           value="{{ admission.bed | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("reason", "Reason for Admission") }}
+                    <textarea
+                            id="reason"
+                            autofocus
+                            readonly
+                            class="form-control">{{ admission.reason | escape }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        {% if admission.attachment %}
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    <a download=""
+                       target="_blank"
+                       href="/Hms/Admissions/{{ admission.id }}/Attachment">
+                        <i class="fa fa-paperclip" aria-hidden="true"></i>
+                        Download Attachment
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if admission.status == "Discharged" %}
+
+<div class="card-style card white mb-4">
+    <h4 class="box-title">Termination Details</h4>
+    <div class="card-body">
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("terminationDate", "Date of Termination") }}
+                    <input type="text"
+                           id="terminationDate"
+                           autofocus
+                           readonly
+                           value="{{ formatDate(admission.dischargedAt, true) | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("duration", "Duration of Admission") }}
+                    <input type="text"
+                           id="duration"
+                           autofocus
+                           readonly
+                           value="{{ admission.getDuration() | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("terminationReason", "Reason for Termination") }}
+                    <textarea
+                            id="terminationReason"
+                            autofocus
+                            readonly
+                            class="form-control">{{ admission.terminationReason | escape }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        {% if admission.terminationAttachment %}
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    <a download=""
+                       target="_blank"
+                       href="/Hms/Admissions/{{ admission.id }}/TerminationAttachment">
+                        <i class="fa fa-paperclip" aria-hidden="true"></i>
+                        Download Attachment
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endif %}
+{% endblock %}

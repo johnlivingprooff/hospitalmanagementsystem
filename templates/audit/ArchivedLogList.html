@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block pageTitle %} {{ parent() }} Archived Audit Logs{% endblock %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">Archived Audit Logs</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>Entry #</th>
+                    <th>Description</th>
+                    <th>Time</th>
+                    <th>IP Address</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% set index = 1 %}
+                {% for auditLog in auditLogs %}
+                <tr>
+                    <td>{{ index }}</td>
+                    <td>{{ auditLog.Action | escape }}</td>
+                    <td data-order="{{ auditLog.Created.getTime() }}">{{ formatDate(auditLog.Created, true) | escape }}</td>
+                    <td>{{ auditLog.Address | escape }}</td>
+                </tr>
+                {% set index = index + 1 %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footerScripts %}
+
+{{ parent() }}
+
+<script>
+    $(function(){
+        expandContentContainer();
+    });
+</script>
+
+{% endblock %}

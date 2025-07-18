@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Create Appointment{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Reception/Appointments" class="nav-link"><i class="fa fa-chevron-left"></i> Back to appointments</a>
+</li>
+
+{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Create Appointment</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/Reception/Appointments/Add") }}
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("doctorId", "Select Doctor", true) }}
+                    {{ formDropDown(doctors, "doctorId", "doctorId", doctorId) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("mrn", "Patient ID", true) }}
+                    {{ inputText(true, "mrn", mrn, {'autocomplete':'off','min': 5, 'max': 20, 'hint': 'Patient ID'}) }}
+                </div>
+            </div>
+
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("date", "Date", true) }}
+                    {{ formDropDown(dates, "date", "date", date) }}
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("startTime", "Start time", true) }}
+                    {{ timeSelector(true, "startTime", startTime) }}
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("endTime", "End time", true) }}
+                    {{ timeSelector(true, "endTime", endTime) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("notes", "Notes", true) }}
+                    {{ editText(true, "notes", notes, {'min': 3, 'max': 500, 'hint': 'Notes', 'rows': 6}) }}
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Submit
+                </button>
+            </div>
+        </div>
+
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}
+
+{% block footerScripts %}
+
+<script>
+$(function(){
+    String.prototype.escapeTags = function(){
+        return this.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    };
+
+    function loadDoctorSchedule(){
+        var dates = $('#date');
+        var doctor = $('#doctorId option:selected').val();
+        $.get('/Hms/Reception/Appointments/GetDoctorsSchedule/' + doctor , function(data){
+            $("#date option:not(.default-option)").remove();
+            data.forEach(function(date){
+                dates.append('<option value="' + date.id + '">' + date.date.escapeTags() + '</option>');
+            });
+            if(date.options.length > 1){
+                $('#date option:nth-child(2)').prop('selected','selected');
+            }else{
+                $('#date option:first-child').prop('selected','selected');
+            }
+            {% if error %}
+            $("#date option[value={{ date | escape }}]").prop('selected','selected');
+            {% endif %}
+        })
+        .fail(function(){
+            alert("Error getting doctor's schedule. Refresh the page and try again.");
+        });
+    }
+
+    $('#doctorId').on('change', function(){
+        loadDoctorSchedule();
+    });
+
+    {% if error %}
+        loadDoctorSchedule();
+    {% endif %}
+});
+</script>
+
+{% endblock %}

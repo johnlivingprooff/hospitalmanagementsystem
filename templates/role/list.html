@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}System Roles{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">System Roles</h4>
+    <div class="card-body">
+        {{ showInfoMessage('Roles contain sets of <a href="/Hms/Permissions">permissions</a> that grant access to specific system functions') }}
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Role Name</th>
+                    <th>Role Description</th>
+                    <th>Active</th>
+                    <th>Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for role in roles %}
+                <tr>
+                    <td>{{ role.roleName | escape }}</td>
+                    <td>{{ role.roleDescription | escape }}</td>
+                    <td>{{ yesOrNo(role.active) | escape }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">Options
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                {% if role.systemRole == false %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Roles/{{ role.id }}/Edit">Edit</a>
+                                {% endif %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Roles/{{ role.id }}/View">View</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footerScripts %}
+
+{{ parent() }}
+
+<script>
+
+$(function () {
+    window.expandContentContainer();
+})
+
+</script>
+
+{% endblock %}

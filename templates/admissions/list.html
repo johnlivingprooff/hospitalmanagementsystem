@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Admissions - {{ title | escape }}{% endblock %}
+
+{% set useFluidContainer = true %}
+
+{% block mainContent %}
+{% set canViewDetails = "ReadAdmissionDetails" in userPermissions %}
+{% set canTerminate = "TerminateAdmissions" in userPermissions %}
+{% set canRecordVitals = "WriteAdmissions" in userPermissions %}
+{% set canViewOptions = canViewDetails or canTerminate or canRecordVitals %}
+
+<div class="card-style card white">
+    <h4 class="box-title">{{ title | escape }}</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Ward</th>
+                    <th>Bed</th>
+                    <th>Admission Date</th>
+                    {% if dischargedAdmissions %}
+                    <th>Termination Date</th>
+                    {% endif %}
+                    <th>Admission Type</th>
+                    {% if canViewOptions %}<th>Options</th>{% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for admission in admissions %}
+                <tr>
+                    <td>{{ admission.patientMrn | escape }}</td>
+                    <td>{{ admission.patientName | escape }}</td>
+                    <td>{{ admission.wardCode | escape }} ({{ admission.wardName | escape }})</td>
+                    <td>{{ admission.bed | escape }}</td>
+                    <td>{{ formatDate(admission.createdAt, true) | escape }}</td>
+                    {% if dischargedAdmissions %}
+                    <td>{{ formatDate(admission.dischargedAt, true) | escape }}</td>
+                    {% endif %}
+                    <td>{{ admission.admissionType.description | escape }}</td>
+                    {% if canViewOptions %}
+                    <td>
+                        <div class="btn-group">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">Options
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                {% if canTerminate and admission.status == "Active" %}
+                                <a class="dropdown-item" href="/Hms/Admissions/{{ admission.id }}/Terminate">Terminate</a>
+                                {% endif %}
+
+                                {% if canRecordVitals %}
+                                <a class="dropdown-item" href="/Hms/Admissions/{{ admission.id }}/Vitals">Vital Signs Recordings</a>
+                                {% endif %}
+
+                                {% if canViewDetails %}
+                                <a class="dropdown-item" href="/Hms/Admissions/{{ admission.id }}/Details">Details</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

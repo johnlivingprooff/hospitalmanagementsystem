@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Wards{% endblock %}
+
+{% block mainContent %}
+{% set canModify = "WriteBeds" in userPermissions %}
+<div class="card-style card white">
+    <h4 class="box-title">Beds</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Ward</th>
+                    <th>Status</th>
+                    {% if canModify %}
+                    <th>Options</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for bed in beds %}
+                <tr>
+                    <td>{{ bed.code | escape }}</td>
+                    <td>{{ bed.ward | escape }}</td>
+                    <td class="{{ (bed.vacant) ? 'table-success text-success' : 'table-danger text-danger' }}"
+                        data-order="{{ (bed.vacant) ? 1 : 0 }}">
+                        {{ (bed.vacant) ? 'Vacant' : 'Occupied' }}
+                    </td>
+                    {% if canModify %}
+                    <td>
+                        <div class="btn-group">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">Options
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="/Hms/Beds/{{ bed.id }}/Edit">Edit</a>
+
+                                {% if bed.vacant %}
+                                <a class="dropdown-item" href="/Hms/Beds/{{ bed.id }}/Delete">Delete</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

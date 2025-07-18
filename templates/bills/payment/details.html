@@ -1,0 +1,26 @@
+
+<div class="card-style card white">
+    <h4 class="box-title">Bill Details</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Balance</th>
+                    <th>Paid</th>
+                    <th>Bill Type</th>
+                    <th>Billed On</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ formatCurrency(bill.balance) | escape }}</td>
+                    <td>{{ formatCurrency(bill.paid) | escape }}</td>
+                    <td>{{ bill.billType | escape }}</td>
+                    <td>{{ formatDate(bill.createdAt, true) | escape }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Edit Bed{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Edit Bed</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/Beds/Update") }}
+
+        <input name="id" value="{{ id }}" type="hidden"/>
+
+        <div class="form-row">
+            <div class="col-2">
+                <div class="form-group">
+                    {{ labelFor("code", "Code", true) }}
+                    <input type="text"
+                           id="code"
+                           name="code"
+                           autocomplete="off"
+                           minlength="2"
+                           maxlength="10"
+                           autofocus
+                           required
+                           value="{{ code | escape }}"
+                           placeholder="Code"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("wardId", "Ward", true) }}
+                    {{ formDropDown(wards, "wardId", "wardId", wardId) }}
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Update
+                </button>
+            </div>
+        </div>
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "../../../base.html" %}
+
+{% block menuBlock %}
+
+{{ protectedNavLink('/Hms/Prescriptions', 'Filed Prescriptions', 'ReadPrescriptions', userPermissions) }}
+
+{{ protectedNavLink('/Hms/Prescriptions/Pending', 'Pending Prescriptions', 'ReadPrescriptions', userPermissions) }}
+
+{{ protectedNavLink('/Hms/Prescriptions/Dispensed', 'Dispensed Prescriptions', 'ReadPrescriptions', userPermissions) }}
+
+{{ protectedNavLink('/Hms/Prescriptions/New', 'New Prescription', 'WritePrescriptions', userPermissions, 'ml-auto') }}
+
+{% endblock %}

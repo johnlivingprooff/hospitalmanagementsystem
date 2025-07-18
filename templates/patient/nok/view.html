@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ patient.fullname() | escape }}'s next of kin{% endblock %}
+
+{# This block hides the navigation links since this view is also shared with patient accounts #}
+{% block menuBlock %}
+{% if account.isPatient() == false %}
+    {{ parent() }}
+{% endif %}
+{% endblock %}
+
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">{{ patient.fullname() | escape }}'s next of kin</h4>
+    <div class="card-body">
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("firstName", "First name") }}
+                    <input type="text"
+                           value="{{ nok.firstName|escape }}"
+                           id="firstName"
+                           class="form-control" readonly autofocus>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("lastName", "Last name") }}
+                    <input type="text"
+                           value="{{ nok.lastName|escape }}"
+                           id="lastName"
+                           class="form-control" readonly autofocus>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("relationship", "Relationship") }}
+                    <input type="text"
+                           value="{{ nok.relationship|escape }}"
+                           id="relationship"
+                           class="form-control" readonly autofocus>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("address", "Address") }}
+                    <input type="text"
+                           value="{{ nok.address|escape }}"
+                           id="address"
+                           class="form-control" readonly autofocus>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("phone1", "Primary Phone Number") }}
+                    <input type="tel"
+                           value="{{ nok.phone1 |escape }}"
+                           id="phone1"
+                           class="form-control" readonly autofocus>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("phone2", "Secondary Phone Number") }}
+                    <input type="tel"
+                           value="{{ nok.phone2 |escape }}"
+                           id="phone2"
+                           class="form-control" readonly autofocus>
+                </div>
+            </div>
+        </div>
+
+        {% if "WritePatientNok" in userPermissions %}
+
+        <div class="row">
+            <div class="col">
+                <a href="/Hms/Patients/{{ patient.id }}/Nok/Edit"
+                   type="submit" class="float-right btn btn-primary">
+                    Edit
+                </a>
+            </div>
+        </div>
+
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

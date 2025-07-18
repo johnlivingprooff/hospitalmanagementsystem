@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Consultation{% endblock %}
+
+{% set canModify = "WriteConsultations" in userPermissions %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Consultations</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Fee</th>
+                    {% if canModify %}
+                    <th style="min-width: 15%">Options</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for procedure in procedures %}
+                <tr>
+                    <td>{{ procedure.name | escape }}</td>
+                    <td>{{ "%,.2f" | format(procedure.cost) | escape }}</td>
+                    {% if canModify %}
+                    <td>
+                        <div class="btn-group">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">Options
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="/Hms/Consultations/{{ procedure.id }}/Edit">Edit</a>
+                                <a class="dropdown-item" href="/Hms/Consultations/{{ procedure.id }}/Delete">Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

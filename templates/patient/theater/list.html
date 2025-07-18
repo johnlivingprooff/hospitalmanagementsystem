@@ -1,0 +1,34 @@
+{% extends "../details-base.html" %}
+
+{% block pageTitle %}{{ patient.fullname () | escape }}'s Theater Visit History{% endblock %}
+
+{% set useFluidContainer = true %}
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">{{ patient.fullname () | escape }}'s Theater Visit History</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Procedure</th>
+                    <th>Performed By</th>
+                    <th>Department</th>
+                    <th>Performed On</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for surgery in surgeries %}
+                <tr>
+                    <td>{{ surgery.procedureName | escape }}</td>
+                    <td>{{ surgery.performer | escape }}</td>
+                    <td>{{ surgery.department | escape }}</td>
+                    <td>{{ formatDate(surgery.createdAt, true) | escape }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

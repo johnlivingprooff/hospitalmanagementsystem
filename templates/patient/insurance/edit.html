@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ patient.fullname() | escape }}'s insurance details{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Patients/{{ patient.id }}/Insurance" class="nav-link">
+        <span class="fa fa-angle-left"></span> Back
+    </a>
+</li>
+{% endblock %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">{{ patient.fullname() | escape }}'s insurance details</h4>
+    <div class="card-body">
+        {{ openForm("/Hms/Patients/" ~ patient.id ~ "/Insurance/Update") }}
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("insurer", "Insurance Company", true) }}
+                    <input type="text"
+                           autocomplete="off"
+                           minlength="2"
+                           maxlength="100"
+                           value="{{ insurer|escape }}"
+                           name="insurer"
+                           id="insurer"
+                           class="form-control"
+                           placeholder="Insurance Company" required autofocus>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("membershipId", "Membership ID", true) }}
+                    <input type="text"
+                           minlength="2"
+                           maxlength="20"
+                           autocomplete="off"
+                           value="{{ membershipId|escape }}"
+                           name="membershipId"
+                           id="membershipId"
+                           class="form-control"
+                           placeholder="Membership ID" required autofocus>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("address", "Address", true) }}
+                    <input type="text"
+                           minlength="3"
+                           maxlength="200"
+                           autocomplete="off"
+                           value="{{ address|escape }}"
+                           name="address"
+                           id="address"
+                           class="form-control"
+                           placeholder="Address" required autofocus>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("phone", "Phone Number", true) }}
+                    <input type="tel"
+                           minlength="10"
+                           maxlength="30"
+                           autocomplete="off"
+                           value="{{ phone |escape }}"
+                           name="phone"
+                           id="phone"
+                           class="form-control"
+                           placeholder="Phone number" required autofocus>
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Update
+                </button>
+            </div>
+        </div>
+
+        {{ closeForm() }}
+    </div>
+</div>
+
+{% endblock %}

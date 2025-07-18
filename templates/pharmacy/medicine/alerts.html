@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Pharmacy Notification Settings{% endblock %}
+
+{% block menuBlock %}{% endblock %}
+
+{% block mainContent %}
+{% set canModify = "WriteMedicines" in userPermissions %}
+<div class="card-style card white">
+    <h4 class="box-title">Notification Settings</h4>
+    <div class="card-body">
+
+        <div class="alert alert-info" role="alert">
+            <h4></h4>
+            <p>The system will monitor medicine stock levels and expiration dates and send out notification emails every
+                24hrs.</p><p>Notifications for low stock levels will stop being sent when the stock level is either
+            above the configured threshold or completely goes down to zero. Notifications for expiring medicine will
+            stop being sent when the medicine is restocked or when its expiration date has passed.</p>
+        </div>
+
+        {% if canModify %}
+        {{ openForm("/Hms/Medicines/Alerts/Update") }}
+        {% endif %}
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("days", "Expiration date threshold", true) }}
+                    <input type="text"
+                           id="days"
+                           name="days"
+                           data-toggle="tooltip"
+                           {% if not canModify %} disabled="disabled" {% endif %}
+                           data-placement="top"
+                           title="Number of days before expiration to trigger alerts."
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="3"
+                           autofocus
+                           required
+                           value="{{ days | escape }}"
+                           placeholder="Days"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("notifyExpiration", "Send expiration alerts", true) }}
+                    {% if canModify %}
+                    {{ formDropDown(booleans, "notifyExpiration", "notifyExpiration", notifyExpiration) }}
+                    {% else %}
+                    <input class="form-control"
+                           id="notifyExpiration"
+                           type="text" value="{{ yesOrNo(notifyExpiration) }}"
+                           disabled="disabled">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("notifyStockLevel", "Send stock level alerts", true) }}
+                    {% if canModify %}
+                    {{ formDropDown(booleans, "notifyStockLevel", "notifyStockLevel", notifyStockLevel) }}
+                    {% else %}
+                    <input class="form-control"
+                           id="notifyStockLevel"
+                           type="text" value="{{ yesOrNo(notifyStockLevel) }}"
+                           disabled="disabled">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("notificationEmail", "Notification Email", true) }}
+                    <input type="email"
+                           id="notificationEmail"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Email address where to send alerts to."
+                           name="notificationEmail"
+                           autocomplete="off"
+                           minlength="3"
+                           maxlength="50"
+                           autofocus
+                           {% if not canModify %} disabled="disabled" {% endif %}
+                           required
+                           value="{{ notificationEmail | escape }}"
+                           placeholder="Email address"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        {% if canModify %}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Update
+                </button>
+            </div>
+        </div>
+
+        {{ closeForm() }}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

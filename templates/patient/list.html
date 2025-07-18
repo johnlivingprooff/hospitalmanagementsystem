@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% set useFluidContainer = true %}
+
+{% block pageTitle %}{{ listTitle | escape }}{% endblock %}
+{% set canModify = "WritePatients" in userPermissions %}
+{% set canReadNok = "ReadPatientNok" in userPermissions %}
+{% set canReadInsurance = "ReadPatientInsurance" in userPermissions %}
+{% set canReadLabTests = "VewPatientLabTests" in userPermissions %}
+{% set canReadAttachments = "ViewPatientAttachments" in userPermissions %}
+{% set canReadVitals = "ViewPatientVitals" in userPermissions %}
+{% set canReadBills = "ViewPatientBills" in userPermissions %}
+{% set canReadBirths = "ViewPatientBirths" in userPermissions %}
+{% set canReadDeathReport = "ReadPatientDeathReport" in userPermissions %}
+{% set canReadAdmissions = "ReadPatientAdmissions" in userPermissions %}
+{% set canReadPrescriptions = "ReadPatientPrescriptions" in userPermissions %}
+{% set canReadLabResults = "ViewPatientLabTests" in userPermissions %}
+{% set canReadDentalResults = "ReadPatientDentalResults" in userPermissions %}
+{% set canReadOperations = "ReadPatientOperations" in userPermissions %}
+{% set canReadAppointments = "ReadPatientAppointments" in userPermissions %}
+{% set canReadConsultations = "ReadPatientConsultations" in userPermissions %}
+
+{% set canViewAnything =
+    (canModify) or
+    (canReadInsurance) or
+    (canReadNok) or
+    (canReadLabTests) or
+    (canReadAttachments) or
+    (canReadVitals) or
+    (canReadBills) or
+    (canReadDeathReport) or
+    (canReadAdmissions) or
+    (canReadPrescriptions) or
+    (canReadLabResults) or
+    (canReadDentalResults) or
+    (canReadOperations) or
+    (canReadAppointments) or
+    (canReadConsultations)
+%}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">{{ listTitle | escape }}</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Sex</th>
+                    <th>D.O.B</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Blood Group</th>
+                    {% if canViewAnything %}
+                    <th>Options</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for patient in patients %}
+                <tr>
+                    <td>{{ patient.mrn | escape }}</td>
+                    <td>{{ patient.getFullName() | escape }}</td>
+                    <td>{{ patient.sex | escape }}</td>
+                    <td>{{ formatDate(patient.dob) | escape }}</td>
+                    <td>{{ patient.phone | escape }}</td>
+                    <td>{{ patient.address | escape }}</td>
+                    <td>{{ patient.bloodGroup.description | escape }}</td>
+                    {% if canViewAnything %}
+                    <td>
+                        <div class="btn-group">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">Options
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                {% if canModify %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/Edit">Edit</a>
+                                {% endif %}
+
+                                {% if canReadNok %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/Nok">Next Of Kin</a>
+                                {% endif %}
+
+                                {% if canReadInsurance %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/Insurance">Insurance Details</a>
+                                {% endif %}
+
+                                {% if canReadVitals %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/Vitals">Vitals</a>
+                                {% endif %}
+
+                                {% if canReadAttachments %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/Documents">Documents</a>
+                                {% endif %}
+
+                                {% if canReadLabResults %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/LabTests">Lab Test Results</a>
+                                {% endif %}
+
+                                {% if canReadBills %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/BillHistory">Bill History</a>
+                                {% endif %}
+
+                                {% if canReadBirths and patient.sex == "Female"  %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/Births">Birth Records</a>
+                                {% endif %}
+
+                                {% if canReadDeathReport  %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/Death">Death Report</a>
+                                {% endif %}
+
+                                {% if canReadAdmissions %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/Admissions">Admission History</a>
+                                {% endif %}
+
+                                {% if canReadPrescriptions %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/Prescriptions">Prescription History</a>
+                                {% endif %}
+
+                                {% if canReadDentalResults %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/Dental">Dental Visit History</a>
+                                {% endif %}
+
+                                {% if canReadOperations %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/Operations">Theater Visit History</a>
+                                {% endif %}
+
+                                {% if canReadAppointments %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/Appointments">Appointments</a>
+                                {% endif %}
+
+                                {% if canReadConsultations %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/Consultations">Consultation History</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

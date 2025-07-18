@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Reset Password{% endblock %}
+{% block loginText %}Type your login ID and an further instructions will be emailed to you{% endblock %}
+
+{% set formAction = '/Auth/GetResetLink' %}
+
+{% block input %}
+
+<div class="form-label-group">
+    <input type="text"
+           value="{{ loginId | escape }}"
+           name="loginId"
+           id="loginId"
+           data-toggle="tooltip"
+           data-placement="top"
+           title="Your login ID is your email address"
+           minlength="3"
+           maxlength="50"
+           class="form-control"
+           placeholder="Login ID" required autofocus>
+    <label for="loginId">Login ID</label>
+</div>
+
+{% endblock %}
+
+{% block buttons %}
+<button class="btn btn-lg btn-primary btn-block mb-4" type="submit">Get Reset Link</button>
+<div class="row">
+    <div class="col d-flex justify-content-center">
+        <a href="/">Back to login</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}System Reports{% endblock %}
+
+{% block mainContent %}
+<div class="row">
+    <div class="col-md-12">
+        <h1>System Reports</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>User Statistics</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <tr>
+                                <td>Total Users:</td>
+                                <td><strong>{{ stats.users.total }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Active Users:</td>
+                                <td><strong>{{ stats.users.active }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Inactive Users:</td>
+                                <td><strong>{{ stats.users.inactive }}</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Patient Statistics</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <tr>
+                                <td>Total Patients:</td>
+                                <td><strong>{{ stats.patients.total }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Active Patients:</td>
+                                <td><strong>{{ stats.patients.active }}</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Appointment Statistics</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <tr>
+                                <td>Total Appointments:</td>
+                                <td><strong>{{ stats.appointments.total }}</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

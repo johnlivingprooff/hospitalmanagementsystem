@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ parent() }} - Add Day{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Add schedule date</h4>
+    <div class="card-body">
+
+        {% if range %}
+            {{ openForm("/Hms/Schedules/SubmitRange") }}
+        {% else %}
+            {{ openForm("/Hms/Schedules/Submit") }}
+        {% endif %}
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("startDate", "Start Date", true) }}
+                    {{ dateSelector(true, "startDate", startDate) }}
+                </div>
+            </div>
+
+            {% if range %}
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("endDate", "End date", true) }}
+                    {{ dateSelector(true, "endDate", endDate) }}
+                </div>
+            </div>
+
+            {% endif %}
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("startTime", "Start time", true) }}
+                    {{ timeSelector(true, "startTime", startTime) }}
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("endTime", "End time", true) }}
+                    {{ timeSelector(true, "endTime", endTime) }}
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Submit
+                </button>
+            </div>
+        </div>
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}

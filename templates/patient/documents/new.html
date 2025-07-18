@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block menuBlock %}
+<li class="nav-item">
+    <a href="/Hms/Patients/{{ patient.id }}/Documents" class="nav-link">
+        <span class="fa fa-angle-left"></span> Back to documents
+    </a>
+</li>
+{% endblock %}
+
+{% block pageTitle %}Upload Patient Document{% endblock %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">Upload Patient Document</h4>
+    <div class="card-body">
+        {{ showInfoMessage('Patients will not be able to see documents marked as hidden.') }}
+        {{ openForm("/Hms/Patients/"~ patient.id ~"/Documents/Add", '', true) }}
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("name", "Document name", true) }}
+                    <input type="text"
+                           autocomplete="off"
+                           minlength="2"
+                           maxlength="100"
+                           value="{{ name|escape }}"
+                           name="name"
+                           id="name"
+                           class="form-control"
+                           placeholder="Document name" required autofocus>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    {{ labelFor("hidden", "Hidden from patient", true) }}
+                    {{ formDropDown(booleans, "hidden", "hidden", hidden) }}
+                </div>
+            </div>
+            <div class="col">
+                {{ labelFor("attachment", "Select file", true) }}
+                {{ filePicker(true, "attachment", "image/*, application/pdf, text/csv") }}
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Upload
+                </button>
+            </div>
+        </div>
+
+        {{ closeForm() }}
+    </div>
+</div>
+
+{% endblock %}

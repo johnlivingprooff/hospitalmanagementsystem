@@ -1,0 +1,93 @@
+{% extends "../base.html" %}
+
+{% block pageTitle %}System Settings{% endblock %}
+
+{% block mainContent %}
+
+<div class="container mx-auto">
+    <h5 class="section-title my-4">Website logo</h5>
+    <p class="lead">The logo appears on the login page and top-left corner of the navigation bar</p>
+    <div class="form-row my-4">
+        <div class="col-4">
+            <div class="form-group">
+                <img src="/GetWebsiteLogo"
+                     id="logoPreview"
+                     class="image-preview">
+            </div>
+        </div>
+    </div>
+
+    {% if canModify %}
+
+    {{ openForm("/Hms/SystemSettings/UpdateLogo", "", true) }}
+
+    <input id="logo"
+           onchange="logoPreview.src = window.URL.createObjectURL(this.files[0])"
+           name="logo"
+           style="display: none"
+           type="file"
+           accept=".jpeg, .jpg, .png" />
+
+    <div class="form-row my-1">
+        <div class="col-1">
+            <div class="form-group">
+                <div class="col-2">
+                    <a href="javascript:;"
+                       onclick="$(logo).click()"
+                       class="btn btn-primary">Select...</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-1">
+            <div class="form-group">
+                <div class="col-2">
+                    <button class="btn btn-success"><i class="fa fa-upload"></i>
+                        Upload
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ closeForm() }}
+
+    {% endif %}
+
+     {% if canModify %} {{ openForm("/Hms/SystemSettings/UpdateBanner", "", true) }} {% endif %}
+
+    <h5 class="section-title my-4">Website banner</h5>
+    <p class="lead">The banner appears next to the logo and on the login page</p>
+    <div class="form-row">
+        <div class="col-6">
+            <div class="form-group">
+                {% if canModify %}
+                <input type="text"
+                       minlength="1"
+                       maxlength="37"
+                       autocomplete="off"
+                       value="{{ banner|escape }}"
+                       name="banner"
+                       id="banner"
+                       class="form-control"
+                       placeholder="Banner" required autofocus>
+                {% else %}
+                    <span class="h5">{{ banner | escape }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if canModify %}
+    <div class="form-row mt-1">
+        <div class="col-4">
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Update banner</button>
+            </div>
+        </div>
+    </div>
+
+    {{ closeForm() }}
+    {% endif %}
+</div>
+
+{% endblock %}

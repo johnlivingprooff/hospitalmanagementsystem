@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Patient Vitals{% endblock %}
+
+{% set useFluidContainer = true %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">{{ patient.fullname() | escape }}'s Vitals</h4>
+    <div class="card-body">
+        {{ showInfoMessage('Recently recorded vitals are displayed first.') }}
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Heart Rate</th>
+                    <th>Respiratory Rate</th>
+                    <th>Body Temperature</th>
+                    <th>Blood Pressure</th>
+                    <th>Recorded On</th>
+                    <th>Recorded By</th>
+                    <th>Recorded From</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for vital in vitals %}
+                <tr>
+                    <td data-order="{{ vital.pulse | escape }}">{{ vital.pulse | escape }} bpm</td>
+                    <td data-order="{{ vital.breaths | escape }}">{{ vital.breaths | escape }} BPM</td>
+                    <td data-order="{{ vital.temperature }}">{{ vital.temperature | escape }}  {{ vital.tempUnits.symbol | escape }}</td>
+                    <td data-order="{{ vital.systolic }}/{{ vital.diastolic }}">{{ vital.systolic | escape }}/{{ vital.diastolic | escape }} mmHg</td>
+                    <td data-order="{{ ldt2t(vital.created) }}">{{ formatDate(vital.created, true) | escape }}</td>
+                    <td>{{ vital.examiner | escape }}</td>
+                    <td>{{ vital.type.description | escape }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

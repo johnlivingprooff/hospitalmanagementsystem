@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ parent() }} Nurses{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Nurses</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Department</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for nurse in nurses %}
+                <tr>
+                    <td>{{ nurse.fullname() | escape }}</td>
+                    <td>{{ nurse.department | escape }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

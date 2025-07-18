@@ -1,0 +1,67 @@
+{% extends "../details-base.html" %}
+
+{% block pageTitle %}{{ patient.fullname() }}'s {{ type | escape }} Appointments{% endblock %}
+
+{% block menuBlock %}
+
+{% if account.isPatient() == false %}
+
+{{ parent() }}
+
+<li class="nav-item">
+    <a href="/Hms/Patients/{{ patient.id | escape }}/Appointments" class="nav-link">Active Appointments</a>
+</li>
+
+<li class="nav-item">
+    <a href="/Hms/Patients/{{ patient.id | escape }}/Appointments/Cancelled" class="nav-link">Cancelled Appointments</a>
+</li>
+
+<li class="nav-item">
+    <a href="/Hms/Patients/{{ patient.id | escape }}/Appointments/Completed" class="nav-link">Completed Appointments</a>
+</li>
+
+{% endif %}
+
+{% endblock %}
+
+{% set useFluidContainer = true %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">{{ patient.fullname() }}'s {{ type | escape }} Appointments</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Scheduled For</th>
+                    <th>Booked On</th>
+                    <th>Booked By</th>
+                    {% if cancelled %}
+                    <th>Reason for Cancelling</th>
+                    {% endif %}
+                    <th>Doctor</th>
+                    <th>Department</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for appointment in appointments %}
+                <tr>
+                    <td data-order="{{ ldt2t(appointment.startTime) }}">{{ appointment | escape }}</td>
+                    <td data-order="{{ ldt2t(appointment.createdAt) }}">
+                        {{ formatDate(appointment.createdAt, true) }}
+                    </td>
+                    <td>{{ appointment.receptionistName | escape }}</td>
+                    {% if cancelled %}
+                    <td>{{ appointment.cancelReason | escape }}</td>
+                    {% endif %}
+                    <td>{{ appointment.doctorName | escape }}</td>
+                    <td>{{ appointment.department | escape }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

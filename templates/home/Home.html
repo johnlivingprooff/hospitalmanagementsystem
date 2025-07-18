@@ -1,0 +1,12 @@
+{% extends "../base.html" %}
+
+
+{% block mainContent %}
+
+{% if account.isPatient() %}
+
+{% include "../patient/dashboard.html" %}
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ patient.fullname() | escape }}'s Prescription History{% endblock %}
+
+{% set useFluidContainer = true %}
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">{{ patient.fullname() | escape }}'s Prescription History</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Medicine Types</th>
+                    <th>Filed By</th>
+                    <th>Filed On</th>
+                    <th>Dispensed By</th>
+                    <th>Dispensed On</th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for prescription in prescriptions %}
+                <tr>
+                    <td>{{ "%,d" | format(prescription.drugs) | escape }}</td>
+                    <td>{{ prescription.filedBy | escape }}</td>
+                    <td>{{ formatDate(prescription.createdAt, true) | escape }}</td>
+                    <td>{{ prescription.updatedBy | escape }}</td>
+                    <td>{{ formatDate(prescription.updatedAt, true) | escape }}</td>
+                    <td>
+                        <a href="/Hms/Patients/{{ patient.id }}/Prescriptions/{{ prescription.id }}/Details">Details</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <style>
+    body {
+      background-color: #f1f2f2;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 3px; border: 1px solid #d5d3c9;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+      padding: 16px; margin: 8px;
+    }
+    .table {
+      display: table;
+      width: 100%;
+    }
+    .row {
+      display: table-row;
+    }
+                  .item {
+                    background-color: rgba(213, 211, 201, 0.15);
+                    border-left: 1px solid #ddd;
+                    border-right: 1px solid #ddd;
+                    display: block;
+                    padding-top: 8px;
+                    padding-bottom: 8px;
+                    border-bottom: 1px dashed #ddd;
+                    border-radius: 0px;
+                  }
+                  .item:nth-child(even){
+                    background-color: rgba(213, 211, 201, 0.065);
+                  }
+                  .item:first-child {
+                    border-top: 1px solid #ddd;
+                    border-top-left-radius: 3px !important;
+                    border-top-right-radius: 3px !important;
+                  }
+                  .item:last-child {
+                    border-bottom: 1px solid #ddd !important;
+                    border-bottom-left-radius: 3px;
+                    border-bottom-right-radius: 3px;
+                  }
+                  .item:last-child:not(:first-child){
+                    border-top: none;
+                  }
+                  .item:ntn-item(n) {
+                    border-top: none;
+                  }
+    .col {
+      display: table-cell;
+      text-align: left;
+      padding-right: 16px;
+    }
+  .col:nth-child(1) {
+    text-align: right;
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <p>Hello there,</p>
+    <p>The following items in your pharmacy are running low or are completely out of stock. Please make any
+        necessary adjustments.</p>
+    <div class="table">
+        {% for medicine in medicines %}
+        <div class="item row">
+            <div class="row">
+                <div class="col"><strong>Medicine</strong></div>
+                <div class="col">{{ medicine.name | escape }} ({{ medicine.genericName | escape }})</div>
+            </div>
+            <div class="row">
+                <div class="col"><strong>Category</strong></div>
+                <div class="col">{{ medicine.categoryName | escape }}</div>
+            </div>
+            <div class="row">
+                <div class="col"><strong>Location</strong></div>
+                <div class="col">{{ medicine.locationName | escape }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col"><strong>Quantity</strong></div>
+                <div class="col">{{ "%,d" | format(medicine.quantity) | escape }}</div>
+            </div>
+            <div class="row">
+                <div class="col"><strong>Last Updated</strong></div>
+                <div class="col">{{ formatDate(medicine.updated, true) | escape }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <p>This is an automated email. Do not reply to this address.</p>
+    </div>
+</div>
+</body>
+</html>

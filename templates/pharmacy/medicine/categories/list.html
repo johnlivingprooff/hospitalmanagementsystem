@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Medicine Categories{% endblock %}
+
+{% block mainContent %}
+{% set canModify = "WriteMedicineCategories" in userPermissions %}
+<div class="card-style card white">
+    <h4 class="box-title">Medicine Categories</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Category</th>
+                    {% if canModify %}
+                    <th width="15%">Options</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for category in categories %}
+                <tr>
+                    <td>{{ category.name | escape }}</td>
+                    {% if canModify %}
+                    <td>
+                        <div class="btn-group">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">Options
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="/Hms/MedicineCategories/{{ category.id }}/Edit">Edit</a>
+                                <a class="dropdown-item" href="/Hms/MedicineCategories/{{ category.id }}/Delete">Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

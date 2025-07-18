@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Add Dental Procedure{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">New Dental Procedure</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/Dentistry/Procedures/Add") }}
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("name", "Name of Procedure", true) }}
+                    <input type="text"
+                           id="name"
+                           name="name"
+                           autocomplete="off"
+                           minlength="2"
+                           maxlength="255"
+                           autofocus
+                           required
+                           value="{{ name | escape }}"
+                           placeholder="Name"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    {{ labelFor("cost", "Cost of Procedure", true) }}
+                    <input type="text"
+                           id="cost"
+                           name="cost"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="11"
+                           autofocus
+                           required
+                           value="{{ cost | escape }}"
+                           placeholder="Cost"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Add Procedure
+                </button>
+            </div>
+        </div>
+
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}

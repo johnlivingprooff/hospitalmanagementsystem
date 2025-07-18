@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}System Administrator Information{% endblock %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">System Administrator Information</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/System/Administrator/Update") }}
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("email", "Email Address", true) }}
+                    <input type="text"
+                           minlength="3"
+                           maxlength="50"
+                           value="{{ email | escape }}"
+                           autocomplete="off"
+                           name="email"
+                           id="email"
+                           class="form-control" required autofocus>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("firstName", "First name", true) }}
+                    <input type="text"
+                           minlength="2"
+                           maxlength="50"
+                           value="{{ firstName | escape }}"
+                           autocomplete="off"
+                           placeholder="First name"
+                           name="firstName"
+                           id="firstName"
+                           class="form-control" required autofocus>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("lastName", "Last name", true) }}
+                    <input type="text"
+                           minlength="2"
+                           maxlength="50"
+                           placeholder="Last name"
+                           value="{{ lastName | escape }}"
+                           autocomplete="off"
+                           name="lastName"
+                           id="lastName"
+                           class="form-control" required autofocus>
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary float-right">
+                    Save
+                </button>
+            </div>
+        </div>
+
+        {{ closeForm() }}
+    </div>
+</div>
+
+{% endblock %}

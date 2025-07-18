@@ -1,0 +1,61 @@
+{% extends "../../base.html" %}
+
+{% block pageTitle %}Admission Rates{% endblock %}
+
+{% block menuBlock %}{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Admission Rates</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/Admissions/Rates/Update") }}
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("shortStay", "Short Stay Rate (Hourly)", true) }}
+                    <input type="text"
+                           id="shortStay"
+                           name="shortStay"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="10"
+                           autofocus
+                           required
+                           value="{{ shortStay | escape }}"
+                           placeholder="Short stay rate"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("fullAdmission","Full Admission Rate (Nightly)", true) }}
+                    <input type="text"
+                           id="fullAdmission"
+                           name="fullAdmission"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="10"
+                           autofocus
+                           required
+                           value="{{ fullAdmission | escape }}"
+                           placeholder="Full admission rate"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Update
+                </button>
+            </div>
+        </div>
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block errorTitle %} 403 Forbidden {% endblock %}
+
+{% block errorCode %} Access Denied {% endblock %}
+
+{% block errorMessage %}You are not allowed to access this page or resource. Contact your system administrator or <a href="/Auth/Logout">Logout</a>{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "../base.html" %}
+
+{% block headerStyles %}
+
+.pointer-cursor {
+    cursor: pointer !important;
+}
+
+{% endblock %}
+
+{% block menuBlock %}
+    {{ protectedNavLink('/Hms/AuditLogs', 'Audit Logs', 'ReadAuditLogs', userPermissions) }}
+
+    {{ protectedNavLink('/Hms/AuditLogs/ArchivedLogs', 'Archived Audit Logs', 'ReadAuditLogs', userPermissions) }}
+{% endblock %}

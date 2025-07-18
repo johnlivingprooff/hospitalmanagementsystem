@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Edit Medicine{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Updated Medicine</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/Medicines/Update") }}
+
+        <input type="hidden" name="id" value="{{ id }}">
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("name", "Name", true) }}
+                    <input type="text"
+                           id="name"
+                           name="name"
+                           autocomplete="off"
+                           minlength="2"
+                           maxlength="50"
+                           autofocus
+                           required
+                           value="{{ name | escape }}"
+                           placeholder="Name"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("genericName", "Generic Name", true) }}
+                    <input type="text"
+                           id="genericName"
+                           name="genericName"
+                           autocomplete="off"
+                           minlength="2"
+                           maxlength="50"
+                           autofocus
+                           required
+                           value="{{ genericName | escape }}"
+                           placeholder="Generic name"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("category", "Category", true) }}
+                    {{ formDropDown(categories, "category", "category", category) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("purchasePrice", "Purchase Price", true) }}
+                    <input type="text"
+                           id="purchasePrice"
+                           name="purchasePrice"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="12"
+                           autofocus
+                           required
+                           value="{{ purchasePrice | escape }}"
+                           placeholder="Purchase price"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("sellingPrice", "Selling Price", true) }}
+                    <input type="text"
+                           id="sellingPrice"
+                           name="sellingPrice"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="12"
+                           autofocus
+                           required
+                           value="{{ sellingPrice | escape }}"
+                           placeholder="Selling price"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("quantity", "Quantity", true) }}
+                    <input type="text"
+                           id="quantity"
+                           name="quantity"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="12"
+                           autofocus
+                           required
+                           value="{{ quantity | escape }}"
+                           placeholder="Quantity"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("location", "Location", true) }}
+                    {{ formDropDown(locations, "location", "location", location) }}
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    {{ labelFor("threshold", "Low Stock Threshold", true) }}
+                    <input type="text"
+                           id="threshold"
+                           name="threshold"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="12"
+                           autofocus
+                           required
+                           value="{{ threshold | escape }}"
+                           placeholder="Low Stock Threshold"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    {{ labelFor("expires", "Expiry Date", true) }}
+                    <input type="date"
+                           id="expires"
+                           name="expires"
+                           autocomplete="off"
+                           autofocus
+                           required
+                           value="{{ expires | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Update Medicine
+                </button>
+            </div>
+        </div>
+
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}

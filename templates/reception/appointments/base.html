@@ -1,0 +1,11 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+{{ protectedNavLink('/Hms/Reception/Appointments', 'Active Appointments', 'AccessReception', userPermissions) }}
+{{ protectedNavLink('/Hms/Reception/Appointments/Completed', 'Completed Appointments', 'AccessReception', userPermissions) }}
+{{ protectedNavLink('/Hms/Reception/Appointments/Cancelled', 'Cancelled Appointment', 'AccessReception', userPermissions) }}
+
+{{ protectedNavLink('/Hms/Reception/Appointments/New', 'New Appointment', 'AccessReception', userPermissions, 'ml-auto') }}
+
+{% endblock %}

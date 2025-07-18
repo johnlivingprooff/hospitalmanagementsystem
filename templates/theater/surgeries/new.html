@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Upload Surgery Results{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Theater/Surgeries"
+       class="nav-link"><i class="fa fa-chevron-left"></i> Back</a>
+</li>
+
+{% endblock %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">Upload Surgery Results</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/Theater/Surgeries/Add", '', true) }}
+
+        <div class="form-row">
+            <div class="col-3">
+                <div class="form-group">
+                    {{ labelFor("mrn", "Patient ID", true) }}
+                    <input type="text"
+                           id="mrn"
+                           name="mrn"
+                           autocomplete="off"
+                           minlength="5"
+                           maxlength="20"
+                           autofocus
+                           required
+                           value="{{ mrn | escape }}"
+                           placeholder="Patient ID"
+                           class="form-control">
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("procedureId", "Procedure Performed", true) }}
+                    {{ formDropDown(procedures, "procedureId", "procedureId", procedureId) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("notes", "Notes", true) }}
+                    <textarea
+                            id="notes"
+                            name="notes"
+                            autocomplete="off"
+                            minlength="2"
+                            maxlength="2048"
+                            autofocus
+                            required
+                            rows="6"
+                            placeholder="Notes"
+                            class="form-control">{{ notes | escape }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("attachment", "Additional attachment") }}
+                    <input id="attachment"
+                           type="file"
+                           accept="application/pdf, image/*"
+                           name="attachment"
+                           autocomplete="off"
+                           autofocus
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Save
+                </button>
+            </div>
+        </div>
+
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}

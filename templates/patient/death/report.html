@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Patient Death Report{% endblock %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">{{ patient.fullname() | escape }}'s Death Report</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Date of Death</th>
+                    <th>Reported On</th>
+                    <th>Reported By</th>
+                    <th>Attachment</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if report %}
+                <tr>
+                    <td data-order="{{ ldt2t(report.dod) }}">{{ formatDate(report.dod, true) | escape }}</td>
+                    <td data-order="{{ ldt2t(report.createdAt) }}">{{ formatDate(report.createdAt, true) | escape }}</td>
+                    <td>{{ report.reporter | escape }}</td>
+                    <td><a href="/Hms/Patients/{{ patient.id }}/Death/Download">Download</a></td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

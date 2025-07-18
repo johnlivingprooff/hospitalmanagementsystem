@@ -1,0 +1,16 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Patients/{{ patient.type | escape }}"
+       class="nav-link"><i class="fa fa-chevron-left"></i> Back to patients</a>
+</li>
+
+{% if patient.status != "Expired" %}
+
+{{ protectedNavLink('/Hms/Patients/' ~ patient.id ~ '/Death/Record', 'Add Death Report', 'WritePatientDeathReport', userPermissions, 'ml-auto') }}
+
+{% endif %}
+
+{% endblock %}

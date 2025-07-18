@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ patient.fullname() | escape }}' Admission History{% endblock %}
+
+{% set useFluidContainer = true %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">{{ patient.fullname() | escape }}' Admission History</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Ward</th>
+                    <th>Bed</th>
+                    <th>Admission Date</th>
+                    <th>Status</th>
+                    <th>Termination Date</th>
+                    <th>Admission Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for admission in admissions %}
+                <tr>
+                    <td>{{ admission.wardCode | escape }} ({{ admission.wardName | escape }})</td>
+                    <td>{{ admission.bed | escape }}</td>
+                    <td>{{ formatDate(admission.createdAt, true) | escape }}</td>
+                    <td>{{ admission.status | escape }}</td>
+                    <td>{{ formatDate(admission.dischargedAt, true) | escape }}</td>
+                    <td>{{ admission.admissionType.description | escape }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

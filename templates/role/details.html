@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ parent() }} - {{ role.roleName | escape }}{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Roles" class="nav-link">
+        <span class="fa fa-angle-left"></span> Back to System Roles
+    </a>
+</li>
+
+{% if role.systemRole != true %}
+
+{{
+    protectedNavLink(
+        '/Hms/Roles/' ~ role.id ~ '/Permissions',
+        'Manage Role Permissions',
+        'WriteRoles',
+        userPermissions,
+        'ml-auto'
+    )
+}}
+
+{% endif %}
+
+{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">{{ role.roleName | escape }}</h4>
+    <div class="card-body">
+        {# The message function automatically escapes strings #}
+        {{ showInfoMessage(role.roleDescription) }}
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Permission Name</th>
+                    <th>Permission Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for permission in rolePermissions %}
+                <tr>
+                    <td>{{ permission.permissionName | escape }}</td>
+                    <td>{{ permission.permissionDescription | escape }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

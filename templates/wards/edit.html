@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Edit Ward{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Edit Ward</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/Wards/Update") }}
+
+        <input name="id" value="{{ id }}" type="hidden"/>
+
+        <div class="form-row">
+            <div class="col-2">
+                <div class="form-group">
+                    {{ labelFor("code", "Code", true) }}
+                    <input type="text"
+                           id="code"
+                           name="code"
+                           autocomplete="off"
+                           minlength="2"
+                           maxlength="10"
+                           autofocus
+                           required
+                           value="{{ code | escape }}"
+                           placeholder="Code"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("name", "Ward Name", true) }}
+                    <input type="text"
+                           id="name"
+                           name="name"
+                           autocomplete="off"
+                           minlength="2"
+                           maxlength="100"
+                           autofocus
+                           required
+                           value="{{ name | escape }}"
+                           placeholder="Ward name"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    {{ labelFor("active", "Active", true) }}
+                    {{ formDropDown(booleans, "active", "active", active) }}
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Update Ward
+                </button>
+            </div>
+        </div>
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}

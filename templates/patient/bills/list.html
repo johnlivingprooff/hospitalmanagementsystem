@@ -1,0 +1,63 @@
+{% extends "../base.html" %}
+
+{% block pageTitle %}Patient Bills{% endblock %}
+
+{% block menuBlock %}
+    {% if account.isPatient() == false %}
+    <li class="nav-item">
+        <a href="{{ returnUrl | escape }}"
+           class="nav-link"><i class="fa fa-chevron-left"></i> Back to patients</a>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% set useFluidContainer = true %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">{{ patient.fullname() | escape }}'s Bills</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Balance</th>
+                    <th>Paid</th>
+                    <th>Bill Type</th>
+                    <th>Billed On</th>
+                    <th>Bill Status</th>
+                    <th>Last Payment On</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set balance = 0 %}
+                {% set paid = 0 %}
+                {% for bill in bills %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ formatCurrency(bill.balance) | escape }}</td>
+                    <td>{{ formatCurrency(bill.paid) | escape }}</td>
+                    <td>{{ bill.billType | escape }}</td>
+                    <td>{{ formatDate(bill.createdAt, true) | escape }}</td>
+                    <td>{{ bill.status.description | escape }}</td>
+                    <td>{{ formatDate(bill.updatedAt, true) | escape }}</td>
+                </tr>
+                {% set balance = balance + bill.balance %}
+                {% set paid = paid + bill.paid %}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th>{{ formatCurrency(balance) }}</th>
+                    <th>{{ formatCurrency(paid) }}</th>
+                    <th colspan="4">&nbsp;</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Consultation Results{% endblock %}
+
+{% set useFluidContainer = true %}
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Consultation Results</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Consultation</th>
+                    <th>Consultant</th>
+                    <th>Department</th>
+                    <th>Performed On</th>
+                    <th>Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.patientMrn | escape }}</td>
+                    <td>{{ result.patientName | escape }}</td>
+                    <td>{{ result.procedureName | escape }}</td>
+                    <td>{{ result.performer | escape }}</td>
+                    <td>{{ result.department | escape }}</td>
+                    <td>{{ formatDate(result.createdAt, true) | escape }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">Options
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="/Hms/Consultations/Results/{{ result.id }}/Details">Details</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

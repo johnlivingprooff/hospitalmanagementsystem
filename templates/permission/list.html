@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}System Permissions{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">System Permissions</h4>
+    <div class="card-body">
+        {{ showInfoMessage('Permissions are the main key to accessing functions on the system. Each <a href="/Hms/Roles">role</a> contains a list of these permissions, which effectively grant that role system rights to perform corresponding actions.') }}
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Permission Name</th>
+                    <th>Permission Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for permission in permissions %}
+                <tr>
+                    <td>{{ permission.permissionName | escape }}</td>
+                    <td>{{ permission.permissionDescription | escape }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footerScripts %}
+
+{{ parent() }}
+
+<script>
+
+$(function () {
+    window.expandContentContainer();
+})
+
+</script>
+
+{% endblock %}

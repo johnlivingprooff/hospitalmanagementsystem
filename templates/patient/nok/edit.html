@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ patient.fullname() | escape }}'s next of kin{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Patients/{{ patient.id }}/Nok" class="nav-link">
+        <span class="fa fa-angle-left"></span> Back
+    </a>
+</li>
+{% endblock %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">{{ patient.fullname() | escape }}'s next of kin</h4>
+    <div class="card-body">
+        {{ openForm("/Hms/Patients/" ~ patient.id ~ "/Nok/Update") }}
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("firstName", "First name", true) }}
+                    <input type="text"
+                           autocomplete="off"
+                           minlength="2"
+                           maxlength="50"
+                           value="{{ firstName|escape }}"
+                           name="firstName"
+                           id="firstName"
+                           class="form-control"
+                           placeholder="First name" required autofocus>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("lastName", "Last name", true) }}
+                    <input type="text"
+                           minlength="2"
+                           maxlength="50"
+                           autocomplete="off"
+                           value="{{ lastName|escape }}"
+                           name="lastName"
+                           id="lastName"
+                           class="form-control"
+                           placeholder="Last name" required autofocus>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("relationship", "Relationship", true) }}
+                    {{ formDropDown(relationships, "relationship", "relationship", relationship) }}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("address", "Address", true) }}
+                    <input type="text"
+                           minlength="3"
+                           maxlength="200"
+                           autocomplete="off"
+                           value="{{ address|escape }}"
+                           name="address"
+                           id="address"
+                           class="form-control"
+                           placeholder="Address" required autofocus>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("phone1", "Primary Phone Number", true) }}
+                    <input type="tel"
+                           minlength="10"
+                           maxlength="30"
+                           autocomplete="off"
+                           value="{{ phone1 |escape }}"
+                           name="phone1"
+                           id="phone1"
+                           class="form-control"
+                           placeholder="Primary phone number" required autofocus>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("phone2", "Secondary Phone Number") }}
+                    <input type="tel"
+                           minlength="10"
+                           maxlength="30"
+                           autocomplete="off"
+                           value="{{ phone2 |escape }}"
+                           name="phone2"
+                           id="phone2"
+                           class="form-control"
+                           placeholder="Secondary phone number" autofocus>
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Update
+                </button>
+            </div>
+        </div>
+
+        {{ closeForm() }}
+    </div>
+</div>
+
+{% endblock %}

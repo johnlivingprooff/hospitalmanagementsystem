@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Pay Bill{% endblock %}
+
+{% block mainContent %}
+
+{% include 'details.html' %}
+
+<div class="card-style card white">
+    <h4 class="box-title">Insurance Details</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Insurance Company</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Membership ID</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ insurance.insurer | escape }}</td>
+                    <td>{{ insurance.address | escape }}</td>
+                    <td>{{ insurance.phone | escape }}</td>
+                    <td>{{ insurance.membershipId | escape }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card-style card white">
+    <h4 class="box-title">Process Insurance Payment</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/Billing/"~info.id~"/Bills/" ~ bill.id ~ "/ProcessInsurancePayment") }}
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("amount", "Amount", true) }}
+                    {{ inputText(true, "amount", amount, {'min':1, 'max':12, 'autocomplete': 'off', 'hint':'Amount' }) }}
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Submit
+                </button>
+            </div>
+        </div>
+
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}

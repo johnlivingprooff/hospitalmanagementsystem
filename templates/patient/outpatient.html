@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% set useFluidContainer = true %}
+
+{% block pageTitle %}Outpatient Patient Details{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">{{ listTitle | escape }}</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Sex</th>
+                    <th>Status</th>
+                    <th>Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for patient in patients %}
+                <tr>
+                    <td>{{ patient.mrn | escape }}</td>
+                    <td>{{ patient.getFullName() | escape }}</td>
+                    <td>{{ patient.sex | escape }}</td>
+                    <td>{{ patient.status.description | escape }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">Options
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item"
+                                   href="/Hms/Patient/{{ patient.id }}/Edit">Edit</a>
+                                <a class="dropdown-item"
+                                   href="/Hms/Patient/{{ patient.id }}/Contacts">Contact Information</a>
+                                <a class="dropdown-item"
+                                   href="/Hms/Patient/{{ patient.id }}/Noks">Next Of Kin</a>
+                                <a class="dropdown-item"
+                                   href="/Hms/Patient/{{ patient.id }}/Vitals">Vitals</a>
+                                <a class="dropdown-item"
+                                   href="/Hms/Patient/{{ patient.id }}/Biometrics">Biometrics</a>
+                                <a class="dropdown-item"
+                                   href="/Hms/Patient/{{ patient.id }}/Allergies">Allergies</a>
+                                <a class="dropdown-item"
+                                   href="/Hms/Patient/{{ patient.id }}/Attachments">Attachments</a>
+                                <a class="dropdown-item"
+                                   href="/Hms/Patient/{{ patient.id }}/LabTests">Lab Tests Results</a>
+                                <a class="dropdown-item"
+                                   href="/Hms/Patient/{{ patient.id }}/Visits">Visit History</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footerScripts %}
+
+{{ parent() }}
+
+<script>
+
+$(function () {
+    window.expandContentContainer();
+})
+
+</script>
+
+{% endblock %}

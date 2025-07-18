@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Login{% endblock %}
+{% block loginText %}Sign-in to get started.{% endblock %}
+
+{% set formAction = '/Auth/Login' %}
+
+{% block input %}
+
+<div class="form-label-group">
+    <input type="text"
+           value="{{ email | escape }}"
+           name="email"
+           id="email"
+           minlength="3"
+           maxlength="50"
+           class="form-control"
+           placeholder="Username" required autofocus>
+    <label for="email">Email address</label>
+</div>
+
+<div class="form-label-group">
+    <input type="password"
+           name="password"
+           minlength="8"
+           maxlength="15"
+           id="inputPassword"
+           class="form-control"
+           placeholder="Password" required>
+    <label for="inputPassword">Password</label>
+</div>
+
+<div class="row">
+    <div class="col">
+        {# {{ labelFor("portal", "Portal") }} #}
+        {{ formDropDown(portals, "portal", "portal", portal, ' form-control-lg mb-2', 'Select Portal') }}
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block buttons %}
+
+<div class="btn-group" style="display: flex">
+    <button type="submit" class="btn btn-lg btn-primary" style="flex: 1">Sign In</button>
+    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false">
+        <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="/Auth/ResetPassword">Reset Password</a>
+    </div>
+</div>
+
+{% endblock %}

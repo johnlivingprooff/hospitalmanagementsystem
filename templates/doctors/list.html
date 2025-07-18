@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ parent() }} Doctors{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Doctors</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for doctor in doctors %}
+                <tr>
+                    <td>{{ doctor.fullname() | escape }}</td>
+                    <td>{{ doctor.department | escape }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">Options
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="/Hms/Doctors/{{ doctor.id }}/Schedule">View Schedule</a>
+                                <a class="dropdown-item" href="/Hms/Doctors/{{ doctor.id }}/Appointments">Appointments</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

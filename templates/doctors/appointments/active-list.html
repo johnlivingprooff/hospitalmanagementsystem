@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ listTitle | escape }}{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Doctors"
+       class="nav-link"><i class="fa fa-chevron-left"></i> Back to Doctors</a>
+</li>
+
+{% endblock %}
+
+{% set useFluidContainer = true %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">{{ listTitle | escape }}</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Scheduled For</th>
+                    <th>Booked On</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for appointment in appointments %}
+                <tr>
+                    <td>{{ appointment.patientMrn | escape }}</td>
+                    <td>{{ appointment.patientName | escape }}</td>
+                    <td data-order="{{ ldt2t(appointment.startTime) }}">{{ appointment | escape }}</td>
+                    <td data-order="{{ ldt2t(appointment.createdAt) }}">
+                        {{ formatDate(appointment.createdAt, true) }}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

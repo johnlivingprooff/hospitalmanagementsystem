@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}New Admission{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Admissions"
+       class="nav-link"><i class="fa fa-chevron-left"></i> Back to admissions</a>
+</li>
+
+{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">New Admission</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/Admissions/Add", '', true) }}
+
+        <div class="form-row">
+            <div class="col-3">
+                <div class="form-group">
+                    {{ labelFor("mrn", "Patient ID", true) }}
+                    <input type="text"
+                           id="mrn"
+                           name="mrn"
+                           autocomplete="off"
+                           minlength="5"
+                           maxlength="20"
+                           autofocus
+                           required
+                           value="{{ mrn | escape }}"
+                           placeholder="Patient ID"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("admissionDate", "Date of Admission", true) }}
+                    <input type="date"
+                           id="admissionDate"
+                           name="admissionDate"
+                           autofocus
+                           required
+                           value="{{ admissionDate | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("admissionTime", "Time of Admission", true) }}
+                    <input type="time"
+                           id="admissionTime"
+                           name="admissionTime"
+                           autofocus
+                           required
+                           value="{{ admissionTime | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("admissionType", "Admission Type", true) }}
+                    {{ formDropDown(admissionTypes, "admissionType", "admissionType", admissionType) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("wardId", "Ward", true) }}
+                    {{ formDropDown(wards, "wardId", "wardId", wardId) }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("bedId", "Bed", true) }}
+                    {{ formDropDown(beds, "bedId", "bedId", bedId) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("reason", "Reason for Admission", true) }}
+                    <textarea
+                            id="reason"
+                            name="reason"
+                            autocomplete="off"
+                            minlength="2"
+                            maxlength="500"
+                            autofocus
+                            required
+                            placeholder="Reason for admission"
+                            class="form-control">{{ reason | escape }}</textarea>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("attachment", "Additional attachment") }}
+                    <input id="attachment"
+                           type="file"
+                           accept="application/pdf, image/*"
+                           name="attachment"
+                           autocomplete="off"
+                           autofocus
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Save
+                </button>
+            </div>
+        </div>
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}
+
+{% block footerScripts %}
+{{ parent() }}
+<script>
+    $(function () {
+        function escapeHtml(html) {
+            return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+        $("#wardId").on('change', function(e){
+            var ward = e.target.value || null;
+            if(ward != null){
+                $.getJSON("/Hms/Admissions/GetVacantBeds/" + ward, function(data){
+                    // Remove old items
+                    $("#bedId :not(option[class='default-option'])").remove();
+                    var nameList = $("#bedId");
+                    var count = 0;
+                    // add new ones
+                    $.each(data, function(key, value){
+                        count++;
+                        $('<option data-index='+key+' data-user="yes">').val(value.id)
+                            .text(escapeHtml(value.label))
+                            .appendTo(nameList);
+                    });
+                    if(data.length > 0){
+                        $("#bedId option[data-index=0]").prop('selected', true);
+                    }else{
+                        $("#bedId option[data-default=true]").prop('selected', true);
+                    }
+                }).fail(function(){
+                    // Show dialog box
+                    alert('There was an error when fetching data. Refresh the page or try logging in again.');
+                })
+            }
+        });
+    })
+</script>
+
+{% endblock %}

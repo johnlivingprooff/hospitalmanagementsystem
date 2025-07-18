@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const db = require('./database');
+const routes = require('./routes');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -527,6 +528,10 @@ app.post('/api/restore', (req, res) => {
     }
 });
 
+// Module Routes - Use the new modular routing system
+app.use('/', routes);
+
+// Legacy Routes (keeping for backward compatibility)
 // Route for home page
 app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, 'dashboard.html'));

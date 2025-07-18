@@ -1,0 +1,9 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+{{ protectedNavLink('/Hms/Wards', 'Wards', 'ReadWards', userPermissions) }}
+
+{{ protectedNavLink('/Hms/Wards/New', 'Add Ward', 'WriteWards', userPermissions, 'ml-auto') }}
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="{{ returnUrl | escape }}"
+       class="nav-link"><i class="fa fa-chevron-left"></i> Back to admissions</a>
+</li>
+
+{% if admission.status == "Active" %}
+
+{{ protectedNavLink('/Hms/Admissions/'~ admission.id ~'/Vitals/New', 'Record Vitals', 'WriteAdmissions', userPermissions, 'ml-auto') }}
+
+{% endif %}
+
+{% endblock %}

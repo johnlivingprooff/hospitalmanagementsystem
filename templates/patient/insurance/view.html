@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ patient.fullname() | escape }}'s insurance details{% endblock %}
+
+{# This block hides the navigation links since this view is also shared with patient accounts #}
+{% block menuBlock %}
+{% if account.isPatient() == false %}
+    {{ parent() }}
+{% endif %}
+{% endblock %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">{{ patient.fullname() | escape }}'s insurance details</h4>
+    <div class="card-body">
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("insurer", "Insurance Company") }}
+                    <input type="text"
+                           value="{{ insurance.insurer|escape }}"
+                           id="insurer"
+                           class="form-control" readonly autofocus>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("membershipId", "Membership ID") }}
+                    <input type="text"
+                           value="{{ insurance.membershipId|escape }}"
+                           id="membershipId"
+                           class="form-control"
+                           readonly autofocus>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("address", "Address") }}
+                    <input type="text"
+                           value="{{ insurance.address|escape }}"
+                           id="address"
+                           class="form-control" readonly autofocus>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("phone", "Phone Number") }}
+                    <input type="text"
+                           value="{{ insurance.phone |escape }}"
+                           id="phone"
+                           class="form-control"
+                           readonly autofocus>
+                </div>
+            </div>
+        </div>
+
+        {% if "WritePatientInsurance" in userPermissions %}
+
+        <div class="row">
+            <div class="col">
+                <a href="/Hms/Patients/{{ patient.id }}/Insurance/Edit" type="submit"
+                   class="float-right btn btn-primary">
+                    Edit
+                </a>
+            </div>
+        </div>
+
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

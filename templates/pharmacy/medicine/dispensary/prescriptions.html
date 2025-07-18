@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Dispensary - {{ listTitle | escape }}{% endblock %}
+
+{% set useFluidContainer = true %}
+{% block mainContent %}
+{% set dispensed = "Dispensed" == status %}
+{% set canModify = ("DispenseMedicine" in userPermissions) and ("Dispensed" == status) %}
+<div class="card-style card white">
+    <h4 class="box-title">{{ listTitle | escape }}</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Filed By</th>
+                    <th>Department</th>
+                    <th>Filed On</th>
+                    <th>{{ (dispensed) ? 'Dispensed On' : 'Submitted On' }}</th>
+                    {% if dispensed %}
+                    <th>Dispensed By</th>
+                    {% endif %}
+                    <th>Medicine Type</th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for prescription in prescriptions %}
+                <tr>
+                    <td>{{ prescription.patientMrn | escape }}</td>
+                    <td>{{ prescription.patientName | escape }}</td>
+                    <td>{{ prescription.filedBy | escape }}</td>
+                    <td>{{ prescription.department | escape }}</td>
+                    <td>{{ formatDate(prescription.createdAt, true) | escape }}</td>
+                    <td>{{ formatDate(prescription.updatedAt, true) | escape }}</td>
+                    {% if dispensed %}
+                    <td>{{ prescription.updatedBy | escape }}</td>
+                    {% endif %}
+                    <td>{{ "%,d" | format(prescription.drugs) | escape }}</td>
+                    <td>
+                        <a href="/Hms/Medicines/Dispensary/{{ prescription.id }}/{{ (prescription.status == 'Pending') ? 'PendingDetails' : 'DispensedDetails' }}">
+                            Details
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

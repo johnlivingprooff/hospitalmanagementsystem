@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block pageTitle %} {{ parent() }} Audit Logs{% endblock %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">Audit Logs</h4>
+    <div class="card-body">
+        <p>The auditing system tracks every user activity within the system</p>
+    </div>
+    <div class="card-body">
+        {{ openForm("/Hms/AuditLogs/Archive") }}
+
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>Entry #</th>
+                    <th>Description</th>
+                    <th>Time</th>
+                    <th>IP Address</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% set index = 1 %}
+                {% for auditLog in auditLogs %}
+                <tr data-order="[]">
+                    <td data-order="[]">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox"
+                                   class="custom-control-input cb pointer-cursor"
+                                   name="log[]"
+                                   value="{{ auditLog.id }}" id="log{{ index }}">
+                            <label class="custom-control-label pointer-cursor" for="log{{ index }}">{{ index }}</label>
+                        </div>
+                    </td>
+                    <td>{{ auditLog.Action | escape }}</td>
+                    <td>{{ formatDate(auditLog.Created, true) | escape }}</td>
+                    <td>{{ auditLog.Address | escape }}</td>
+                </tr>
+                {% set index = index + 1 %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if not empty(auditLogs) %}
+
+        <div class="form-group">
+            <div class="btn-group">
+                <a href="javascript:selectAllLogs(true)" class="btn btn-success mb-2 mt-4 text-white">Select All</a>
+                <a href="javascript:selectAllLogs(false)" class="btn btn-success mb-2 mt-4 text-white">Deselect All</a>
+            </div>
+            <button id="ArchiveLogs" type="submit" class="btn btn-primary mb-2 mt-4">Archive Selected</button>
+        </div>
+
+        {% endif %}
+
+        {{ closeForm() }}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footerScripts %}
+
+{{ parent() }}
+
+<script>
+    var selectedIdCount = 0;
+
+    function selectAllLogs(b){
+        $('.cb').each(function(i,el){
+            el.checked = b;
+        });
+    }
+
+    $(function(){
+        expandContentContainer();
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Departments{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Departments</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Workstation</th>
+                    <th>Active</th>
+                    {% if "WriteDepartments" in userPermissions %}
+                    <th>Edit</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for department in departments %}
+                <tr>
+                    <td>{{ department.code | escape }}</td>
+                    <td>{{ department.name | escape }}</td>
+                    <td>{{ department.workStation | escape }}</td>
+                    <td>{{ yesOrNo(department.active) | escape }}</td>
+                    {% if "WriteDepartments" in userPermissions %}
+                    <td><a href="/Hms/Departments/{{ department.id }}/Edit">Edit</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footerScripts %}
+
+{{ parent() }}
+
+<script>
+
+$(function () {
+    window.expandContentContainer();
+})
+
+
+</script>
+
+{% endblock %}

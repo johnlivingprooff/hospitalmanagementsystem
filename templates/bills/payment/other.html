@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Pay Bill{% endblock %}
+
+{% block mainContent %}
+
+{% include 'details.html' %}
+
+<div class="card-style card white">
+    <h4 class="box-title">Process Payment From Other Individual/Organization</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/Billing/"~info.id~"/Bills/" ~ bill.id ~ "/ProcessOtherPayment") }}
+
+        <div class="form-row">
+            <div class="col-3">
+                <div class="form-group">
+                    {{ labelFor("amount", "Amount", true) }}
+                    {{ inputText(true, "amount", amount, {'min':1, 'max':12, 'autocomplete': 'off', 'hint':'Amount' }) }}
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("name", "Name of Individual/Organization", true) }}
+                    {{ inputText(true, "name", name, {'min':2, 'max':100, 'autocomplete': 'off' }) }}
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("address", "Address", true) }}
+                    {{ inputText(true, "address", address, {'min':2, 'max':100, 'autocomplete': 'off' }) }}
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("phone", "Phone Number", true) }}
+                    {{ inputText(true, "phone", phone, {'min':10, 'max':30, 'autocomplete': 'off' }) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("details", "Details", true) }}
+                    {{ inputText(true, "details", details, {'min':1, 'max':200, 'autocomplete': 'off', 'hint':'Details' }) }}
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Submit
+                </button>
+            </div>
+        </div>
+
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}

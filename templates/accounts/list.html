@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ parent() }} {{ pageTitle | escape }}{% endblock %}
+
+{% set useFluidContainer = true %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">{{ pageTitle | escape }}</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>D.o.B</th>
+                    <th>Sex</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Role</th>
+                    <th>Created</th>
+                    <th>Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set canModifyAccounts = "WriteAccounts" in userPermissions %}
+                {% set canAccessRoles = "ReadRoles" in userPermissions %}
+                {% for account in accounts %}
+                <tr>
+                    <td>{{ account.firstName | escape }} {{ account.lastName | escape }}</td>
+                    <td>{{ formatDate(account.dob) | escape }}</td>
+                    <td>{{ account.sex | escape }}</td>
+                    <td>{{ account.email | escape }}</td>
+                    <td>{{ account.phone | escape }}</td>
+                    <td>{{ account.department | escape }}</td>
+                    <td>
+                        {% if canAccessRoles %}
+                            <a href="/Hms/Roles/{{ account.roleId }}/View">{{ account.roleName | escape }}</a>
+                        {% else %}
+                            {{ account.roleName | escape }}
+                        {% endif %}
+                    </td>
+                    <td>{{ formatDate(account.created, true) }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">Options
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+
+                                {% if canModifyAccounts %}
+                                <a class="dropdown-item"
+                                   href="/Hms/Accounts/{{ account.id }}/Edit">Edit</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

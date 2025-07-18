@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% set useFluidContainer = true %}
+
+{% block pageTitle %}{{ patient.fullname() | escape }}'s lab test results{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">{{ patient.fullname() | escape }}'s lab test results</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Procedure</th>
+                    <th>Examiner</th>
+                    <th>Department</th>
+                    <th>Performed On</th>
+                    <th>Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for test in tests %}
+                <tr>
+                    <td>{{ test.procedureName | escape }}</td>
+                    <td>{{ test.examinerName | escape }}</td>
+                    <td>{{ test.department | escape }}</td>
+                    <td>{{ formatDate(test.createdAt, true) | escape }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">Options
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="/Hms/Patients/{{ patient.id }}/LabTests/{{ test.id }}/Details">Details</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

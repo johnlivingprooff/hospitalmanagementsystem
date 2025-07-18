@@ -1,0 +1,9 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+{{ protectedNavLink('/Hms/Theater/Surgeries', 'Surgeries', 'ReadTheaterSurgeries', userPermissions) }}
+
+{{ protectedNavLink('/Hms/Theater/Surgeries/New', 'Add Surgery', 'WriteTheaterSurgeries', userPermissions, 'ml-auto') }}
+
+{% endblock %}

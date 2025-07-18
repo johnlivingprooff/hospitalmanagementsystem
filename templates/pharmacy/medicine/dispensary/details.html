@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Prescription Details{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="{{ returnUrl | escape }}"
+       class="nav-link"><i class="fa fa-chevron-left"></i> Back to prescriptions</a>
+</li>
+
+{% endblock %}
+
+{% set useFluidContainer = true %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">
+        Prescription For {{ prescription.patientName | escape | upper }} - #{{ prescription.patientMrn | escape }}
+    </h4>
+    <div class="card-body">
+
+        {% if prescription.status == "Pending" and prescription.expiringDrugs > 0 %}
+        <div class="alert alert-danger" role="alert">
+            <h6>Expiring/Expired Medicine Found</h6>
+            <p>This prescription contains {{ "%,d" | format(prescription.expiringDrugs) }} expired or expiring
+                medicine(s).</p>
+        </div>
+        {% endif %}
+
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Medicine</th>
+                    <th>Notes</th>
+                    <th>Prescribed Quantity</th>
+                    {% if prescription.status == "Pending" %}
+                    <th>Stock Quantity</th>
+                    <th>Actual Quantity To Dispense</th>
+                    {% endif %}
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set total = 0.0 %}
+                {% for drug in drugs %}
+                <tr>
+                    <td>{{ drug.medicineName | escape }}</td>
+                    <td>{{ drug.notes | escape }}</td>
+                    <td>{{ "%,d" | format(drug.quantity) | escape }}</td>
+                    {% if prescription.status == "Pending" %}
+                    <td>{{ "%,d" | format(drug.stockQuantity) | escape }}</td>
+                    <td>{{ "%,d" | format(drug.actualQuantity) | escape }}</td>
+                    {% endif %}
+                    <td>{{ "%,.2f" | format(drug.sellingPrice) | escape }}</td>
+                    <td>{{ "%,.2f" | format(drug.totalCost) | escape }}</td>
+                </tr>
+                {% set total = total + drug.totalCost %}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="{{ (prescription.status == 'Pending') ? 6 : 4 }}">Total</th>
+                        <th>{{ "%,.2f" | format(total) | escape }}</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        {% if prescription.status == "Pending" %}
+
+        {{ openForm("/Hms/Medicines/Dispensary/Dispense", 'my-4') }}
+
+        <input name="id" type="hidden" value="{{ prescription.id }}">
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Dispense Medicine</button>
+            </div>
+        </div>
+
+        {{ closeForm() }}
+
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

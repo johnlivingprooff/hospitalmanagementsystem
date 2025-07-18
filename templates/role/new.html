@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Add New System Role{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Add New Role</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/Roles/Add") }}
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("name", "Role name", true) }}
+                    <input type="text"
+                           id="name"
+                           name="name"
+                           autocomplete="off"
+                           minlength="3"
+                           maxlength="50"
+                           autofocus
+                           required
+                           value="{{ name | escape }}"
+                           placeholder="Role name"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("description", "Brief description", true) }}
+                    <input type="text"
+                           id="description"
+                           name="description"
+                           autocomplete="off"
+                           minlength="3"
+                           maxlength="50"
+                           autofocus
+                           required
+                           value="{{ description | escape }}"
+                           placeholder="Role description"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    {{ labelFor("active", "Active", true) }}
+                    {{ formDropDown(booleans, "active", "active", active) }}
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Add Role
+                </button>
+            </div>
+        </div>
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}

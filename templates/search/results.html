@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Search Results{% endblock %}
+
+{% block mainContent %}
+<div class="row">
+    <div class="col-md-12">
+        <h1>Search Results</h1>
+        
+        <form method="GET" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search patients, users, or records...">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
+        </form>
+        
+        {% if query %}
+        <div class="card">
+            <div class="card-header">
+                <h5>Search Results for "{{ query }}"</h5>
+            </div>
+            <div class="card-body">
+                {% if results %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Name</th>
+                                <th>Details</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for result in results %}
+                            <tr>
+                                <td>
+                                    {% if result.type == 'patient' %}
+                                    <span class="badge badge-success">Patient</span>
+                                    {% else %}
+                                    <span class="badge badge-primary">User</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ result.firstName }} {{ result.lastName }}</td>
+                                <td>
+                                    {% if result.type == 'patient' %}
+                                    Phone: {{ result.phone }}<br>
+                                    DOB: {{ result.dateOfBirth }}
+                                    {% else %}
+                                    Role: {{ result.role }}<br>
+                                    Department: {{ result.department }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if result.type == 'patient' %}
+                                    <a href="/patients/{{ result.id }}" class="btn btn-sm btn-primary">View</a>
+                                    {% else %}
+                                    <a href="/admin/users/{{ result.id }}" class="btn btn-sm btn-primary">View</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No results found for "{{ query }}".
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

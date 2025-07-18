@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Add New Workstation{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">New Workstation</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/Workstations/Add") }}
+
+        <div class="form-row">
+            <div class="col-2">
+                <div class="form-group">
+                    {{ labelFor("code", "Code", true) }}
+                    <input type="text"
+                           id="code"
+                           name="code"
+                           autocomplete="off"
+                           minlength="2"
+                           maxlength="10"
+                           autofocus
+                           required
+                           value="{{ code | escape }}"
+                           placeholder="Code"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("name", "Name", true) }}
+                    <input type="text"
+                           id="name"
+                           name="name"
+                           autocomplete="off"
+                           minlength="2"
+                           maxlength="50"
+                           autofocus
+                           required
+                           value="{{ name | escape }}"
+                           placeholder="Name"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    {{ labelFor("active", "Active", true) }}
+                    {{ formDropDown(booleans, "active", "active", active) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("address", "Address", true) }}
+                    <input type="text"
+                           id="address"
+                           name="address"
+                           autocomplete="off"
+                           minlength="3"
+                           maxlength="100"
+                           autofocus
+                           required
+                           value="{{ address | escape }}"
+                           placeholder="Address"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("districtId", "District", true) }}
+                    {{ formDropDown(districts, "districtId", "districtId", districtId) }}
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Add Workstation
+                </button>
+            </div>
+        </div>
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}

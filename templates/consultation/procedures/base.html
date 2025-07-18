@@ -1,0 +1,9 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+{{ protectedNavLink('/Hms/Consultations', 'Consultations', 'ReadConsultations', userPermissions) }}
+
+{{ protectedNavLink('/Hms/Consultations/New', 'New Consultation', 'WriteConsultations', userPermissions, 'ml-auto') }}
+
+{% endblock %}

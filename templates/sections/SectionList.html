@@ -1,0 +1,37 @@
+{% extends "../base.html" %}
+
+{% block pageTitle %}Sections{% endblock %}
+
+{% block mainContent %}
+
+<div class="panel panel-primary my-4">
+    <div class="panel-heading">
+        <h3 class="panel-title">Sections</h3>
+    </div>
+
+    <table class="table datatable table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Section Name</th>
+            <th>Section Head</th>
+            <th>User Count</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        {% for section in sectionList %}
+
+        <tr>
+            <td>{{ section.SectionName }}</td>
+            <td>{{ section.SectionHead }}</td>
+            <td>{{ printNumber(section.UserCount) }}</td>
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

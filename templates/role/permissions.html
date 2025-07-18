@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ parent() }} - {{ role.roleName | escape }} - Permissions {% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Roles/{{ role.id }}/View" class="nav-link">
+        <span class="fa fa-angle-left"></span> Back
+    </a>
+</li>
+
+{% endblock %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">Role Permission Editor - {{ role.roleName | escape }}</h4>
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                {{ showInfoMessage("Click on &quot;Add&quot; to add permission to role") }}
+                <div class="table-responsive">
+                    <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Permission Name</th>
+                            <th>Permission Description</th>
+                            <th>Options</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for permission in permissions %}
+                        <tr>
+                            <td>{{ permission.permissionName | escape }}</td>
+                            <td>{{ permission.permissionDescription | escape }}</td>
+                            <td><a href="/Hms/Roles/{{ role.id }}/AddPermission/{{ permission.id }}">Add&nbsp;<i
+                                    class="fa fa-angle-right"></i></a></td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col">
+                {{ showInfoMessage("Click on &quot;Remove&quot; to remove permission from role") }}
+                <div class="table-responsive">
+                    <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Permission Name</th>
+                            <th>Permission Description</th>
+                            <th>Options</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for permission in rolePermissions %}
+                        <tr>
+                            <td>{{ permission.permissionName | escape }}</td>
+                            <td>{{ permission.permissionDescription | escape }}</td>
+                            <td>
+                                {% if permission.privileged == false %}
+                                <a href="/Hms/Roles/{{ role.id }}/RemovePermission/{{ permission.id }}"><i
+                                        class="fa fa-angle-left"></i>&nbsp;Remove</a></td>
+                                {% endif %}
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+
+{% block footerScripts %}
+
+{{ parent() }}
+
+<script>
+    $(function () {
+        window.expandContentContainer();
+    })
+
+
+
+
+
+</script>
+
+{% endblock %}

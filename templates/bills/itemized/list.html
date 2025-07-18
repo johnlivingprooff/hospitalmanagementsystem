@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Billing - {{ info.fullName | escape }}'s {{ title | escape }}{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="{{ returnUrl | escape }}"
+       class="nav-link"><i class="fa fa-chevron-left"></i> Back to bills</a>
+</li>
+
+{% endblock %}
+
+{% set useFluidContainer = true %}
+{% set showPaymentOptions =  status == "UnPaid" %}
+{% set showFinalDate = status == "Paid" %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">{{ info.fullName | escape }}'s {{ title | escape }}</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Balance</th>
+                    <th>Paid</th>
+                    <th>Bill Type</th>
+                    <th>Billed On</th>
+                    {% if showFinalDate %}
+                    <th>Final Payment On</th>
+                    {% endif %}
+                    {% if showPaymentOptions %}
+                    <th>Payment Options</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% set balance = 0 %}
+                {% set paid = 0 %}
+                {% for bill in bills %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ formatCurrency(bill.balance) | escape }}</td>
+                    <td>{{ formatCurrency(bill.paid) | escape }}</td>
+                    <td>{{ bill.billType | escape }}</td>
+                    <td>{{ formatDate(bill.createdAt, true) | escape }}</td>
+                    {% if showFinalDate %}
+                    <td>{{ formatDate(bill.updatedAt, true) | escape }}</td>
+                    {% endif %}
+                    {% if showPaymentOptions %}
+                    <td>
+                        <div class="btn-group">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">Add Payment From
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="/Hms/Billing/{{ bill.patientId }}/Bills/{{ bill.id }}/PaymentFromPatient"
+                                   class="dropdown-item">Patient</a>
+
+                                <a href="/Hms/Billing/{{ bill.patientId }}/Bills/{{ bill.id }}/PaymentFromInsurance"
+                                   class="dropdown-item">Insurance</a>
+
+                                <a href="/Hms/Billing/{{ bill.patientId }}/Bills/{{ bill.id }}/PaymentFromOther"
+                                   class="dropdown-item">Other</a>
+                            </div>
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% set balance = balance + bill.balance %}
+                {% set paid = paid + bill.paid %}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th>{{ formatCurrency(balance) }}</th>
+                    <th>{{ formatCurrency(paid) }}</th>
+                    <th colspan="3">&nbsp;</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

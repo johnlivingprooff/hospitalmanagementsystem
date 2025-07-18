@@ -1,0 +1,11 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+{{  protectedNavLink('/Hms/Accounts', 'Active Accounts', 'ReadAccounts', userPermissions) }}
+
+{{  protectedNavLink('/Hms/Accounts/Inactive', 'Inactive Accounts', 'ReadAccounts', userPermissions) }}
+
+{{  protectedNavLink('/Hms/Accounts/New', 'Add New Account', 'WriteAccounts', userPermissions, 'ml-auto') }}
+
+{% endblock %}

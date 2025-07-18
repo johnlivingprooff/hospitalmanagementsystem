@@ -1,0 +1,9 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+{{ protectedNavLink('/Hms/Roles', 'System Roles', 'ReadRoles', userPermissions) }}
+
+{{ protectedNavLink('/Hms/Roles/New', 'Add New Role', 'WriteRoles', userPermissions) }}
+
+{% endblock %}

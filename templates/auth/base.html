@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/GetWebsiteLogo">
+
+    <title>Hospital Management System - {% block pageTitle %}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/assets/bootstrap/css/floating-labels.css" rel="stylesheet">
+
+    <link href="/assets/fa/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .logo {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+        }
+        body {
+            background: #dedede;
+        }
+        .version {
+            color: gray;
+            text-align: center;
+        }
+        .version-text {
+            font-size: 1rem !important;
+        }
+        .version-text.subtext {
+            font-size: .8rem !important;
+        }
+        .drop-shadow {
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+        }
+        .white-bg {
+            background-color: #fff !important;
+        }
+        .checked-bg {
+            background: url(/assets/static/bg-main.gif);
+        }
+    </style>
+
+    <!-- Custom styles -->
+    <link href="/assets/bootstrap/css/custom/all.css" rel="stylesheet">
+</head>
+
+<body>
+{{ openForm(formAction, "form-signin drop-shadow white-bg checked-bg") }}
+<div class="text-center mb-4">
+    <img class="logo" src="/GetWebsiteLogo"/>
+    <h5 class="my-4">{{ systemSettings.banner | escape }}</h5>
+    <p class="my-4 font-weight-normal">{% block loginText %}{% endblock %}</p>
+</div>
+
+{% block input %}{% endblock %}
+
+{% if errorMessage %}
+{{ showErrorMessage(errorMessage, "my-4 mx-4") }}
+{% endif %}
+
+{% if successMessage %}
+{{ showSuccessMessage(successMessage, "my-4 mx-4") }}
+{% endif %}
+
+{% if errorList %}
+{{ printErrorList(errorList) }}
+{% endif %}
+
+{% block buttons %}{% endblock %}
+{{ closeForm }}
+
+<div class="my-4 version">
+    <p class="lead version-text">
+        <strong>System Version {{ applicationVersion | escape }}</strong>
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-12 version">
+        <p class="version-text subtext lead"><strong>Developed By MiHR Business Partner</strong></p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 version">
+        <p class="version-text subtext lead"><strong>enquiries@mihrafrica.com</strong></p>
+    </div>
+</div>
+
+<script src="/assets/jquery/jquery-3.4.1.js"></script>
+<script src="/assets/popper/popper-1.12.9.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/fa/js/all.min.js"></script>
+
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  $('[data-toggle="popover"]').popover();
+})
+
+
+
+</script>
+{% block footerScripts %}{% endblock %}
+</body>
+</html>

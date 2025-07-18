@@ -1,0 +1,23 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Schedules" class="nav-link">My Schedule</a>
+</li>
+
+<li class="nav-item dropdown ml-auto">
+    <a href="#"
+       role="button"
+       class="nav-link dropdown-toggle"
+       data-toggle="dropdown"
+       aria-haspopup="true"
+       aria-expanded="false">Add Date
+    </a>
+    <div class="dropdown-menu">
+        <a href="/Hms/Schedules/New" class="dropdown-item">Single Day</a>
+        <a href="/Hms/Schedules/NewByRange" class="dropdown-item">Multiple Days</a>
+    </div>
+</li>
+
+{% endblock %}

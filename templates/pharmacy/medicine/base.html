@@ -1,0 +1,9 @@
+{% extends "../../base.html" %}
+
+{% block menuBlock %}
+
+{{ protectedNavLink('/Hms/Medicines', 'Medicines', 'ReadMedicines', userPermissions) }}
+
+{{ protectedNavLink('/Hms/Medicines/New', 'Add Medicine', 'WriteMedicines', userPermissions, 'ml-auto') }}
+
+{% endblock %}

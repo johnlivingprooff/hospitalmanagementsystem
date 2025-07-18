@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ listTitle | escape }}{% endblock %}
+
+{% set useFluidContainer = true %}
+{% block mainContent %}
+{% set dispensed = "Dispensed" == status %}
+{% set canModify = ("WritePrescriptions" in userPermissions) and ("Filed" == status or "Pending" == status) %}
+<div class="card-style card white">
+    <h4 class="box-title">{{ listTitle | escape }}</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Medicine Types</th>
+                    <th>Filed On</th>
+                    {% if dispensed %}
+                    <th>Dispensed By</th>
+                    <th>Dispensed On</th>
+                    {% endif %}
+                    <th>Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for prescription in prescriptions %}
+                <tr>
+                    <td>{{ prescription.patientMrn | escape }}</td>
+                    <td>{{ prescription.patientName | escape }}</td>
+                    <td>{{ "%,d" | format(prescription.drugs) | escape }}</td>
+                    <td>{{ formatDate(prescription.createdAt, true) | escape }}</td>
+                    {% if dispensed %}
+                    <td>{{ prescription.updatedBy | escape }}</td>
+                    <td>{{ formatDate(prescription.updatedAt, true) | escape }}</td>
+                    {% endif %}
+                    <td>
+                        <div class="btn-group">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">Options
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                {% if canModify %}
+                                    {% if prescription.status == "Filed" %}
+                                    <a class="dropdown-item" href="/Hms/Prescriptions/{{ prescription.id }}/Edit">Edit</a>
+                                    {% endif %}
+
+                                    {% if prescription.status == "Filed" %}
+                                    <a class="dropdown-item" href="/Hms/Prescriptions/{{ prescription.id }}/Delete">Delete</a>
+                                    {% elseif prescription.status == "Pending" %}
+                                    <a class="dropdown-item" href="/Hms/Prescriptions/{{ prescription.id }}/Recall">Recall</a>
+                                    {% endif %}
+                                {% endif %}
+                                <a class="dropdown-item" href="/Hms/Prescriptions/{{ prescription.id }}/Details">Details</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}System User List - Inactive Users{% endblock %}
+
+{% block mainContent %}
+
+<div class="panel panel-primary my-4">
+    <div class="panel-heading">
+        <h3 class="panel-title">System Users</h3>
+    </div>
+    <div class="panel-body">
+        <p class="lead">Active system users</p>
+    </div>
+
+    <table class="table datatable table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Sex</th>
+            <th>Created</th>
+            <th>Updated</th>
+            <th>Date of Birth</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {# There's already an object called "user" in the current model context #}
+        {% for _user in userList %}
+
+        <tr>
+            <td><a href="/Hms/Users/View/{{ _user.Id }}">{{ _user.fullname() | escape }}</a></td>
+            <td><abbr>{{ _user.roleName | escape }}</abbr></td>
+            <td>{{ _user.Sex.desc }}</td>
+            <td>{{ formatDate(_user.Created, true) }}</td>
+            <td>{{ formatDate(_user.Updated, true) }}</td>
+            <td>{{ formatDate(_user.DateOfBirth) }}</td>
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

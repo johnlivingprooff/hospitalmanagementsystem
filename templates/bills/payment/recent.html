@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Billing - Recent Bill Payments{% endblock %}
+
+{% block menuBlock %}
+{% endblock %}
+
+{% set useFluidContainer = true %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">Recent Bill Payments</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Amount</th>
+                    <th>Paid On</th>
+                    <th>Payer</th>
+                    <th>Processed By</th>
+                    <th>Bill For Service</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.mrn | escape }}</td>
+                    <td>{{ payment.patient | escape }}</td>
+                    <td>{{ printBigDecimal(payment.amount) | escape }}</td>
+                    <td>{{ formatDate(payment.createdAt, true) | escape }}</td>
+                    <td>{{ payment.payer | escape }}</td>
+                    <td>{{ payment.processor | escape }}</td>
+                    <td>{{ payment.billType | escape }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

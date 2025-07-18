@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Edit Prescription{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Prescriptions"
+       class="nav-link"><i class="fa fa-chevron-left"></i> Back to prescriptions</a>
+</li>
+
+<li class="nav-item ml-auto">
+    <a href="#additionalMedicine"
+       data-toggle="collapse"
+       aria-controls="additionalMedicine"
+       aria-expanded="{{ (viewBag.collapseMedicinePanel) ? 'true' : 'false' }}"
+       class="nav-link">Toggle Medicine Panel</a>
+</li>
+
+{% endblock %}
+
+
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">
+        Prescription For {{ prescription.patientName | escape | upper }} - #{{ prescription.patientMrn | escape }}
+    </h4>
+    <div class="card-body">
+
+        <div class="alert alert-info" role="alert">
+            <p>Once you have added all the medicine, click <strong>Submit Prescription</strong> to submit to the
+                Dispensary section.</p>
+            <p><strong>NOTE</strong> You cannot edit prescriptions once submitted.</p>
+        </div>
+
+        {% if prescription.expiringDrugs > 0 %}
+        <div class="alert alert-danger" role="alert">
+            <h6>Expiring/Expired Medicine Found</h6>
+            <p>This prescription contains {{ "%,d" | format(prescription.expiringDrugs) }} expired or expiring
+                medicine(s). Please review your selection.</p>
+        </div>
+        {% endif %}
+
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Medicine</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                    <th>Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for drug in drugs %}
+                <tr>
+                    <td>{{ drug.medicineName | escape }}</td>
+                    <td>{{ "%,d" | format(drug.quantity) | escape }}</td>
+                    <td class="{{ (drug.expiring) ? 'table-danger text-danger' : '' }}">
+                        {{ (drug.expiring) ? 'Expiring/Expired' : 'Good' }}
+                    </td>
+                    <td>{{ drug.notes | escape }}</td>
+                    <td><a href="/Hms/Prescriptions/{{prescription.id}}/Medicine/{{ drug.id }}/Delete">Remove</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if prescription.drugs > 0 %}
+
+        {{ openForm("/Hms/Prescriptions/Submit", 'my-4') }}
+
+        <input name="id" type="hidden" value="{{ prescription.id }}">
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Submit the prescription to the dispensary"
+                        class="float-right btn btn-primary">
+                    Submit Prescription
+                </button>
+            </div>
+        </div>
+
+        {{ closeForm() }}
+
+        {% endif %}
+    </div>
+</div>
+
+<!-- Make this collapsible -->
+<div class="collapse{{ (viewBag.collapseMedicinePanel) ? ' show' : '' }}" id="additionalMedicine">
+    <div class="card-style card white">
+        <h4 class="box-title">Add Medicine To Prescription</h4>
+        <div class="card-body">
+
+            {{ openForm("/Hms/Prescriptions/" ~ prescription.id ~ "/AddMedicine") }}
+
+            <div class="alert alert-info" role="alert">
+                <h6>Adding Medicine To Prescription</h6>
+                <p>Select the medicine you want to add from the list below then enter the amount to prescribe along with
+                    any additional notes.</p>
+                <p><strong>NOTE</strong> You can only add each type of medicine one at a time.</p>
+            </div>
+
+            <input type="hidden" name="prescriptionId" value="{{ prescriptionId }}">
+
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        <div class="table-responsive">
+                            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Medicine</th>
+                                    <th>Stock Quantity</th>
+                                    <th style="min-width: 15%">Quality Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for medicine in medicines %}
+                                <tr>
+                                    <td>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio"
+                                                   class="custom-control-input"
+                                                   id="medicine{{ medicine.id }}"
+                                                   name="medicineId"
+                                                   required
+                                                   value="{{ medicine.id }}">
+                                            <label class="custom-control-label"
+                                                   style="cursor: pointer"
+                                                   for="medicine{{ medicine.id }}">
+                                                {{ medicine.name | escape }}
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>{{ "%,d" | format(medicine.quantity) | escape }}</td>
+                                    <td class="{{ (medicine.expiring) ? 'table-danger text-danger' : '' }}">
+                                        {{ (medicine.expiring) ? 'Expired/Expiring' : 'Good' }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr/>
+
+            <div class="form-row">
+                <div class="col-3">
+                    <div class="form-group">
+                        {{ labelFor("quantity", "Prescription Quantity", true) }}
+                        <input type="text"
+                               id="quantity"
+                               name="quantity"
+                               autocomplete="off"
+                               minlength="1"
+                               maxlength="19"
+                               autofocus
+                               required
+                               value="{{ quantity | escape }}"
+                               placeholder="Prescription quantity"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        {{ labelFor("notes", "Notes") }}
+                        <input type="text"
+                               id="notes"
+                               name="notes"
+                               autocomplete="off"
+                               minlength="1"
+                               maxlength="255"
+                               autofocus
+                               value="{{ notes | escape }}"
+                               placeholder="Notes"
+                               class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            {{ printErrorList(errorList) }}
+
+            <div class="form-row">
+                <div class="col">
+                    <button type="submit" class="float-right btn btn-primary">
+                        Add Medicine
+                    </button>
+                </div>
+            </div>
+
+            {{ closeForm() }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footerScripts %}
+
+{{ parent() }}
+
+<script>
+    $(additionalMedicine).on('shown.bs.collapse', function(){
+        additionalMedicine.scrollIntoView();
+    });
+    {% if viewBag.collapseMedicinePanel %}
+        additionalMedicine.scrollIntoView();
+    {% endif %}
+</script>
+
+{% endblock %}

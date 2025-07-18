@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Patient Death Reports{% endblock %}
+
+{% block menuBlock %}{% endblock %}
+{% set useFluidContainer = true %}
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">Patient Death Reports</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Sex</th>
+                    <th>Date of Birth</th>
+                    <th>Date of Death</th>
+                    <th>Reported On</th>
+                    <th>Reported By</th>
+                    <th>Attachment</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for report in reports %}
+                <tr>
+                    <td>{{ report.mrn | escape }}</td>
+                    <td>{{ report.patient | escape }}</td>
+                    <td>{{ report.sex | escape }}</td>
+                    <td data-order="{{ ldt2t(report.dob) }}">{{ formatDate(report.dob, true) | escape }}</td>
+                    <td data-order="{{ ldt2t(report.dod) }}">{{ formatDate(report.dod, true) | escape }}</td>
+                    <td data-order="{{ ldt2t(report.createdAt) }}">{{ formatDate(report.createdAt, true) | escape }}</td>
+                    <td>{{ report.reporter | escape }}</td>
+                    <td><a href="/Hms/Patients/DeathReports/{{ report.id }}/Download">Download</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

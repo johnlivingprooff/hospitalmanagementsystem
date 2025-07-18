@@ -1,0 +1,9 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+{{ protectedNavLink('/Hms/Dentistry/Procedures', 'Procedures', 'ReadDentalProcedures', userPermissions) }}
+
+{{ protectedNavLink('/Hms/Dentistry/Procedures/New', 'New Procedure', 'WriteDentalProcedures', userPermissions, 'ml-auto') }}
+
+{% endblock %}

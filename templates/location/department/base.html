@@ -1,0 +1,9 @@
+{% extends "../../base.html" %}
+
+{% block menuBlock %}
+
+{{ protectedNavLink('/Hms/Departments', 'Departments', 'ReadDepartments', userPermissions) }}
+
+{{ protectedNavLink('/Hms/Departments/New', 'Add New Department', 'WriteDepartments', userPermissions) }}
+
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "../base.html" %}
+
+{% block menuBlock %}
+
+{{ protectedNavLink('/Hms/Admissions', 'Active Admissions', 'ReadAdmissions', userPermissions) }}
+
+{{ protectedNavLink('/Hms/Admissions/Terminated', 'Terminated Admissions', 'ReadAdmissions', userPermissions) }}
+
+{{ protectedNavLink('/Hms/Admissions/New', 'New Admission', 'WriteAdmissions', userPermissions, 'ml-auto') }}
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Create Appointment{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Appointments" class="nav-link"><i class="fa fa-chevron-left"></i> Back to my appointments</a>
+</li>
+
+{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Create Appointment</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/Appointments/Add") }}
+
+        <div class="form-row">
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("patientId", "Patient ID", true) }}
+                    {{ inputText(true, "mrn", mrn, {'autocomplete':'off','min': 5, 'max': 20, 'hint': 'Patient ID'}) }}
+                </div>
+            </div>
+
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("date", "Date", true) }}
+                    {{ formDropDown(dates, "date", "date", date) }}
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("startTime", "Start time", true) }}
+                    {{ timeSelector(true, "startTime", startTime) }}
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("endTime", "End time", true) }}
+                    {{ timeSelector(true, "endTime", endTime) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("notes", "Notes", true) }}
+                    {{ editText(true, "notes", notes, {'min': 3, 'max': 500, 'hint': 'Notes', 'rows': 6}) }}
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Submit
+                </button>
+            </div>
+        </div>
+
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}

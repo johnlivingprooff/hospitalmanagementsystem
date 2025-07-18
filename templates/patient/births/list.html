@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Patient Births{% endblock %}
+
+{% set useFluidContainer = true %}
+{% set canModify = "WritePatientBirths" in userPermissions %}
+
+{# This block hides the navigation links since this view is also shared with patient accounts #}
+{% block menuBlock %}
+{% if account.isPatient() == false %}
+{{ parent() }}
+{% endif %}
+{% endblock %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">{{ patient.fullname() | escape }}'s Birth records</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Child's Name</th>
+                    <th>Sex</th>
+                    <th>Date of Birth</th>
+                    <th>Length</th>
+                    <th>Weight</th>
+                    <th>Heart Rate</th>
+                    <th>Respiratory Rate</th>
+                    <th>Body Temperature</th>
+                    <th>Blood Pressure</th>
+                    {% if canModify %}
+                    <th>Options</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for birth in births %}
+                <tr>
+                    <td>{{ birth.name | escape }}</td>
+                    <td>{{ birth.sex | escape }}</td>
+                    <td data-order="{{ ldt2t(birth.created) }}">{{ formatDate(birth.dob, true) | escape }}</td>
+                    <td data-order="{{ birth.height | escape }}">{{ birth.height | escape }} cm</td>
+                    <td data-order="{{ birth.weigh | escape }}">{{ birth.weight | escape }} kgs</td>
+                    <td data-order="{{ birth.pulse | escape }}">{{ birth.pulse | escape }} bpm</td>
+                    <td data-order="{{ birth.breaths | escape }}">{{ birth.breaths | escape }} BPM</td>
+                    <td data-order="{{ birth.temperature }}">{{ birth.temperature | escape }}  {{ birth.tempUnits.symbol | escape }}</td>
+                    <td data-order="{{ birth.systolic }}/{{ birth.diastolic }}">{{ birth.systolic | escape }}/{{ birth.diastolic | escape }} mmHg</td>
+                    {% if canModify %}
+                    <td>
+                        <div class="btn-group">
+                            <a href="#"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">Options
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item"
+                                   href="/Hms/Patients/{{ patient.id }}/Births/{{ birth.id }}/Delete">Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

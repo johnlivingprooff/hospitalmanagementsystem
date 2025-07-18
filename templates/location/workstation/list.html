@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Workstations{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Workstations</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>District</th>
+                    <th>Active</th>
+                    {% if "WriteWorkstations" in userPermissions %}
+                    <th>Edit</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for workstation in workstations %}
+                <tr>
+                    <td>{{ workstation.code | escape }}</td>
+                    <td>{{ workstation.name | escape }}</td>
+                    <td>{{ workstation.address | escape }}</td>
+                    <td>{{ workstation.district | escape }}</td>
+                    <td>{{ yesOrNo(workstation.active) | escape }}</td>
+                    {% if "WriteWorkstations" in userPermissions %}
+                    <td><a href="/Hms/Workstations/{{ workstation.id }}/Edit">Edit</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footerScripts %}
+
+{{ parent() }}
+
+<script>
+
+$(function () {
+    window.expandContentContainer();
+})
+
+
+</script>
+
+{% endblock %}

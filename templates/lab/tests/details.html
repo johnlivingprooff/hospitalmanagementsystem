@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Laboratory Test Details{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Lab/Tests"
+       class="nav-link"><i class="fa fa-chevron-left"></i> Back to tests</a>
+</li>
+
+{% endblock %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">Lab test results for {{ test.patientName | upper | escape }} | {{ test.patientMrn | escape }}</h4>
+    <div class="card-body">
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("mrn", "Patient ID") }}
+                    <input type="text"
+                           id="mrn"
+                           readonly
+                           autofocus
+                           value="{{ test.patientMrn | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("patientName", "Patient Name") }}
+                    <input type="text"
+                           id="patientName"
+                           readonly
+                           autofocus
+                           value="{{ test.patientName | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("procedure", "Procedure") }}
+                    <input type="text"
+                           id="procedure"
+                           readonly
+                           autofocus
+                           value="{{ test.procedureName | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("date", "Performed On") }}
+                    <input type="text"
+                           id="date"
+                           readonly
+                           autofocus
+                           value="{{ formatDate(test.createdAt, true) | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("examinerName", "Medical Examiner") }}
+                    <input type="text"
+                           id="examinerName"
+                           readonly
+                           autofocus
+                           value="{{ test.examinerName | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("department", "Department") }}
+                    <input type="text"
+                           id="department"
+                           readonly
+                           autofocus
+                           value="{{ test.department | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("notes", "Notes", true) }}
+                    <textarea
+                            id="notes"
+                            autofocus
+                            readonly
+                            required
+                            rows="6"
+                            class="form-control">{{ test.notes | escape }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        {% if test.attachment %}
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    <a download=""
+                       target="_blank"
+                       href="/Hms/Lab/Tests/{{ test.id }}/Attachment">
+                        <i class="fa fa-paperclip" aria-hidden="true"></i>
+                        Download Attachment
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

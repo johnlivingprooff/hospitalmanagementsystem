@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Register Birth{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Patients/{{ patient.id }}/Births"
+       class="nav-link"><i class="fa fa-chevron-left"></i> Back to births</a>
+</li>
+
+{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">Register Birth Under {{ patient.fullname() | escape }} (#{{ patient.mrn | escape }})</h4>
+    <div class="card-body">
+
+        {{ openForm("/Hms/Patients/"~ patient.id ~"/Births/Add") }}
+
+        <div class="form-row">
+            <div class="col-6">
+                <div class="form-group">
+                    {{ labelFor("name", "Child's name", true) }}
+                    <input type="text"
+                           id="name"
+                           name="name"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="200"
+                           autofocus
+                           required
+                           value="{{ name | escape }}"
+                           placeholder="Child's name"
+                           class="form-control">
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("sex", "Sex", true) }}
+                    {{ formDropDown(sexes, "sex", "sex", sex) }}
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("date", "Date of birth", true) }}
+                    {{ dateSelector(true, "date", date) }}
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("time", "Time of birth", true) }}
+                    {{ timeSelector(true, "time", time) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("pulse", "Heart rate", true) }}
+                    <input type="text"
+                           id="pulse"
+                           name="pulse"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="3"
+                           autofocus
+                           required
+                           value="{{ pulse | escape }}"
+                           placeholder="Heart rate"
+                           class="form-control">
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("breaths", "Respiratory rate", true) }}
+                    <input type="text"
+                           id="breaths"
+                           name="breaths"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="3"
+                           autofocus
+                           required
+                           value="{{ breaths | escape }}"
+                           placeholder="Respiratory rate"
+                           class="form-control">
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("systolic", "Systolic pressure", true) }}
+                    <input type="text"
+                           id="systolic"
+                           name="systolic"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="3"
+                           autofocus
+                           required
+                           value="{{ systolic | escape }}"
+                           placeholder="Systolic pressure"
+                           class="form-control">
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("diastolic", "Diastolic pressure", true) }}
+                    <input type="text"
+                           id="diastolic"
+                           name="diastolic"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="3"
+                           autofocus
+                           required
+                           value="{{ diastolic | escape }}"
+                           placeholder="Diastolic pressure"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("weight", "Weight (Kg)", true) }}
+                    <input type="text"
+                           id="weight"
+                           name="weight"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="5"
+                           autofocus
+                           required
+                           value="{{ weight | escape }}"
+                           placeholder="Weight"
+                           class="form-control">
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("height", "Length (Cm)", true) }}
+                    <input type="text"
+                           id="height"
+                           name="height"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="5"
+                           autofocus
+                           required
+                           value="{{ height | escape }}"
+                           placeholder="Length"
+                           class="form-control">
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("temperature", "Temperature", true) }}
+                    <input type="text"
+                           id="temperature"
+                           name="temperature"
+                           autocomplete="off"
+                           minlength="1"
+                           maxlength="3"
+                           autofocus
+                           required
+                           value="{{ temperature | escape }}"
+                           placeholder="Temperature"
+                           class="form-control">
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("tempUnits", "Temperature Units", true) }}
+                    {{ formDropDown(units, "tempUnits", "tempUnits", tempUnits) }}
+                </div>
+            </div>
+        </div>
+
+        {{ printErrorList(errorList) }}
+
+        <div class="form-row">
+            <div class="col">
+                <button type="submit" class="float-right btn btn-primary">
+                    Save
+                </button>
+            </div>
+        </div>
+        {{ closeForm() }}
+    </div>
+</div>
+{% endblock %}

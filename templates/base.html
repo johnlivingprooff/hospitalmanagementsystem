@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/GetWebsiteLogo">
+
+    <title>Hospital Management System - {% block pageTitle %}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/assets/bootstrap/css/dashboard.css" rel="stylesheet">
+
+    <link href="/assets/fa/css/all.min.css" rel="stylesheet">
+
+    <link href="/assets/datatables/datatables.min.css" rel="stylesheet">
+    <style>
+
+    /* Fixes dropdown menu clipping when inside responsive tables */
+    /* https://github.com/twbs/bootstrap/issues/11037#issuecomment-105283986 */
+    @media (max-width: 767px) {
+        .table-responsive .dropdown-menu {
+            position: static !important;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .table-responsive {
+            overflow: visible;
+        }
+    }
+
+    .logo {
+        width: 30px;
+        height: 30px;
+    }
+
+    .navbar {
+        position: static !important;
+    }
+
+    li.nav-item div.separator {
+        display: block;
+        width: .1rem;
+        background-color: #d0d0d0;
+        height: 100%;
+    }
+
+    img.image-preview, img.profile-image {
+        object-fit: cover;
+        width: 200px;
+        height: 200px;
+    }
+
+    .menu-list .list-group-item:first-child {
+        border-top-right-radius: 0px;
+        border-top-left-radius: 0px;
+        border-top: none;
+    }
+
+    .menu-list .list-group-item:last-child {
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+
+    .menu-list .list-group-item {
+        border-left: none;
+        border-right: none;
+        border-color: #0000;
+    }
+
+    body {
+        background: #dedede;
+        padding-top: 0px !important;
+    }
+
+    h5.page-title, .section-title {
+        border-bottom: 1px double gray;
+        padding: 8px;
+        background-color: #f0e4c6;
+    }
+
+    .home-link {
+        display: block;
+        text-decoration: none;
+    }
+
+    .top-space {
+        margin-top: 6.0rem !important;
+    }
+
+    .drop-shadow {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+    }
+
+    .navbar-shadow {
+        -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    }
+
+    .white-bg {
+        background-color: #fff !important;
+    }
+
+    .mihr-bg, .mihr-theme {
+        background-color: #000066 !important;
+    }
+
+    .mihr-theme {
+        color: #fff;
+    }
+
+    .white-text {
+        color: #fff !important;
+    }
+
+    .card-style {
+        background: url(/assets/static/bg-main.gif);
+        margin: 0px 0px 20px 0px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 1px 1px rgba(0, 0, 0, 0.05);
+        -moz-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 1px 1px rgba(0, 0, 0, 0.05);
+        -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 1px 1px rgba(0, 0, 0, 0.05);
+    }
+
+    .box-title {
+        background-color: #fff !important;
+        border-bottom: 1px solid #d9d9d9;
+        padding: 10px 10px 10px 16px;
+    }
+
+    li.nav-item {
+        margin-right: 10px;
+    }
+
+    .required:after {
+        content : " *";
+        color : red;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .brighter-border.dropdown-divider {
+        border-top: 1px solid #d5d5d5 !important;
+    }
+
+    {% block headerStyles %}{% endblock %}
+
+    </style>
+
+    <!-- Custom styles -->
+    <link href="/assets/bootstrap/css/custom/all.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!--Main Navigation-->
+<header>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark indigo mihr-bg">
+        <a class="navbar-brand" href="/"><strong>Hospital Management System</strong></a>
+        <button class="navbar-toggler" type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="/Hms/Account/Password"
+                       class="nav-link white-text">
+                        <img src="/Hms/{{ (account.isPatient()) ? 'Patients': 'Users' }}/ProfileImage/{{ account.id }}"
+                             width="30"
+                             height="30"
+                             class="rounded-circle">&nbsp;{{ (account.firstName ~' ' ~ account.lastName) | escape }} ({{ userRole.roleName | escape }})
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/Auth/Logout"
+                       class="nav-link white-text">
+                        <i class="fa fa-power-off"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light navbar-shadow white-bg">
+        <button class="navbar-toggler" type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent2"
+                aria-controls="navbarSupportedContent2"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent2">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">
+                        <i class="fa fa-home"></i>
+                        Home
+                    </a>
+                </li>
+
+                {# ------------ Protected Links -------------- #}
+
+                {{ beginProtectedMenu('reception', '&nbsp;Front Desk', 'fa fa-book', 'AccessReception', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Reception/Appointments', 'Appointments', 'AccessReception', userPermissions) }}
+                {{ endProtectedMenu('AccessReception', userPermissions) }}
+
+                {{ beginProtectedMenu('patient', '&nbsp;View', 'fa fa-eye', 'PerformPatientActivities', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Patient/Nok', 'Next of Kin', 'PerformPatientActivities', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Patient/Insurance', 'Insurance Details', 'PerformPatientActivities', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Patient/Bills', 'My Bills', 'PerformPatientActivities', userPermissions) }}
+                    {% if account.sex == "Female" %}
+                    {{ protectedDropdownNavItem('/Hms/Patient/Births', 'Birth Reports', 'PerformPatientActivities', userPermissions) }}
+                    {% endif %}
+                    {{ protectedDropdownNavItem('/Hms/Patient/Appointments', 'Upcoming Appointments', 'PerformPatientActivities', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Patient/Appointments/Cancelled', 'Cancelled Appointments', 'PerformPatientActivities', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Patient/Appointments/Completed', 'Completed Appointments', 'PerformPatientActivities', userPermissions) }}
+                {{ endProtectedMenu('PerformPatientActivities', userPermissions) }}
+
+                {{ beginProtectedMenu('billing', '&nbsp;Billing', 'fa fa-credit-card', 'AccessBilling', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Billing', 'Outstanding Bills', 'AccessBilling', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Billing/Paid', 'Fully Paid Bills', 'AccessBilling', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Billing/History', 'Payment History', 'AccessBilling', userPermissions) }}
+                {{ endProtectedMenu('AccessBilling', userPermissions) }}
+
+                {{ beginProtectedMenu('nurseStation', '&nbsp;Nurses Station', 'fas fa-user-nurse', 'AccessNursesStation', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/NurseStation/Vitals/New', 'Record Vitals', 'AccessNursesStation', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/NurseStation/Vitals/Fees', 'Vital Service Fee', 'AccessNursesStation', userPermissions) }}
+                {{ endProtectedMenu('AccessNursesStation', userPermissions) }}
+
+                {{ beginProtectedMenu('patients', '&nbsp;Patient Management', 'fa fa-wheelchair', 'ReadPatients', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Patients/Inpatient', 'Inpatients', 'ReadPatients/ViewInPatients', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Patients/Outpatient', 'Outpatients', 'ReadPatients/ViewOutPatients', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Patients/DeathReports', 'Death Reports', 'ReadPatients/ReadDeathReports', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Patients/New', 'Register Patient', 'ReadPatients/AddPatients', userPermissions) }}
+                {{ endProtectedMenu('ReadPatients', userPermissions) }}
+
+                {{ beginProtectedMenu('accounts', '&nbsp;Account Management', 'fa fa-users', 'ReadAccounts', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Accounts', 'User Accounts', 'ReadAccounts', userPermissions) }}
+                {{ endProtectedMenu('ReadAccounts', userPermissions) }}
+
+                {{ beginProtectedMenu('nurses', '&nbsp;Nurses', 'fas fa-user-nurse', 'AccessNurses', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Nurses', 'Nurses', 'AccessNurses/ReadNurses', userPermissions) }}
+                {{ endProtectedMenu('AccessNurses', userPermissions) }}
+
+                {{ beginProtectedMenu('doctors', '&nbsp;Doctors', 'fa fa-user-md', 'AccessDoctors', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Doctors', 'Doctors', 'AccessDoctors/ReadDoctors', userPermissions) }}
+                {{ endProtectedMenu('AccessDoctors', userPermissions) }}
+
+                {{ beginProtectedMenu('schedule', '&nbsp;Schedule & Appointments', 'fa fa-user-md', 'AccessScheduleModule', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Schedules', 'My Schedule', 'AccessScheduleModule', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Appointments', 'My Appointments', 'AccessScheduleModule', userPermissions) }}
+                {{ endProtectedMenu('AccessScheduleModule', userPermissions) }}
+
+                {{ beginProtectedMenu('consultations', '&nbsp;Doctors Consultation', 'fa fa-user-md', 'AccessConsultations', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Consultations', 'Consultations', 'AccessConsultations/ReadConsultations', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Consultations/Results', 'Consultation Results', 'AccessConsultations/ReadConsultationResults', userPermissions) }}
+                {{ endProtectedMenu('AccessConsultations', userPermissions) }}
+
+                {{ beginProtectedMenu('admissions', '&nbsp;Admissions', 'fas fa-bed', 'AccessAdmissions', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Admissions', 'Admissions', 'AccessAdmissions/ReadAdmissions', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Admissions/Rates', 'Admission Rates', 'AccessAdmissions/WriteAdmissionRates', userPermissions) }}
+                {{ endProtectedMenu('AccessAdmissions', userPermissions) }}
+
+                {{ beginProtectedMenu('pharmacy', '&nbsp;Pharmacy', 'fas fa-pills', 'AccessPharmacy', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/MedicineCategories', 'Medicine Categories', 'AccessPharmacy/ReadMedicineCategories', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/MedicineLocations', 'Medicine Locations', 'AccessPharmacy/ReadMedicineLocations', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Medicines', 'Medicines', 'AccessPharmacy/ReadMedicines', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Medicines/LowStock', 'Low Stocks', 'AccessPharmacy/ReadMedicines', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Medicines/Expiring', 'Expiring Medicine', 'AccessPharmacy/ReadMedicines', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Prescriptions', 'Prescriptions', 'AccessPharmacy/ReadPrescriptions', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Medicines/Dispensary', 'Dispensary', 'AccessPharmacy/ReadMedicines', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Medicines/Alerts', 'Notification Settings', 'AccessPharmacy/ReadMedicines', userPermissions) }}
+                {{ endProtectedMenu('AccessPharmacy', userPermissions) }}
+
+                {{ beginProtectedMenu('lab', '&nbsp;Laboratory', 'fas fa-microscope', 'AccessLabs', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Lab/Procedures', 'Procedures', 'AccessLabs/ReadLabProcedures', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Lab/Tests', 'Tests', 'AccessLabs/ReadLabTests', userPermissions) }}
+                {{ endProtectedMenu('lab', userPermissions) }}
+
+                {{ beginProtectedMenu('theater', '&nbsp;Theater', ' 	fas fa-procedures', 'AccessTheater', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Theater/Procedures', 'Procedures', 'AccessTheater/ReadTheaterProcedures', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Theater/Surgeries', 'Surgeries', 'AccessTheater/ReadTheaterSurgeries', userPermissions) }}
+                {{ endProtectedMenu('theater', userPermissions) }}
+
+                {{ beginProtectedMenu('dentistry', '&nbsp;Dentistry', 'fas fa-tooth', 'AccessDentistry', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Dentistry/Procedures', 'Procedures', 'AccessDentistry/AccessDentalProcedures', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Dentistry/Surgeries', 'Surgeries', 'AccessDentistry/ReadDentalSurgeries', userPermissions) }}
+                {{ endProtectedMenu('dentistry', userPermissions) }}
+
+                {{ beginProtectedMenu('settings', '&nbsp;Settings', 'fa fa-cog', 'ReadSettings', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Regions', 'Regions', 'ReadSettings/ReadRegions', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Districts', 'Districts', 'ReadSettings/ReadDistricts', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Workstations', 'Workstations', 'ReadSettings/ReadWorkstations', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Departments', 'Departments', 'ReadSettings/ReadDepartments', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Wards', 'Wards', 'ReadSettings/ReadWards', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Beds', 'Beds', 'ReadSettings/ReadBeds', userPermissions) }}
+
+                    {{ protectedDropdownNavItem('/Hms/Permissions', 'System Permissions', 'ReadSettings/ReadPermissions', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Roles', 'System Roles', 'ReadSettings/ReadRoles', userPermissions) }}
+                {{ endProtectedMenu('ReadSettings', userPermissions) }}
+
+                {{ beginProtectedMenu('system', '&nbsp;System', 'fa fa-desktop', 'ReadSystem', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/AuditLogs', 'Audit Logs', 'ReadSystem/ReadAuditLogs', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/Administrator', 'Administrator', 'ReadSystem/WriteAdminSettings', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/SystemSettings', 'Logo & Banner', 'ReadSystem/WriteSystemSettings', userPermissions) }}
+                    {{ protectedDropdownNavItem('/Hms/About', 'Version Information', 'ReadSystem/ReadVersion', userPermissions) }}
+                {{ endProtectedMenu('ReadSystem', userPermissions) }}
+
+                {# End Protected Links #}
+            </ul>
+        </div>
+    </nav>
+</header>
+<!--Main Navigation-->
+
+<main>
+    {% set containerClass = (useFluidContainer ? 'container-fluid' : 'container') %}
+    <div id="mainContainer" class="{{ containerClass }}" style="margin-top: 150px;">
+        {% if errorMessage %}
+        {{ showErrorMessage(errorMessage, "my-4 mx-4") }}
+        {% endif %}
+
+        {% if successMessage %}
+        {{ showSuccessMessage(successMessage, "my-4 mx-4") }}
+        {% endif %}
+
+        {% if infoMessage %}
+        {{ showInfoMessage(infoMessage, "my-4 mx-4") }}
+        {% endif %}
+
+        {# Extend menu here #}
+        <div class="mb-2">
+            <ul class="nav">
+                {% block menuBlock %}{% endblock %}
+            </ul>
+        </div>
+
+        {# Descendant views should extend this block for adding content #}
+        {% block mainContent %}{% endblock %}
+    </div>
+</main>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/assets/jquery/jquery-3.4.1.js"></script>
+<script src="/assets/popper/popper-1.12.9.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/fa/js/all.min.js"></script>
+<script src="/assets/datatables/datatables.min.js"></script>
+<script src="/assets/datatables/Buttons-1.6.1/js/buttons.bootstrap4.min.js"></script>
+<script src="/assets/datatables/Buttons-1.6.1/js/buttons.colVis.min.js"></script>
+<script src="/assets/datatables/Buttons-1.6.1/js/buttons.print.min.js"></script>
+
+<script>
+var dt = $('.datatable');
+if(dt !== undefined && dt !== null){
+    var options = {
+        destroy: true,
+        iDisplayLength: 10,
+        dom: 'Bfrtip',
+        buttons: [
+            { extend: 'copy', footer:true, exportOptions: { columns: ':visible' } },
+            { extend: 'excel', footer:true, exportOptions: { columns: ':visible' } },
+            { extend: 'csv', footer:true, exportOptions: { columns: ':visible' } },
+            { extend: 'pdf', pageSize:'LEGAL', orientation:'landscape', footer:true, exportOptions: { columns: ':visible' } },
+            { extend: 'print', footer:true, exportOptions: { columns: ':visible' } },
+            { extend: 'colvis', text: 'Column Visibility' }
+        ]
+     };
+    dt.DataTable(options);
+}
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  $('[data-toggle="popover"]').popover();
+
+  window.expandContentContainer = function(){
+    {% if useFluidContainer == false %}
+        $('#mainContainer').removeClass('container').addClass('container-fluid');
+    {% endif %}
+  };
+})
+
+</script>
+{# Descendant views should extend this block to add footer scripts #}
+{% block footerScripts %}{% endblock %}
+</body>
+</html>

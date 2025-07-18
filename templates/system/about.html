@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}{{ parent() }} - About System{% endblock %}
+
+{% block mainContent %}
+<div class="card-style card white">
+    <h4 class="box-title">System Version Information</h4>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-2"><h6>Build</h6></div>
+            <div class="col">{{ artifactId | escape }}</div>
+        </div>
+        <div class="row">
+            <div class="col-2"><h6>Version</h6></div>
+            <div class="col">{{ version | escape }}</div>
+        </div>
+        <div class="row">
+            <div class="col-2"><h6>Timestamp</h6></div>
+            <div class="col">{{ timestamp | escape }}</div>
+        </div>
+        <div class="row">
+            <div class="col-2"><h6>Developed By</h6></div>
+            <div class="col">MiHR Business Partner | <a
+                    href="mailto:enquiries@mihrafrica.com">enquiries@mihrafrica.com</a></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

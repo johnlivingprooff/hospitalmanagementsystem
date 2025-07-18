@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Theater Operation Details{% endblock %}
+
+{% block menuBlock %}
+
+<li class="nav-item">
+    <a href="/Hms/Theater/Surgeries"
+       class="nav-link"><i class="fa fa-chevron-left"></i> Back</a>
+</li>
+
+{% endblock %}
+
+{% block mainContent %}
+
+<div class="card-style card white">
+    <h4 class="box-title">Medical Surgery Details for {{ surgery.patientName | upper | escape }} | {{ surgery.patientMrn | escape }}</h4>
+    <div class="card-body">
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("mrn", "Patient ID") }}
+                    <input type="text"
+                           id="mrn"
+                           readonly
+                           autofocus
+                           value="{{ surgery.patientMrn | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("patientName", "Patient Name") }}
+                    <input type="text"
+                           id="patientName"
+                           readonly
+                           autofocus
+                           value="{{ surgery.patientName | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("procedure", "Procedure") }}
+                    <input type="text"
+                           id="procedure"
+                           readonly
+                           autofocus
+                           value="{{ surgery.procedureName | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("date", "Performed On") }}
+                    <input type="text"
+                           id="date"
+                           readonly
+                           autofocus
+                           value="{{ formatDate(surgery.createdAt, true) | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("examinerName", "Performed By") }}
+                    <input type="text"
+                           id="examinerName"
+                           readonly
+                           autofocus
+                           value="{{ surgery.performer | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("department", "Department") }}
+                    <input type="text"
+                           id="department"
+                           readonly
+                           autofocus
+                           value="{{ surgery.department | escape }}"
+                           class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    {{ labelFor("notes", "Notes", true) }}
+                    <textarea
+                            id="notes"
+                            autofocus
+                            readonly
+                            required
+                            rows="6"
+                            class="form-control">{{ surgery.notes | escape }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        {% if surgery.attachment %}
+        <div class="form-row">
+            <div class="col">
+                <div class="form-group">
+                    <a download=""
+                       target="_blank"
+                       href="/Hms/Theater/Surgeries/{{ surgery.id }}/Attachment">
+                        <i class="fa fa-paperclip" aria-hidden="true"></i>
+                        Download Attachment
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

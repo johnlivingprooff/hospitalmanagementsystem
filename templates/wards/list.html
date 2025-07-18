@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Wards{% endblock %}
+
+{% block mainContent %}
+{% set canModifyWards = "WriteWards" in userPermissions %}
+<div class="card-style card white">
+    <h4 class="box-title">Wards</h4>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table data-order="[]" class="table datatable table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Active</th>
+                    {% if canModifyWards %}
+                    <th>Edit</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for ward in wards %}
+                <tr>
+                    <td>{{ ward.code | escape }}</td>
+                    <td>{{ ward.name | escape }}</td>
+                    <td>{{ yesOrNo(ward.active) | escape }}</td>
+                    {% if canModifyWards %}
+                    <td><a href="/Hms/Wards/{{ ward.id }}/Edit">Edit</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
